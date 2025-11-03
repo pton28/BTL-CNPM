@@ -1,7 +1,9 @@
+import './Header.scss'
+
 const Header = () => {
     return (
-        <div>
-            Headers
+        <div className="header-container">
+            {/*Headers*/}
         </div>
     )
 }

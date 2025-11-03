@@ -13,6 +13,8 @@ import Unauthorized from "../pages/common/unauthorized/Unauthorized.jsx";
 *   2.  absolute path (ex: '/admin')
 * */
 import { createBrowserRouter } from "react-router-dom"
+import LoginTutor from "@/pages/tutor/login/LoginTutor.jsx";
+import HistoryAppointment from "@/pages/student/history/HistoryAppointment.jsx";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -26,6 +28,18 @@ export const router = createBrowserRouter([
                 path: '/pre-login',
                 element: <PreLogin />,
             },
+            {
+                path: '/student/login',
+                element: <LoginStudent />
+            },
+            {
+                path: '/tutor/login',
+                element: <LoginTutor />,
+            },
+            { // Route private
+                path: 'history',
+                element: <HistoryAppointment />
+            },
             // others public routes
             // ...
             {
@@ -36,10 +50,7 @@ export const router = createBrowserRouter([
                         path: '/student',
                         element: <MainStudentLayout />,
                         children: [
-                            {
-                                path: 'login',
-                                element: <LoginStudent />
-                            }
+
                         ]
                     },
                     // tutor

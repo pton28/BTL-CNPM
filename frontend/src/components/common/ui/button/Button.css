@@ -1,0 +1,9 @@
+.btn-login {
+    width: 440px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    background: #0366FF;
+    color: #fff;
+}
