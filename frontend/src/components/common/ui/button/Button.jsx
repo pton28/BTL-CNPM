@@ -1,11 +1,12 @@
 // File: Button.jsx
 // Chức năng: lưu các button component thường dùng
+import './Button.css'
 
-export function ButtonCancel() {
+export function ButtonLogin() {
     return (
-        <>
-            This button cancel
-        </>
+        <button className='btn-login'>
+            Login
+        </button>
     )
 }
 

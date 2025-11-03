@@ -1,15 +1,15 @@
-import './LoginStudent.scss'
+import './LoginTutor.scss'
 import {ButtonLogin} from "@/components/common/ui/button/Button.jsx";
 
-const LoginStudent = () => {
+const LoginTutor = () => {
     return (
         <div className="form-login-container">
             <div className="box">
-                <h1>Đăng nhập cho sinh viên</h1>
+                <h1>Đăng nhập cho giảng viên</h1>
                 <p>Vui lòng điền đầy đủ thông tin đăng nhập</p>
 
                 <div className='input-container'>
-                    <label>Email sinh viên</label>
+                    <label>Email giảng viên</label>
                     <input placeholder='email@gmail.com'/>
                 </div>
 
@@ -24,4 +24,4 @@ const LoginStudent = () => {
     )
 }
 
-export default LoginStudent
+export default LoginTutor
