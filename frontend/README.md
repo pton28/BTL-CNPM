@@ -1,16 +1,76 @@
-# React + Vite
+# Lưu ảnh của từng Component
+Lưu trong assets
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+📁 src/
+├── 📁 assets/
+│   ├── 📄 images/
+│   └── 📄 icons/
+│
+├── 📁 components/
+│   ├── 📁 ui/             # (Tùy chọn) Các component nhỏ nhất (Button, Input, Modal)
+│   │   ├── 📄 Button.jsx
+│   │   └── 📄 Modal.jsx
+│   ├── 📁 layout/         # Các component bố cục chung
+│   │   ├── 📄 Header.jsx
+│   │   ├── 📄 Sidebar.jsx
+│   │   └── 📄 MainLayout.jsx
+│   └── 📄 Spinner.jsx
+│
+├── 📁 config/
+│   └── 📄 index.js        # (Nơi lưu API_URL, hằng số chung)
+│
+├── 📁 context/            # (Hoặc store/ nếu dùng Redux/Zustand)
+│   └── 📄 AuthContext.jsx
+│
+├── 📁 features/           # 🚀 NƠI QUAN TRỌNG NHẤT
+│   ├── 📁 authentication/
+│   │   ├── 📄 LoginForm.jsx
+│   │   ├── 📄 RegisterForm.jsx
+│   │   └── 📄 useAuth.js      # (Hook/logic riêng cho auth)
+│   │
+│   ├── 📁 courses/
+│   │   ├── 📄 CourseList.jsx
+│   │   ├── 📄 CourseCard.jsx
+│   │   ├── 📄 CourseDetails.jsx
+│   │   ├── 📄 LessonPlayer.jsx
+│   │   └── 📄 Quiz.jsx
+│   │
+│   ├── 📁 dashboard/
+│   │   ├── 📁 student/
+│   │   │   └── 📄 MyCourses.jsx
+│   │   ├── 📁 tutor/
+│   │   │   └── 📄 CourseManagement.jsx
+│   │   └── 📄 Statistics.jsx│   │
+│   └── 📁 admin/
+│       ├── 📄 UserTable.jsx
+│       └── 📄 ApprovalQueue.jsx
+│
+├── 📁 hooks/              # Các hooks DÙNG CHUNG
+│   ├── 📄 useApi.js
+│   └── 📄 useDebounce.js
+│
+├── 📁 pages/              # Các "trang" để React Router trỏ đến
+│   ├── 📄 HomePage.jsx
+│   ├── 📄 LoginPage.jsx
+│   ├── 📄 CourseDetailPage.jsx
+│   ├── 📄 StudentDashboardPage.jsx
+│   ├── 📄 TutorDashboardPage.jsx
+│   └── 📄 NotFoundPage.jsx
+│
+├── 📁 routes/
+│   ├── 📄 AppRoutes.jsx     # (File định nghĩa tất cả routes)
+│   └── 📄 ProtectedRoute.jsx
+│
+├── 📁 services/ (hoặc api/)
+│   ├── 📄 apiClient.js    # (Cấu hình Axios/fetch)
+│   ├── 📄 authService.js
+│   └── 📄 courseService.js
+│
+├── 📁 utils/              # Các hàm helper DÙNG CHUNG
+│   ├── 📄 formatDate.js
+│   └── 📄 validators.js
+│
+├── 📄 App.jsx             # (Chứa Router Provider, Context Provider)
+├── 📄 main.jsx            # (Entry point)
+└── 📄 index.css           # (Global styles)
