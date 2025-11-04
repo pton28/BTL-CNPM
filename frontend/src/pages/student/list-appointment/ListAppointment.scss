@@ -1,0 +1,57 @@
+@use '@/styles/mixin/reponsive' as *;
+
+.list-appointment-container {
+  width: 100%;
+  .box{
+    overflow-x: hidden;
+    margin: 50px 15vw;
+    h1{
+      color: #044CC8;
+    }
+    .button-container{
+      margin: 30px 0;
+      display: flex;
+      gap: 5px;
+      button {
+        padding: 20px;
+        border-radius: 10px;
+        border: none;
+
+        &:hover{
+          background: #044CC8;
+          color: #fff;
+          transition: 200ms all;
+          cursor: pointer;
+        }
+      }
+      .active{
+        background: #044CC8;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@include respond-to(sm) {
+  .list-appointment-container{
+    .box {
+      margin: 50px 5vw;
+    }
+  }
+}
+
+@include respond-to(md) {
+  .list-appointment-container{
+    .box {
+      margin: 50px 8vw;
+    }
+  }
+}
+
+@include respond-to(lg) {
+  .list-appointment-container{
+    .box {
+      margin: 50px 11vw;
+    }
+  }
+}

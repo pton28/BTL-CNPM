@@ -5,15 +5,30 @@ import dadienra from '@/assets/student/history/dadienra.svg'
 import giangvien from '@/assets/student/history/giangvien.svg'
 import hinhthuc from '@/assets/student/history/hinhthuc.svg'
 import sapdienra from '@/assets/student/history/sapdienra.svg'
-import {useState} from "react";
-import HistoryAppointmentStudent from "@/components/student/history/HistoryAppointmentStudent.jsx";
+import {useEffect, useState} from "react";
+import HistoryAppointmentStudentComponent from "@/components/student/history/HistoryAppointmentStudent.jsx";
+import {useFetchAppointment} from "@/services/fetchAPI/useFetchAppointment.jsx";
 
+/**
+ * @typedef {"all" | "upcoming" | "past" | "teacher" | "type"} HistoryType
+ */
 
 const HistoryAppointment = () => {
+
+    /** @type {[HistoryType, function]} */
     const [history, setHistory] = useState('all')
+    const [refresh, setRefresh] = useState(true)
+    const {appointment, loading} = useFetchAppointment(refresh)// array
+    const [ListAppointment, setListAppointment] = useState(appointment)
+
+    useEffect(() => {
+        setListAppointment(appointment)
+    }, [appointment])
     return (
         <div className="history-container">
+            {!loading && console.log('List', ListAppointment)}
             <div className="tab">
+                <h2>Phân loại</h2>
                 <ul>
                     <li
                         onClick={() => setHistory("all")}
@@ -56,7 +71,7 @@ const HistoryAppointment = () => {
                     </li>
                 </ul>
             </div>
-                <HistoryAppointmentStudent history={history} />
+                <HistoryAppointmentStudentComponent history={history} />
         </div>
     )
 }

@@ -15,6 +15,7 @@ import Unauthorized from "../pages/common/unauthorized/Unauthorized.jsx";
 import { createBrowserRouter } from "react-router-dom"
 import LoginTutor from "@/pages/tutor/login/LoginTutor.jsx";
 import HistoryAppointment from "@/pages/student/history/HistoryAppointment.jsx";
+import ListAppointment from "@/pages/student/list-appointment/ListAppointment.jsx";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -39,6 +40,11 @@ export const router = createBrowserRouter([
             { // Route private
                 path: 'history',
                 element: <HistoryAppointment />
+            },
+            { // Route private
+                path: 'list-appointment/:id',
+                element: <ListAppointment />,
+
             },
             // others public routes
             // ...
