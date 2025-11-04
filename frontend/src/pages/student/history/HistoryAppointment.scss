@@ -1,12 +1,18 @@
+@use '@/styles/mixin/reponsive' as *;
+
 .history-container {
   background-color: #fff;
   display: flex;
   .tab {
     background-color: #F7F6FA;
     margin: 30px;
-    padding: 20px;
+    padding: 30px 20px;
     border-radius: 10px;
-    width: 270px;
+    width: 22vw;
+    height: fit-content;
+    h2 {
+      margin: 0 0 20px 10px;
+    }
     ul {
       list-style: none;
       .active {
@@ -15,10 +21,20 @@
       li {
         display: flex;
         align-items: center;
+        cursor: pointer;
         img {
           padding: 5px
         }
       }
+    }
+  }
+}
+
+@include respond-to(md){
+  .history-container{
+    display: block;
+    .tab {
+      width: 50vw;
     }
   }
 }
