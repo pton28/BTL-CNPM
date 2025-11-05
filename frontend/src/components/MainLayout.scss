@@ -1,0 +1,60 @@
+.main-layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.slideshow-container {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 70px); // trừ phần header
+  overflow: hidden;
+}
+
+.slideshow-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+
+  &.fade {
+    opacity: 0.3;
+  }
+}
+
+/* === Nút mũi tên === */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 2rem;
+  padding: 0.5rem 0.9rem;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 0.1s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &.left {
+    left: 20px;
+  }
+
+  &.right {
+    right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .arrow {
+    font-size: 1.5rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

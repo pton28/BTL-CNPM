@@ -1,0 +1,32 @@
+/*
+@params:
+  1. $thumb-color  — The color of the draggable scrollbar thumb.
+  2. $track-color  — The background color of the scrollbar track (behind the thumb).
+  3. $hover-color  — The color of the thumb when hovered.
+*/
+
+@mixin custom-scrollbar($thumb-color: #A0AAB5, $track-color: #E2E7EB, $hover-color: #2A5CAA) {
+  /* ===== Scrollbar CSS ===== */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumb-color;
+    border-radius: 10px;
+    border: 2px solid $track-color;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: $hover-color;
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #{$thumb-color} #{$track-color};
+}

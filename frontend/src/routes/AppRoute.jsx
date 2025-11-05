@@ -23,6 +23,7 @@ import InnerAppointment from "@/pages/student/inner-appointment/InnerAppointment
 // Tutor ----------------------------------------------------------------------------
 import LoginTutor from "@/pages/tutor/login/LoginTutor.jsx";
 import ListAppointment from "@/pages/student/list-appointment/ListAppointment.jsx";
+import SearchCourse from "@/pages/student/search-course/SearchCourse.jsx";
 
 
 
@@ -54,11 +55,14 @@ export const router = createBrowserRouter([
             { // Route private
                 path: 'list-appointment/:id',
                 element: <InnerAppointment />,
-
             },
             { // Route private
-                path: '/list-appointment',
+                path: 'list-appointment',
                 element: <ListAppointment />,
+            },
+            { // Route private
+                path: 'search-course',
+                element: <SearchCourse />,
             },
             // others public routes
             // ...

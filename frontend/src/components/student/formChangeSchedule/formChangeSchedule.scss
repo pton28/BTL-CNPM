@@ -1,24 +1,42 @@
+@use '@/styles/mixin/scrollbar' as *;
+@use '@/styles/mixin/reponsive' as *;
+
 .form-change-schedule-container {
-  width: 40%;
-  height: 40%;
+  //width: 40vw;
+  height: 70%;
   background: #E2E7EB;
   position: fixed;
-  top: 30%;
-  right: 30%;
+  top: 15%;
+  right: 25%;
+  left: 25%;
   border-radius: 10px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
 
+  h3{
+    text-align: center;
+    margin: 30px 0;
+    font-size: 20px;
+  }
   .table-wrapper{
     flex: 1; /* quan trọng */
     overflow-y: auto;
     max-height: 80%;
+
+    @include custom-scrollbar();
+
     table{
       font-size: 15px;
-      padding: 20px 10px;
+      padding: 0 10px;
       thead{
         position: sticky;
         top: 0;
-        //margin: 10px 0;
         background: #E2E7EB;
+        th{
+          padding-top: 20px;
+          border-bottom: 1px solid #545454;
+        }
       }
       tbody{
         //overflow-y: auto;
@@ -56,18 +74,61 @@
     justify-content: center;
     margin-bottom: 10px;
     button {
-      margin: 20px 20px;
+      margin: 20px 10px;
       padding: 10px;
       border: none;
       border-radius: 10px;
-      width: 60px;
+      width: 70px;
       cursor: pointer;
+      color: white;
+      font-size: 14px;
+      transition: 0.2s all;
     }
     .btn-close {
-      background: #B5B7C0;
+      background: #DF0404;
+      &:hover{
+        background: #b60101;
+        transform: scale(1.05);
+      }
     }
     .btn-save{
-      background: forestgreen;
+      background: #27C840;
+      &:hover{
+        background: #1d962f;
+        transform: scale(1.05);
+      }
     }
+  }
+}
+
+@include respond-to(lg){
+  .form-change-schedule-container {
+    //width: 60vw;
+    right: 20%;
+    left: 20%;
+  }
+}
+
+@include respond-to(md){
+  .form-change-schedule-container {
+    //width: 60vw;
+    right: 15%;
+    left: 15%;
+  }
+}
+
+@include respond-to(sm){
+  .form-change-schedule-container {
+    //width: 60vw;
+    right: 10%;
+    left: 10%;
+  }
+}
+
+@include respond-to(xs){
+  .form-change-schedule-container {
+    //width: 60vw;
+    right: 5%;
+    left: 5%;
   }
 }

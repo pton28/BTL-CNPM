@@ -1,7 +1,13 @@
 import './LoginStudent.scss'
 import {ButtonLogin} from "@/components/common/ui/button/Button.jsx";
+import {useNavigate} from "react-router-dom";
 
 const LoginStudent = () => {
+    const navigate = useNavigate();
+    const handleLoginStudent = () => {
+        //login
+        navigate("/list-appointment")
+    }
     return (
         <div className="form-login-container">
             <div className="box">
@@ -18,7 +24,9 @@ const LoginStudent = () => {
                     <input placeholder='Mật khẩu' type='password' />
                 </div>
 
-                <ButtonLogin />
+                <button className='btn-login' onClick={handleLoginStudent}>
+                    Login
+                </button>
             </div>
         </div>
     )

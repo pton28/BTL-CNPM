@@ -67,7 +67,7 @@ const DetailComponent = () => {
                         <td>Quán Cafe ABC Tầng 2</td>
                         <td>Sắp diễn ra</td>
                         <td>
-                            <button className="change-btn" onClick={() => setShowFormChangeSchedule(true)}>Thay đổi</button>
+                            <button className="change-btn" onClick={() => setShowFormChangeSchedule(true)}>Thay đổi thời gian</button>
                         </td>
                     </tr>
                 </tbody>
