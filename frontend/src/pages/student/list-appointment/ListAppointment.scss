@@ -1,57 +1,108 @@
 @use '@/styles/mixin/reponsive' as *;
 
 .list-appointment-container {
-  width: 100%;
-  .box{
-    overflow-x: hidden;
-    margin: 50px 15vw;
-    h1{
+  border: 1px solid #ddd;
+  margin: 60px auto;
+  width: 80%;
+  border-radius: 10px;
+  //background: #044CC8;
+  .header-appointment-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px;
+
+    button {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #044CC8;
+      background-color: white;
       color: #044CC8;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      &:hover {
+        background-color: #044CC8;
+        color: white;
+      }
     }
-    .button-container{
-      margin: 30px 0;
-      display: flex;
-      gap: 5px;
-      button {
-        padding: 20px;
+  }
+
+  .card-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 30px;
+    .card-item {
+      background: #F7F6FA;
+      border: 1px solid #ddd;
+      margin: 10px 10px;
+      border-radius: 5px;
+      width: 30%;
+      padding: 30px;
+      .card-item-title{
+        display: flex;
+        .card-item-info{
+          margin-left:20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          .name-teacher {
+            font-size: 18px;
+            font-weight: 600;
+          }
+          .major{
+            height: 38px;
+            overflow: hidden;
+          }
+        }
+
+      }
+      .name-course{
+        font-size: 20px;
+        font-weight: 400;
+        margin: 10px 0;
+        width: 100%;
+        height: 50px;
+        overflow: hidden;
+      }
+
+      button{
+        padding: 10px;
         border-radius: 10px;
         border: none;
-
-        &:hover{
-          background: #044CC8;
-          color: #fff;
-          transition: 200ms all;
-          cursor: pointer;
+        color: white;
+        background: #044CC8;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s;
+        &:hover {
+          background-color: #002e81;
+          //background: white;
+          transform: scale(1.03);
         }
       }
-      .active{
-        background: #044CC8;
-        color: #fff;
-      }
-    }
-  }
-}
-
-@include respond-to(sm) {
-  .list-appointment-container{
-    .box {
-      margin: 50px 5vw;
-    }
-  }
-}
-
-@include respond-to(md) {
-  .list-appointment-container{
-    .box {
-      margin: 50px 8vw;
     }
   }
 }
 
 @include respond-to(lg) {
   .list-appointment-container{
-    .box {
-      margin: 50px 11vw;
+    .card-list {
+      .card-item{
+        width: 45%;
+        margin: 10px 10px;
+      }
+    }
+  }
+}
+
+@include respond-to(md) {
+  .list-appointment-container{
+    .card-list {
+      .card-item{
+        width: 100%;
+        margin: 10px 10px;
+      }
     }
   }
 }

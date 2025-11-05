@@ -1,0 +1,73 @@
+.form-change-schedule-container {
+  width: 40%;
+  height: 40%;
+  background: #E2E7EB;
+  position: fixed;
+  top: 30%;
+  right: 30%;
+  border-radius: 10px;
+
+  .table-wrapper{
+    flex: 1; /* quan trọng */
+    overflow-y: auto;
+    max-height: 80%;
+    table{
+      font-size: 15px;
+      padding: 20px 10px;
+      thead{
+        position: sticky;
+        top: 0;
+        //margin: 10px 0;
+        background: #E2E7EB;
+      }
+      tbody{
+        //overflow-y: auto;
+        tr {
+          td{
+            &:last-child{
+              cursor: pointer;
+
+              background-color: #cbe4ff;   /* màu khác so với các cột còn lại */
+              width: 80px;
+              height: 50%;
+              text-align: center;
+              font-weight: 500;
+              border-radius: 4px;
+              transition: background-color 0.2s ease;
+
+              &:hover {
+                background-color: #1780d5;
+                color: white;
+              }
+              &.active {
+                background-color: #1780d5;
+                color: white;
+                font-weight: 600;
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+  .group-button{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    button {
+      margin: 20px 20px;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      width: 60px;
+      cursor: pointer;
+    }
+    .btn-close {
+      background: #B5B7C0;
+    }
+    .btn-save{
+      background: forestgreen;
+    }
+  }
+}

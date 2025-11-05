@@ -1,28 +1,37 @@
-.list-appointment-container {
-  .box {
-    .evaluate-container {
-      .question{
-        border: 1px solid #dee2e6;
-        display: flex;
-        padding: 20px;
-        flex-direction: column;
-        border-radius: 10px;
-        margin: 20px 0;
-        p {
-          font-size: 20px;
-          padding-bottom: 10px;
-        }
-        label {
-          padding: 5px 10px;
-        }
-        textarea {
-          resize: vertical;
-          overflow: auto;
-          border-radius: 5px;
-          border: 1px solid #ccc;
-          padding: 10px;
-        }
-      }
+.evaluate-appointment-container {
+  button {
+    width: 100px;
+    transition: 200ms all;
+    cursor: pointer;
+
+    &:hover {
+      background: #004fc5;
+    }
+  }
+
+  .question {
+    border: 1px solid #dee2e6;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    border-radius: 10px;
+    margin: 20px 0;
+
+    p {
+      font-size: 20px;
+      padding-bottom: 10px;
+    }
+
+    label {
+      padding: 5px 10px;
+    }
+
+    textarea {
+      resize: vertical;
+      overflow: auto;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      padding: 10px;
     }
   }
 }

@@ -28,7 +28,12 @@ instead of long relative paths like `'../../../assets'`.
 Add some **responsive styles**, for example:
 
 ```scss
-@media (max-width: 580px) {
-  ...
+@include respond-to(sm) {
+  //login UI
 }
 ```
+View detail in `'@/styles/mixin/reponsive.scss'`
+
+## Fetch API
+A sample for fetch API using axios support loading and refresh
+Ex: `@/services/fetchAPI/...`

@@ -1,0 +1,38 @@
+.detail-appointment-container {
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 20px;
+  h2 {
+    padding: 20px 0 40px 0;
+  }
+  table {
+    width: 100%;
+
+    th{
+      text-align: center;
+      padding-bottom: 20px;
+    }
+    td {
+      text-align: center;
+      padding: 20px 10px;
+      border-top: 1px solid #dee2e6 ;
+      &:nth-child(4), &:nth-child(6) {
+        text-align: left;
+      }
+
+      .change-btn {
+        padding: 5px 10px;
+        border: none;
+        background: crimson;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.3s;
+        &:hover {
+          background: #c01036;
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}

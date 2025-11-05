@@ -1,47 +1,77 @@
 import './ListAppointment.scss'
-import {useState} from "react";
-import CourseComponent from "@/components/student/courseDetail/course/courseComponent.jsx";
-import EvaluateComponent from "@/components/student/courseDetail/evaluate/evaluateComponent.jsx";
-import DetailComponent from "@/components/student/courseDetail/detail/detailComponent.jsx";
-import Unauthorized from "@/pages/common/unauthorized/Unauthorized.jsx";
 
-/*
-* Status:   Khoa hoc --> 1
-*           Danh gia --> 2
-*           Chi tiet --> 3
-* */
+import Avt from '@/assets/student/avt.svg'
+import {useNavigate} from "react-router-dom";
+
 const ListAppointment = () => {
-    const [status, setStatus] = useState('evaluate')
-    const mapStatus = () => {
-        if(status === 'course') return <CourseComponent />
-        else if(status === 'evaluate') return <EvaluateComponent />
-        else if(status === 'detail') return <DetailComponent />
-        else return <Unauthorized />
-    }
+    const navigate = useNavigate()
     return (
         <div className="list-appointment-container">
-            <div className='box'>
-                <h1>Kỹ năng Chuyên nghiệp cho Kỹ sư (CO2001)_PHẠM MINH TUẤN (CQ_HK251) [L03]</h1>
-                <div className='button-container'>
-                    <button
-                        className={status === 'course' ? 'active' : ''}
-                        onClick={() => setStatus('course')}>
-                            Khóa học
-                    </button>
-                    <button
-                        className={status === 'evaluate' ? 'active' : ''}
-                        onClick={() => setStatus('evaluate')}>
-                            Đánh giá
-                    </button>
-                    <button
-                        className={status === 'detail' ? 'active' : ''}
-                        onClick={() => setStatus('detail')}>
-                            Chi tiết
-                    </button>
-                </div>
-                {mapStatus()}
+            <div className='header-appointment-container'>
+                <h2>Danh sách lớp của tôi</h2>
+                <button className='btn-border'>Lịch học của tôi</button>
             </div>
 
+            <div className='card-list'>
+                <div className='card-item'>
+                    <div className='card-item-title'>
+                        <img src={Avt} alt="avt" />
+                        <div className='card-item-info'>
+                            <p className='name-teacher'>Lê Thành sách</p>
+                            <p className='major'>Lĩnh vực: Toan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly n  gon ngu</p>
+                        </div>
+                    </div>
+                    <p className='name-course'>Xu ly ngon ngu tu ly ngon ngu tuu ngon ngu tu ly ngon ngu tu ngon ngu tu ly ngon ngu tu ly ngon ngu tu nhien</p>
+                    <button className='btn-detail' onClick={() => navigate('/list-appointment/1')}>Xem chi tiết</button>
+                </div>
+
+                <div className='card-item'>
+                    <div className='card-item-title'>
+                        <img src={Avt} alt="avt" />
+                        <div className='card-item-info'>
+                            <p className='name-teacher'>Lê Thành sách</p>
+                            <p className='major'>Lĩnh vực: Toan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly n  gon ngu</p>
+                        </div>
+                    </div>
+                    <p className='name-course'>Xu ly ngon ngu tu ly ngon ngu tuu ngon ngu tu ly ngon ngu tu ngon ngu tu ly ngon ngu tu ly ngon ngu tu nhien</p>
+                    <button className='btn-detail'>Xem chi tiết</button>
+                </div>
+
+                <div className='card-item'>
+                    <div className='card-item-title'>
+                        <img src={Avt} alt="avt" />
+                        <div className='card-item-info'>
+                            <p className='name-teacher'>Lê Thành sách</p>
+                            <p className='major'>Lĩnh vực: Toan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly n  gon ngu</p>
+                        </div>
+                    </div>
+                    <p className='name-course'>Xu ly ngon ngu tu ly ngon ngu tuu ngon ngu tu ly ngon ngu tu ngon ngu tu ly ngon ngu tu ly ngon ngu tu nhien</p>
+                    <button className='btn-detail'>Xem chi tiết</button>
+                </div>
+
+                <div className='card-item'>
+                    <div className='card-item-title'>
+                        <img src={Avt} alt="avt" />
+                        <div className='card-item-info'>
+                            <p className='name-teacher'>Lê Thành sách</p>
+                            <p className='major'>Lĩnh vực: Toan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly n  gon ngu</p>
+                        </div>
+                    </div>
+                    <p className='name-course'>Xu ly ngon ngu tu ly ngon ngu tuu ngon ngu tu ly ngon ngu tu ngon ngu tu ly ngon ngu tu ly ngon ngu tu nhien</p>
+                    <button className='btn-detail'>Xem chi tiết</button>
+                </div>
+                <div className='card-item'>
+                    <div className='card-item-title'>
+                        <img src={Avt} alt="avt" />
+                        <div className='card-item-info'>
+                            <p className='name-teacher'>Lê Thành sách</p>
+                            <p className='major'>Lĩnh vực: Toan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly noan Xu ly ngon ngu tu ly n  gon ngu</p>
+                        </div>
+                    </div>
+                    <p className='name-course'>Xu ly ngon ngu tu ly ngon ngu tuu ngon ngu tu ly ngon ngu tu ngon ngu tu ly ngon ngu tu ly ngon ngu tu nhien</p>
+                    <button className='btn-detail'>Xem chi tiết</button>
+                </div>
+            </div>
         </div>
     )
 }

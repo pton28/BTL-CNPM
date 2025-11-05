@@ -1,21 +1,31 @@
+import { createBrowserRouter } from "react-router-dom"
+
+/*
+ * Define public routes and private routes
+ * Distinguish:
+ *   1.  relative path (ex: 'admin')
+ *   2.  absolute path (ex: '/admin')
+ * */
+
+// Common --------------------------------------------------------------------------
 import MainLayout from "../components/MainLayout.jsx";
 import PreLogin from "../pages/common/preLogin/PreLogin.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
-import MainStudentLayout from "../pages/student/MainStudentLayout.jsx";
-import LoginStudent from "../pages/student/login/LoginStudent.jsx";
 import Unauthorized from "../pages/common/unauthorized/Unauthorized.jsx";
 
 
-/*
-* Define public routes and private routes
-* Distinguish:
-*   1.  relative path (ex: 'admin')
-*   2.  absolute path (ex: '/admin')
-* */
-import { createBrowserRouter } from "react-router-dom"
-import LoginTutor from "@/pages/tutor/login/LoginTutor.jsx";
+// Student --------------------------------------------------------------------------
+import MainStudentLayout from "../pages/student/MainStudentLayout.jsx";
+import LoginStudent from "../pages/student/login/LoginStudent.jsx";
 import HistoryAppointment from "@/pages/student/history/HistoryAppointment.jsx";
+import InnerAppointment from "@/pages/student/inner-appointment/InnerAppointment.jsx";
+
+// Tutor ----------------------------------------------------------------------------
+import LoginTutor from "@/pages/tutor/login/LoginTutor.jsx";
 import ListAppointment from "@/pages/student/list-appointment/ListAppointment.jsx";
+
+
+
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -43,8 +53,12 @@ export const router = createBrowserRouter([
             },
             { // Route private
                 path: 'list-appointment/:id',
-                element: <ListAppointment />,
+                element: <InnerAppointment />,
 
+            },
+            { // Route private
+                path: '/list-appointment',
+                element: <ListAppointment />,
             },
             // others public routes
             // ...
