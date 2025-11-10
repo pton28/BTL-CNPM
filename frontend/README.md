@@ -3,7 +3,8 @@
 1.  clone repo
 2.  cd dir
 3.  npm install
-4.  npm run div
+4.  npm run format
+5.  npm run div
 
 ## Save Component Images
 
