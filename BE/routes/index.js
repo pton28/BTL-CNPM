@@ -1,8 +1,9 @@
-import { Router } from "express";
-import courseRoutes from "./routes/course.route.js";
+const routeStudent = require("./student.route");
+const routeTutor = require("./tutor.route");
 
-const router = Router();
+function initRoutes(app) {
+  app.use("/student", routeStudent)
+  app.use("/tutor", routeTutor)
+}
 
-router.use('/api', courseRoutes);
-
-export default router;
+module.exports = initRoutes;
