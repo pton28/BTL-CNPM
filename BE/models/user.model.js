@@ -1,7 +1,6 @@
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-
 // For initial setup, we define a simple Course schema.
 const Course = new Schema({
   courseId: { type: ObjectId },
