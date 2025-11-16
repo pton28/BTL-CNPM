@@ -1,5 +1,5 @@
 const express = require('express')
-const meetingController = require('../controllers/meeting.controller')
+const meetingController = require('../../controllers/meetingController/meeting.controller')
 const routeMeeting = express.Router()
 
 routeMeeting.post('/', meetingController.createMeeting)

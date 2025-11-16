@@ -1,5 +1,5 @@
-const { sendResponse } = require('../helper/sendResponse')
-const meetingService = require('../services/meeting.service')
+const { sendResponse } = require('../../helper/sendResponse')
+const meetingService = require('../../services/meetingServices/meeting.service')
 
 const meetingController = {
     createMeeting: async(req, res) => {

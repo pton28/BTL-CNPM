@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const studentSchema = new mongoose.Schema({
-    id: {
+    id_student: {
         type: String,
         required: true,
         unique: true
@@ -36,6 +36,7 @@ const studentSchema = new mongoose.Schema({
         default: true
     }
 }, { timestamps: true })
+
 
 const Student = mongoose.model('Student', studentSchema)
 module.exports = Student

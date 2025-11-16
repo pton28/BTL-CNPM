@@ -1,4 +1,5 @@
 const Tutor = require('../models/tutor.model')
+const Major = require('../models/major.model')
 const bcrypt = require('bcrypt')
 
 const tutorService = {
@@ -21,10 +22,7 @@ const tutorService = {
     getAllTutorService: async() => {
         try {
             const tutors = await Tutor.find()
-                .populate({
-                    path: 'major_id',
-                    select: 'name'
-                })
+                .populate(['major', 'faculty'])
             if(!tutors) return null
             return tutors
         } catch (error) {

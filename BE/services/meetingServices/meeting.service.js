@@ -1,4 +1,4 @@
-const Meeting = require('../models/meeting.model')
+const Meeting = require('../../models/meetingModel/meeting.model')
 
 const meetingService = {
     createMeeting: async(meetingData) => {
@@ -15,14 +15,7 @@ const meetingService = {
     getAllMeetings: async() => {
         try {
             const meetings = await Meeting.find()
-                .populate({
-                    path: 'major_id',
-                    select: 'name -_id'
-                })
-                .populate({
-                    path: 'id_tutor',
-                    select: 'full_name email -_id'
-                })
+                .populate(['tutor', 'major'])
             return meetings
         } catch (error) {
             console.log('Error at getAllMeetings', error)

@@ -19,12 +19,12 @@ const TutorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    faculty_id: {
+    faculty: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "Faculty"
     },
-    major_id: {
+    major: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "Major"
@@ -40,8 +40,11 @@ const TutorSchema = new mongoose.Schema({
         default: true
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
+
 
 const Tutor = mongoose.model("Tutor", TutorSchema);
 module.exports = Tutor
