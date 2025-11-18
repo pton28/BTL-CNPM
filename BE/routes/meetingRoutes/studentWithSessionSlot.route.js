@@ -1,5 +1,5 @@
-const express = require('express')
-const studentWithSessionSlotController = require('../../controllers/meetingController/studentWithSessionSlot.controller')
+import express from 'express';
+import studentWithSessionSlotController from '../../controllers/meetingController/studentWithSessionSlot.controller.js';
 const routeStudentWithSessionSlot = express.Router()
 
 routeStudentWithSessionSlot.post('/', studentWithSessionSlotController.createStudentWithSessionSlot)
@@ -8,5 +8,5 @@ routeStudentWithSessionSlot.get('/:id', studentWithSessionSlotController.getStud
 routeStudentWithSessionSlot.put('/:id', studentWithSessionSlotController.updateStudentWithSessionSlot)
 routeStudentWithSessionSlot.delete('/:id', studentWithSessionSlotController.deleteStudentWithSessionSlot)
 
-module.exports = routeStudentWithSessionSlot
+export default routeStudentWithSessionSlot
 

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const majorSchema = new mongoose.Schema({
     name: {
@@ -6,9 +6,8 @@ const majorSchema = new mongoose.Schema({
         required: true,
         trim: true
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
-
-const Major = mongoose.model('Major', majorSchema)
-module.exports = Major
+const Major = mongoose.model('Major', majorSchema);
+export default Major;
 

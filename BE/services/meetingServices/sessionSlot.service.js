@@ -1,4 +1,4 @@
-const SessionSlot = require('../../models/meetingModel/sessionSlot.model')
+import SessionSlot from '../../models/meetingModel/sessionSlot.model.js';
 
 const sessionSlotService = {
     createSessionSlot: async(sessionSlotData) => {
@@ -22,5 +22,5 @@ const sessionSlotService = {
     }
 }
 
-module.exports = sessionSlotService
+export default sessionSlotService;
 

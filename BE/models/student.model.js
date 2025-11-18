@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const studentSchema = new mongoose.Schema({
     id_student: {
@@ -35,8 +35,7 @@ const studentSchema = new mongoose.Schema({
         required: true,
         default: true
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
-
-const Student = mongoose.model('Student', studentSchema)
-module.exports = Student
+const Student = mongoose.model('Student', studentSchema);
+export default Student;

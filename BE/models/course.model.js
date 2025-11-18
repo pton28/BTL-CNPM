@@ -1,16 +1,17 @@
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
 const ObjectId = Schema.ObjectId;
 
-
 // For initial setup, we define a simple Course schema.
-const sessionSchema = new mongoose.Schema({
+const sessionSchema = new Schema({
   day: {
     type: String,
     enum: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     required: true
   },
   date: {
-    type: String, // yyyy-mm-dd
+    type: String // yyyy-mm-dd
   },
   startTime: {
     type: String,
@@ -30,8 +31,8 @@ const sessionSchema = new mongoose.Schema({
   }
 });
 
-// Week: 1 tuần của khóa học
-const weekSchema = new mongoose.Schema({
+// Week: 1 tuan cua khoa hoc
+const weekSchema = new Schema({
   weekNumber: {
     type: Number,
     required: true
@@ -42,8 +43,8 @@ const weekSchema = new mongoose.Schema({
   }
 });
 
-// Course: khóa học chứa nhiều tuần
-const courseSchema = new mongoose.Schema({
+// Course: khoa hoc chua nhieu tuan
+const courseSchema = new Schema({
   courseId: {
     type: String,
     required: true,
@@ -66,5 +67,5 @@ const courseSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model("Course", courseSchema);
-export default mongoose.model('Course', Course);
+const Course = mongoose.model('Course', courseSchema);
+export default Course;

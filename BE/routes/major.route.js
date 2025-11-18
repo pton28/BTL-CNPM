@@ -1,5 +1,5 @@
-const express = require('express')
-const majorController = require('../controllers/major.controller')
+import express from 'express';
+import majorController from '../controllers/major.controller.js';
 const routeMajor = express.Router()
 
 routeMajor.post('/', majorController.createMajor)
@@ -8,5 +8,5 @@ routeMajor.get('/:id', majorController.getMajorById)
 routeMajor.put('/:id', majorController.updateMajor)
 routeMajor.delete('/:id', majorController.deleteMajor)
 
-module.exports = routeMajor
+export default routeMajor
 

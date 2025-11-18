@@ -1,5 +1,5 @@
-const StudentWithMeetingService = require('../services/studentWithMeeting.service')
-const { sendResponse } = require('../helper/sendResponse')
+import StudentWithMeetingService from '../services/studentWithMeeting.service.js';
+import { sendResponse } from '../helper/sendResponse.js';
 
 const StudentWithMeetingController = {
     getAllMeetingByStudent: async(req, res) => {
@@ -19,4 +19,4 @@ const StudentWithMeetingController = {
     }
 }
 
-module.exports = StudentWithMeetingController
+export default StudentWithMeetingController;

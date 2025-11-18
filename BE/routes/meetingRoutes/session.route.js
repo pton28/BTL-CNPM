@@ -1,5 +1,5 @@
-const express = require('express')
-const sessionController = require('../../controllers/meetingController/session.controller')
+import express from 'express';
+import sessionController from '../../controllers/meetingController/session.controller.js';
 const routeSession = express.Router()
 
 routeSession.post('/', sessionController.createSession)
@@ -8,5 +8,5 @@ routeSession.get('/:id', sessionController.getSessionById)
 routeSession.put('/:id', sessionController.updateSession)
 routeSession.delete('/:id', sessionController.deleteSession)
 
-module.exports = routeSession
+export default routeSession
 

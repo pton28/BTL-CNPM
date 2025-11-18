@@ -1,7 +1,7 @@
-const express = require("express");
-const studentController = require("../controllers/student.controller").default;
-const routeStudent = express.Router();
+import express from "express";
+import studentController from "../controllers/student.controller.js";
+const router = express.Router();
 
-routeStudent.post("/login", studentController.loginStudent);
+router.post("/login", studentController.loginStudent);
 
-module.exports = routeStudent;
+export default router;

@@ -1,5 +1,5 @@
-const { sendResponse } = require('../../helper/sendResponse')
-const sessionSlotService = require('../../services/meetingServices/sessionSlot.service')
+import { sendResponse } from '../../helper/sendResponse.js';
+import sessionSlotService from '../../services/meetingServices/sessionSlot.service.js';
 
 const sessionSlotController = {
     createSessionSlot: async(req, res) => {
@@ -86,5 +86,5 @@ const sessionSlotController = {
     }
 }
 
-module.exports = sessionSlotController
+export default sessionSlotController;
 

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const facultySchema = new mongoose.Schema({
     name: {
@@ -6,8 +6,8 @@ const facultySchema = new mongoose.Schema({
         required: true,
         trim: true
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
-const Faculty = mongoose.model('Faculty', facultySchema)
-module.exports = Faculty
+const Faculty = mongoose.model('Faculty', facultySchema);
+export default Faculty;
 

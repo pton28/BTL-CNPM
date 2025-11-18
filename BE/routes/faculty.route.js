@@ -1,5 +1,5 @@
-const express = require('express')
-const facultyController = require('../controllers/faculty.controller')
+import express from 'express';
+import facultyController from '../controllers/faculty.controller.js';
 const routeFaculty = express.Router()
 
 routeFaculty.post('/', facultyController.createFaculty)
@@ -8,5 +8,5 @@ routeFaculty.get('/:id', facultyController.getFacultyById)
 routeFaculty.put('/:id', facultyController.updateFaculty)
 routeFaculty.delete('/:id', facultyController.deleteFaculty)
 
-module.exports = routeFaculty
+export default routeFaculty
 

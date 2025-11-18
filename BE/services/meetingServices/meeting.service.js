@@ -1,4 +1,4 @@
-const Meeting = require('../../models/meetingModel/meeting.model')
+import Meeting from '../../models/meetingModel/meeting.model.js';
 
 const meetingService = {
     createMeeting: async(meetingData) => {
@@ -58,5 +58,5 @@ const meetingService = {
     }
 }
 
-module.exports = meetingService
+export default meetingService;
 

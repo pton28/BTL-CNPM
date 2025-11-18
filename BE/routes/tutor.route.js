@@ -1,8 +1,8 @@
-const express = require('express')
-const tutorController = require('../controllers/tutor.controller')
+import express from 'express';
+import tutorController from '../controllers/tutor.controller.js';
 const routeTutor = express.Router()
 
 routeTutor.post('/login', tutorController.loginTutor)
 routeTutor.get('/', tutorController.getAllTutor)
 
-module.exports = routeTutor
+export default routeTutor

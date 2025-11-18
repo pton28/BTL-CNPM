@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose";
 
 const TutorSchema = new mongoose.Schema({
     id: {
@@ -45,6 +45,5 @@ const TutorSchema = new mongoose.Schema({
     toObject: { virtuals: true }
 });
 
-
 const Tutor = mongoose.model("Tutor", TutorSchema);
-module.exports = Tutor
+export default Tutor;

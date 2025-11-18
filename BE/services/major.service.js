@@ -1,4 +1,4 @@
-const Major = require('../models/major.model')
+import Major from '../models/major.model.js';
 
 const majorService = {
     createMajor: async(majorData) => {
@@ -57,5 +57,5 @@ const majorService = {
     }
 }
 
-module.exports = majorService
+export default majorService;
 

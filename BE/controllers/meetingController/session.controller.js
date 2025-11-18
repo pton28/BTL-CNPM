@@ -1,5 +1,5 @@
-const { sendResponse } = require('../../helper/sendResponse')
-const sessionService = require('../../services/meetingServices/session.service')
+import { sendResponse } from '../../helper/sendResponse.js';
+import sessionService from '../../services/meetingServices/session.service.js';
 
 const sessionController = {
     createSession: async(req, res) => {
@@ -86,5 +86,5 @@ const sessionController = {
     }
 }
 
-module.exports = sessionController
+export default sessionController;
 

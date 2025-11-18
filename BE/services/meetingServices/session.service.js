@@ -1,4 +1,4 @@
-const Session = require('../../models/meetingModel/session.model')
+import Session from '../../models/meetingModel/session.model.js';
 
 const sessionService = {
     createSession: async(sessionData) => {
@@ -22,5 +22,5 @@ const sessionService = {
     }
 }
 
-module.exports = sessionService
+export default sessionService;
 

@@ -1,12 +1,12 @@
-const routeStudent = require("./student.route");
-const routeTutor = require("./tutor.route");
-const routeMeeting = require("./meetingRoutes/meeting.route");
-const routeFaculty = require("./faculty.route");
-const routeMajor = require("./major.route");
-const routeStudentWithMeeting = require('./studentWithMeeting.route')
-const routeSession = require('./meetingRoutes/session.route')
-const routeSessionSlot = require('./meetingRoutes/sessionSlot.route')
-const routeStudentWithSessionSlot = require('./meetingRoutes/studentWithSessionSlot.route')
+import routeStudent from "./student.route.js";
+import routeTutor from "./tutor.route.js";
+import routeMeeting from "./meetingRoutes/meeting.route.js";
+import routeFaculty from "./faculty.route.js";
+import routeMajor from "./major.route.js";
+import routeStudentWithMeeting from './studentWithMeeting.route.js';
+import routeSession from './meetingRoutes/session.route.js';
+import routeSessionSlot from './meetingRoutes/sessionSlot.route.js';
+import routeStudentWithSessionSlot from './meetingRoutes/studentWithSessionSlot.route.js';
 
 
 function initRoutes(app) {
@@ -21,4 +21,4 @@ function initRoutes(app) {
   app.use("/student-with-session-slot", routeStudentWithSessionSlot)
 }
 
-module.exports = initRoutes
+export default initRoutes

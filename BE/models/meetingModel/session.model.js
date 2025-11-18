@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
-// Mỗi meeting có nhiều buổi học
+// M?i meeting co nhieu buoi hoc
 const sessionSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -11,8 +11,7 @@ const sessionSchema = new mongoose.Schema({
         required: true,
         ref: 'Meeting'
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
-const Session = mongoose.model('Session', sessionSchema)
-module.exports = Session
-
+const Session = mongoose.model('Session', sessionSchema);
+export default Session;

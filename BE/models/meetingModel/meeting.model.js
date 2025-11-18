@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const meetingSchema = new mongoose.Schema({
     title_meeting: {
@@ -29,8 +29,8 @@ const meetingSchema = new mongoose.Schema({
         type: Number,
 
     } 
-}, { timestamps: true })
+}, { timestamps: true });
 
-const Meeting = mongoose.model('Meeting', meetingSchema)
-module.exports = Meeting
+const Meeting = mongoose.model('Meeting', meetingSchema);
+export default Meeting;
 

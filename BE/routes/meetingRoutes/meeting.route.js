@@ -1,5 +1,5 @@
-const express = require('express')
-const meetingController = require('../../controllers/meetingController/meeting.controller')
+import express from 'express';
+import meetingController from '../../controllers/meetingController/meeting.controller.js';
 const routeMeeting = express.Router()
 
 routeMeeting.post('/', meetingController.createMeeting)
@@ -8,5 +8,5 @@ routeMeeting.get('/:id', meetingController.getMeetingById)
 routeMeeting.put('/:id', meetingController.updateMeeting)
 routeMeeting.delete('/:id', meetingController.deleteMeeting)
 
-module.exports = routeMeeting
+export default routeMeeting
 

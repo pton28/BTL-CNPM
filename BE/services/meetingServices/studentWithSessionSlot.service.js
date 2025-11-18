@@ -1,5 +1,5 @@
-const StudentWithSessionSlot = require('../../models/meetingModel/studentWithSessionSlot.model')
-const Student = require('../../models/student.model')
+import StudentWithSessionSlot from '../../models/meetingModel/studentWithSessionSlot.model.js';
+import Student from '../../models/student.model.js';
 
 const studentWithSessionSlotService = {
     createStudentWithSessionSlot: async (studentWithSessionSlotData) => {
@@ -47,5 +47,5 @@ const studentWithSessionSlotService = {
     }
 }
 
-module.exports = studentWithSessionSlotService
+export default studentWithSessionSlotService;
 

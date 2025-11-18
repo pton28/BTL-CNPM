@@ -1,6 +1,6 @@
-const StudentWithMeeting = require('../models/studentWithMeeting.model')
-const Meeting = require('../models/meetingModel/meeting.model')
-const mongoose = require('mongoose')
+import StudentWithMeeting from '../models/studentWithMeeting.model.js';
+import Meeting from '../models/meetingModel/meeting.model.js';
+import mongoose from 'mongoose';
 
 const StudentWithMeetingService = {
     getAllMeetingByStudentService: async(studentId) => {
@@ -34,4 +34,4 @@ const StudentWithMeetingService = {
     }
 }
 
-module.exports = StudentWithMeetingService
+export default StudentWithMeetingService;

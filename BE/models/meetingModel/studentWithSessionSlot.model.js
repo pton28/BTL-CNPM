@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const studentWithSessionSlotSchema = new mongoose.Schema({
     student: {
@@ -24,8 +24,8 @@ const studentWithSessionSlotSchema = new mongoose.Schema({
     date_signup: {
         type: Date
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
-const StudentWithSessionSlot = mongoose.model('StudentWithSessionSlot', studentWithSessionSlotSchema)
-module.exports = StudentWithSessionSlot
+const StudentWithSessionSlot = mongoose.model('StudentWithSessionSlot', studentWithSessionSlotSchema);
+export default StudentWithSessionSlot;
 

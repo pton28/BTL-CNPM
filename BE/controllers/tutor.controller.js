@@ -1,5 +1,5 @@
-const { sendResponse } = require('../helper/sendResponse')
-const { loginTutorService, getAllTutorService } = require('../services/tutor.service')
+import { sendResponse } from '../helper/sendResponse.js';
+import { loginTutorService, getAllTutorService } from '../services/tutor.service.js';
 
 const tutorController = {
     loginTutor: async(req, res) => {
@@ -34,4 +34,4 @@ const tutorController = {
     }
 }   
 
-module.exports = tutorController
+export default tutorController;

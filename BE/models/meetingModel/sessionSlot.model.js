@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
-// Khung giờ
+// Khung gio?
 const sessionSlotSchema = new mongoose.Schema({
     id: {
         type: String,
@@ -29,8 +29,7 @@ const sessionSlotSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
-const SessionSlot = mongoose.model('SessionSlot', sessionSlotSchema)
-module.exports = SessionSlot
-
+const SessionSlot = mongoose.model('SessionSlot', sessionSlotSchema);
+export default SessionSlot;

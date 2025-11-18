@@ -1,5 +1,5 @@
-const { sendResponse } = require('../helper/sendResponse')
-const facultyService = require('../services/faculty.service')
+import { sendResponse } from '../helper/sendResponse.js';
+import facultyService from '../services/faculty.service.js';
 
 const facultyController = {
     createFaculty: async(req, res) => {
@@ -86,5 +86,5 @@ const facultyController = {
     }
 }
 
-module.exports = facultyController
+export default facultyController;
 

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const StudentWithMeetingSchema = new mongoose.Schema({
     student_id: {
@@ -20,9 +20,8 @@ const StudentWithMeetingSchema = new mongoose.Schema({
         required: true
     }
 }, {
-    timestamps: true, // Thêm timestamps nếu bạn muốn
-})
+    timestamps: true, // Them timestamps neu ban muon
+});
 
-
-const StudentWithMeeting = mongoose.model('StudentWithMeeting', StudentWithMeetingSchema)
-module.exports = StudentWithMeeting
+const StudentWithMeeting = mongoose.model('StudentWithMeeting', StudentWithMeetingSchema);
+export default StudentWithMeeting;

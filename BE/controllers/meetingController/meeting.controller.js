@@ -1,5 +1,5 @@
-const { sendResponse } = require('../../helper/sendResponse')
-const meetingService = require('../../services/meetingServices/meeting.service')
+import { sendResponse } from '../../helper/sendResponse.js';
+import meetingService from '../../services/meetingServices/meeting.service.js';
 
 const meetingController = {
     createMeeting: async(req, res) => {
@@ -86,5 +86,5 @@ const meetingController = {
     }
 }
 
-module.exports = meetingController
+export default meetingController;
 

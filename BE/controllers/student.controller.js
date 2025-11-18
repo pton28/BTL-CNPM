@@ -1,5 +1,5 @@
-import { sendResponse } from "../helper/sendResponse";
-import { loginStudentService } from "../services/student.service";
+import { sendResponse } from "../helper/sendResponse.js";
+import { loginStudentService } from "../services/student.service.js";
 
 const studentController = {
   loginStudent: async (req, res) => {

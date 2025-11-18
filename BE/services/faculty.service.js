@@ -1,4 +1,4 @@
-const Faculty = require('../models/faculty.model')
+import Faculty from '../models/faculty.model.js';
 
 const facultyService = {
     createFaculty: async(facultyData) => {
@@ -57,5 +57,5 @@ const facultyService = {
     }
 }
 
-module.exports = facultyService
+export default facultyService;
 

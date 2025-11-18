@@ -1,5 +1,5 @@
-const { sendResponse } = require('../helper/sendResponse')
-const majorService = require('../services/major.service')
+import { sendResponse } from '../helper/sendResponse.js';
+import majorService from '../services/major.service.js';
 
 const majorController = {
     createMajor: async(req, res) => {
@@ -86,5 +86,5 @@ const majorController = {
     }
 }
 
-module.exports = majorController
+export default majorController;
 
