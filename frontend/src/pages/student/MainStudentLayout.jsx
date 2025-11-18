@@ -1,4 +1,4 @@
-import Header from '../../components/common/header/Header.jsx'
+import Header from '../../components/common/header/HeaderStudent.jsx'
 import { Outlet } from 'react-router-dom'
 
 const MainStudentLayout = () => {
