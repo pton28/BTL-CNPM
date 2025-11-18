@@ -8,6 +8,7 @@ import img4 from '@/assets/common/bk4.jpg'
 import img5 from '@/assets/common/bk5.jpg'
 import './MainLayout.scss'
 import HeaderStudent from '@/components/common/header/HeaderStudent.jsx'
+import HeaderTutor from '@/components/common/header/HeaderTutor.jsx'
 
 const MainLayout = () => {
     const location = useLocation()
@@ -19,6 +20,11 @@ const MainLayout = () => {
         location.pathname !== '/pre-login' &&
         location.pathname !== '/student/login'
     // && location.pathname.includes('student');
+
+    const isTutor =
+        location.pathname !== '/' &&
+        location.pathname !== '/pre-login' &&
+        location.pathname !== '/tutor/login'
 
     const images = [img1, img2, img3, img4, img5]
     const [currentIndex, setCurrentIndex] = useState(0)
@@ -48,7 +54,7 @@ const MainLayout = () => {
 
     return (
         <div className="main-layout-container">
-            {isStudent ? <HeaderStudent /> : <Header />}
+            {isStudent ? <HeaderStudent /> : isTutor ? <HeaderTutor/> : <Header/>}
 
             {showSlide && (
                 <div className="slideshow-container">
