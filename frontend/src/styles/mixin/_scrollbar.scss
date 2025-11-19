@@ -6,27 +6,27 @@
 */
 
 @mixin custom-scrollbar($thumb-color: #a0aab5, $track-color: #e2e7eb, $hover-color: #2a5caa) {
-   /* ===== Scrollbar CSS ===== */
-   &::-webkit-scrollbar {
-      width: 8px;
-   }
+    /* ===== Scrollbar CSS ===== */
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
 
-   &::-webkit-scrollbar-track {
-      background: $track-color;
-      border-radius: 10px;
-   }
+    &::-webkit-scrollbar-track {
+        background: $track-color;
+        border-radius: 10px;
+    }
 
-   &::-webkit-scrollbar-thumb {
-      background-color: $thumb-color;
-      border-radius: 10px;
-      border: 2px solid $track-color;
-   }
+    &::-webkit-scrollbar-thumb {
+        background-color: $thumb-color;
+        border-radius: 10px;
+        border: 2px solid $track-color;
+    }
 
-   &::-webkit-scrollbar-thumb:hover {
-      background-color: $hover-color;
-   }
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: $hover-color;
+    }
 
-   /* Firefox */
-   scrollbar-width: thin;
-   scrollbar-color: #{$thumb-color} #{$track-color};
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #{$thumb-color} #{$track-color};
 }
