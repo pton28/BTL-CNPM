@@ -1,9 +1,9 @@
 import { sendResponse } from '../helper/sendResponse.js';
-import { loginTutorService, getAllTutorService } from '../services/tutor.service.js';
+import tutorService from '../services/tutor.service.js';
 
 const tutorController = {
     loginTutor: async(req, res) => {
-        const tutor = await loginTutorService(req.body.email, req.body.password)
+        const tutor = await tutorService.loginTutorService(req.body.email, req.body.password)
         if(tutor) return sendResponse(res, {
             status: 200,
             message: 'Login success',
@@ -18,7 +18,7 @@ const tutorController = {
         })
     },
     getAllTutor: async(req, res) => {
-        const tutors = await getAllTutorService()
+        const tutors = await tutorService.getAllTutorService()
         if(tutors) return sendResponse(res, {
             status: 200,
             message: 'get all tutor success',
@@ -28,6 +28,22 @@ const tutorController = {
         else return sendResponse(res, {
             status: 500,
             message: 'Get all tutor failed',
+            EC: -1,
+            data: null
+        })
+    },
+    getTutorById: async(req, res) => {
+        const { id } = req.params
+        const tutor = await tutorService.getTutorByIdService(id)
+        if(tutor) return sendResponse(res, {
+            status: 200,
+            message: 'Get tutor by id success',
+            data: tutor,
+            EC: 0
+        })
+        else return sendResponse(res, {
+            status: 404,
+            message: 'Tutor not found',
             EC: -1,
             data: null
         })

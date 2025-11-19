@@ -1,36 +1,75 @@
+import { useState } from 'react'
 import './LoginTutor.scss'
-import { ButtonLogin } from '@/components/common/ui/button/Button.jsx'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-
+import { BASE_API } from '../../../constants'
 
 const LoginTutor = () => {
-    const navigate = useNavigate()
-    const handleLoginTutor = () => {
-        //login
-        navigate('../list-subjects')
-    }
-    return (
-        <div className="form-login-container">
-            <div className="box">
-                <h1>Đăng nhập cho giảng viên</h1>
-                <p>Vui lòng điền đầy đủ thông tin đăng nhập</p>
+   const navigate = useNavigate()
 
-                <div className="input-container">
-                    <label>Email giảng viên</label>
-                    <input placeholder="email@gmail.com" />
-                </div>
+   // State lưu trữ email và password
+   const [formData, setFormData] = useState({
+      email: '',
+      password: '',
+   })
 
-                <div className="input-container">
-                    <label>Mật khẩu</label>
-                    <input placeholder="Mật khẩu" type="password" />
-                </div>
+   // handle change cho input
+   const handleChange = e => {
+      const { name, value } = e.target
+      setFormData(prev => ({
+         ...prev,
+         [name]: value, // cập nhật đúng field email hoặc password
+      }))
+   }
 
-                <button className="btn-login" onClick={handleLoginTutor}>
-                    Login
-                </button>
+   const handleLoginTutor = async () => {
+      try {
+         const res = await axios.post(`${BASE_API}/tutor/login`, formData)
+
+         console.log('Login success:', res.data)
+
+         // Ví dụ: lưu token
+         // localStorage.setItem('token', res.data.token)
+
+         navigate('../list-subjects')
+      } catch (error) {
+         console.error('Login failed:', error)
+      }
+   }
+
+   return (
+      <div className="form-login-container">
+         <div className="box">
+            <h1>Đăng nhập cho giảng viên</h1>
+            <p>Vui lòng điền đầy đủ thông tin đăng nhập</p>
+
+            <div className="input-container">
+               <label>Email giảng viên</label>
+               <input
+                  name="email"
+                  placeholder="email@gmail.com"
+                  value={formData.email}
+                  onChange={handleChange}
+               />
             </div>
-        </div>
-    )
+
+            <div className="input-container">
+               <label>Mật khẩu</label>
+               <input
+                  name="password"
+                  type="password"
+                  placeholder="Mật khẩu"
+                  value={formData.password}
+                  onChange={handleChange}
+               />
+            </div>
+
+            <button className="btn-login" onClick={handleLoginTutor}>
+               Login
+            </button>
+         </div>
+      </div>
+   )
 }
 
 export default LoginTutor

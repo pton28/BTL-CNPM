@@ -2,11 +2,6 @@ import mongoose from 'mongoose';
 
 // Khung gio?
 const sessionSlotSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        unique: true
-    },
     session: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

@@ -4,5 +4,6 @@ const routeTutor = express.Router()
 
 routeTutor.post('/login', tutorController.loginTutor)
 routeTutor.get('/', tutorController.getAllTutor)
+routeTutor.get('/:id', tutorController.getTutorById)
 
 export default routeTutor

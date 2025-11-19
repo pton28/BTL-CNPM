@@ -1,11 +1,12 @@
 ## Run project
 
-1.  clone repo
-2.  cd dir
-3.  npm install
-4.  npm run div
-   
+1. clone repo
+2. cd dir
+3. npm install
+4. npm run div
+
 Before pushing to github, run the command `npm run format` to format code
+
 ## Save Component Images
 
 Store all component-related images in the `assets` folder.
@@ -31,7 +32,7 @@ Add some **responsive styles**, for example:
 
 ```scss
 @include respond-to(sm) {
-    //login UI
+   //login UI
 }
 ```
 

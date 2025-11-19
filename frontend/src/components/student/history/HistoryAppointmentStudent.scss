@@ -1,83 +1,83 @@
 @use '@/styles/mixin/reponsive' as *;
 
 .list-history-container {
-    border-radius: 20px;
-    background-color: #f7f6fa;
-    width: calc(100vw - 90px);
-    margin: 30px 30px 30px 0;
+   border-radius: 20px;
+   background-color: #f7f6fa;
+   width: calc(100vw - 90px);
+   margin: 30px 30px 30px 0;
 
-    h2 {
-        font-size: 25px;
-        font-weight: bold;
-        margin: 30px;
-    }
+   h2 {
+      font-size: 25px;
+      font-weight: bold;
+      margin: 30px;
+   }
 
-    table {
-        width: 100%;
-        table-layout: fixed;
-        th {
-            font-size: 16px;
-            font-weight: 400;
-            color: #b5b7c0;
-            padding: 10px;
+   table {
+      width: 100%;
+      table-layout: fixed;
+      th {
+         font-size: 16px;
+         font-weight: 400;
+         color: #b5b7c0;
+         padding: 10px;
+         text-align: center;
+      }
+      td {
+         font-size: 16px;
+         font-weight: 400;
+         color: #292d32;
+         padding: 10px 5px;
+         border-bottom: 1px solid #e1e1e1;
+         text-align: left;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         &:nth-child(2),
+         &:nth-child(4),
+         &:nth-child(3),
+         &:nth-child(5),
+         &:nth-child(7) {
             text-align: center;
-        }
-        td {
-            font-size: 16px;
-            font-weight: 400;
-            color: #292d32;
-            padding: 10px 5px;
-            border-bottom: 1px solid #e1e1e1;
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            &:nth-child(2),
-            &:nth-child(4),
-            &:nth-child(3),
-            &:nth-child(5),
-            &:nth-child(7) {
-                text-align: center;
+         }
+      }
+      // Fix width for column
+      th:nth-child(1),
+      td:nth-child(1) {
+         width: 25%;
+         padding-left: 20px;
+      }
+      th:nth-child(2),
+      td:nth-child(2) {
+         width: 15%;
+      }
+      th:nth-child(3),
+      td:nth-child(3) {
+         width: 15%;
+      }
+      th:nth-child(6),
+      td:nth-child(6) {
+         width: 20%;
+      }
+      tr {
+         &:last-child td {
+            border: none;
+         }
+      }
+      tbody {
+         tr {
+            &:hover {
+               background-color: #f5f8ff;
+               cursor: pointer;
+               box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
             }
-        }
-        // Fix width for column
-        th:nth-child(1),
-        td:nth-child(1) {
-            width: 25%;
-            padding-left: 20px;
-        }
-        th:nth-child(2),
-        td:nth-child(2) {
-            width: 15%;
-        }
-        th:nth-child(3),
-        td:nth-child(3) {
-            width: 15%;
-        }
-        th:nth-child(6),
-        td:nth-child(6) {
-            width: 20%;
-        }
-        tr {
-            &:last-child td {
-                border: none;
-            }
-        }
-        tbody {
-            tr {
-                &:hover {
-                    background-color: #f5f8ff;
-                    cursor: pointer;
-                    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-                }
-            }
-        }
-    }
+         }
+      }
+   }
 }
 
 @include respond-to(md) {
-    .list-history-container {
-        width: calc(100vw - 60px);
-        margin: 20px 30px;
-    }
+   .list-history-container {
+      width: calc(100vw - 60px);
+      margin: 20px 30px;
+   }
 }

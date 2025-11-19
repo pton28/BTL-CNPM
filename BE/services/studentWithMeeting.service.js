@@ -14,9 +14,9 @@ const StudentWithMeetingService = {
                 .populate({
                     path: 'meeting_id',
                     model: 'Meeting',
-                    select: '_id title_meeting date_of_event method',
+                    select: '_id title_meeting date_of_event method major tutor session_count',
                 })
-                
+                    
             if(!response) return null
 
             let filter_response = []
@@ -30,6 +30,40 @@ const StudentWithMeetingService = {
             console.log('Error in getAllMeetingByStudentService', error)
             console.log('Error details:', error.message)
             return null            
+        }
+    },
+    createStudentMeetingService: async(studentId, meetingId) => {
+        try {
+            const payload = {
+                student_id: studentId,
+                meeting_id: meetingId,
+                status: 'studying',
+                data_signup: new Date()
+            }
+            const checkExist = await StudentWithMeeting.findOne({
+                student_id: studentId,
+                meeting_id: meetingId
+            })
+            if(checkExist) return null
+            const createdRecord = await StudentWithMeeting.create(payload)
+            return createdRecord
+        } catch (error) {
+            console.log('Error in createStudentMeetingService', error)
+            console.log('Error details:', error.message)
+            return null
+        }
+    },
+    deleteStudentMeetingService: async(studentId, meetingId) => {
+        try {
+            const deletedRecord = await StudentWithMeeting.findOneAndDelete({
+                student_id: studentId,
+                meeting_id: meetingId
+            })
+            return deletedRecord
+        } catch (error) {
+            console.log('Error in deleteStudentMeetingService', error)
+            console.log('Error details:', error.message)
+            return null
         }
     }
 }

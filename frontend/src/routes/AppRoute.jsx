@@ -28,72 +28,72 @@ import ListSubjects from '@/pages/tutor/list-subjects/listSubjects.jsx'
 import SubjectDetails from '@/pages/tutor/list-subjects/subjectDetails/subjectDetails.jsx'
 
 export const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <MainLayout />,
-        children: [
-            {
-                path: '/unauthorized',
-                element: <Unauthorized />,
-            },
-            {
-                path: '/pre-login',
-                element: <PreLogin />,
-            },
-            {
-                path: '/student/login',
-                element: <LoginStudent />,
-            },
-            {
-                path: '/tutor/login',
-                element: <LoginTutor />,
-            },
-            {
-                // Route private
-                path: 'history',
-                element: <HistoryAppointment />,
-            },
-            {
-                // Route private
-                path: 'list-appointment/:id',
-                element: <InnerAppointment />,
-            },
-            {
-                // Route private
-                path: 'list-appointment',
-                element: <ListAppointment />,
-            },
-            {
-                // Route private
-                path: 'search-course',
-                element: <SearchCourse />,
-            },
-            {
-                // Route private
-                path: 'list-subjects',
-                element: <ListSubjects />,
-            },
-            {
-                // Route private
-                path: 'subject-details',
-                element: <SubjectDetails />,
-            },
-            {
-                element: <ProtectedRoute />,
-                children: [
-                    // student
-                    {
-                        path: '/student',
-                        element: <MainStudentLayout />,
-                        children: [],
-                    },
-                    {
-                        path: '/tutor',
-                        element: <MainTutorLayout />,
-                        children: [],
-                    },
-                ],
-            },
-        ],
-    },
+   {
+      path: '/',
+      element: <MainLayout />,
+      children: [
+         {
+            path: '/unauthorized',
+            element: <Unauthorized />,
+         },
+         {
+            path: '/pre-login',
+            element: <PreLogin />,
+         },
+         {
+            path: '/student/login',
+            element: <LoginStudent />,
+         },
+         {
+            path: '/tutor/login',
+            element: <LoginTutor />,
+         },
+         {
+            // Route private
+            path: 'history',
+            element: <HistoryAppointment />,
+         },
+         {
+            // Route private
+            path: 'list-appointment/:id',
+            element: <InnerAppointment />,
+         },
+         {
+            // Route private
+            path: 'list-appointment',
+            element: <ListAppointment />,
+         },
+         {
+            // Route private
+            path: 'search-course',
+            element: <SearchCourse />,
+         },
+         {
+            // Route private
+            path: 'list-subjects',
+            element: <ListSubjects />,
+         },
+         {
+            // Route private
+            path: 'subject-details',
+            element: <SubjectDetails />,
+         },
+         {
+            element: <ProtectedRoute />,
+            children: [
+               // student
+               {
+                  path: '/student',
+                  element: <MainStudentLayout />,
+                  children: [],
+               },
+               {
+                  path: '/tutor',
+                  element: <MainTutorLayout />,
+                  children: [],
+               },
+            ],
+         },
+      ],
+   },
 ])
