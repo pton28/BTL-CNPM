@@ -24,7 +24,7 @@ const majorService = {
 
     getMajorById: async(id) => {
         try {
-            const major = await Major.findOne({id})
+            const major = await Major.findOne({_id: id})
             return major
         } catch (error) {
             console.log('Error at getMajorById', error)

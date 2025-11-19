@@ -11,71 +11,71 @@ import HeaderStudent from '@/components/common/header/HeaderStudent.jsx'
 import HeaderTutor from '@/components/common/header/HeaderTutor.jsx'
 
 const MainLayout = () => {
-    const location = useLocation()
-    const showSlide = location.pathname === '/'
+   const location = useLocation()
+   const showSlide = location.pathname === '/'
 
-    // use for Header or HeaderStudent
-    const isStudent =
-        location.pathname !== '/' &&
-        location.pathname !== '/pre-login' &&
-        location.pathname !== '/student/login'
-    // && location.pathname.includes('student');
+   // use for Header or HeaderStudent
+   const isStudent =
+      location.pathname !== '/' &&
+      location.pathname !== '/pre-login' &&
+      location.pathname !== '/student/login'
+   // && location.pathname.includes('student');
 
-    const isTutor =
-        location.pathname !== '/' &&
-        location.pathname !== '/pre-login' &&
-        location.pathname !== '/tutor/login'
+   const isTutor =
+      location.pathname !== '/' &&
+      location.pathname !== '/pre-login' &&
+      location.pathname !== '/tutor/login'
 
-    const images = [img1, img2, img3, img4, img5]
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [fade, setFade] = useState(false)
+   const images = [img1, img2, img3, img4, img5]
+   const [currentIndex, setCurrentIndex] = useState(0)
+   const [fade, setFade] = useState(false)
 
-    useEffect(() => {
-        if (!showSlide) return
-        const interval = setInterval(() => handleNext(), 5000)
-        return () => clearInterval(interval)
-    }, [currentIndex])
+   useEffect(() => {
+      if (!showSlide) return
+      const interval = setInterval(() => handleNext(), 5000)
+      return () => clearInterval(interval)
+   }, [currentIndex])
 
-    const handleNext = () => {
-        setFade(true)
-        setTimeout(() => {
-            setCurrentIndex(prev => (prev + 1) % images.length)
-            setFade(false)
-        }, 500)
-    }
+   const handleNext = () => {
+      setFade(true)
+      setTimeout(() => {
+         setCurrentIndex(prev => (prev + 1) % images.length)
+         setFade(false)
+      }, 500)
+   }
 
-    const handlePrev = () => {
-        setFade(true)
-        setTimeout(() => {
-            setCurrentIndex(prev => (prev - 1 + images.length) % images.length)
-            setFade(false)
-        }, 500)
-    }
+   const handlePrev = () => {
+      setFade(true)
+      setTimeout(() => {
+         setCurrentIndex(prev => (prev - 1 + images.length) % images.length)
+         setFade(false)
+      }, 500)
+   }
 
-    return (
-        <div className="main-layout-container">
-            {isStudent ? <HeaderStudent /> : isTutor ? <HeaderTutor/> : <Header/>}
+   return (
+      <div className="main-layout-container">
+         {isStudent ? <HeaderStudent /> : isTutor ? <HeaderTutor /> : <Header />}
 
-            {showSlide && (
-                <div className="slideshow-container">
-                    <img
-                        src={images[currentIndex]}
-                        alt="BK slideshow"
-                        className={`slideshow-img ${fade ? 'fade' : ''}`}
-                    />
+         {showSlide && (
+            <div className="slideshow-container">
+               <img
+                  src={images[currentIndex]}
+                  alt="BK slideshow"
+                  className={`slideshow-img ${fade ? 'fade' : ''}`}
+               />
 
-                    <button className="arrow left" onClick={handlePrev}>
-                        &#10094;
-                    </button>
-                    <button className="arrow right" onClick={handleNext}>
-                        &#10095;
-                    </button>
-                </div>
-            )}
+               <button className="arrow left" onClick={handlePrev}>
+                  &#10094;
+               </button>
+               <button className="arrow right" onClick={handleNext}>
+                  &#10095;
+               </button>
+            </div>
+         )}
 
-            <Outlet />
-        </div>
-    )
+         <Outlet />
+      </div>
+   )
 }
 
 export default MainLayout

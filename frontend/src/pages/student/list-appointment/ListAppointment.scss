@@ -1,107 +1,107 @@
 @use '@/styles/mixin/reponsive' as *;
 
 .list-appointment-container {
-    border: 1px solid #ddd;
-    margin: 60px auto;
-    width: 80%;
-    border-radius: 10px;
-    //background: #044CC8;
-    .header-appointment-container {
-        display: flex;
-        justify-content: space-between;
-        margin: 30px;
+   border: 1px solid #ddd;
+   margin: 60px auto;
+   width: 80%;
+   border-radius: 10px;
+   //background: #044CC8;
+   .header-appointment-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 30px;
 
-        button {
+      button {
+         padding: 10px;
+         border-radius: 10px;
+         border: 1px solid #044cc8;
+         background-color: white;
+         color: #044cc8;
+         font-weight: 600;
+         cursor: pointer;
+         transition: 0.3s;
+         &:hover {
+            background-color: #044cc8;
+            color: white;
+         }
+      }
+   }
+
+   .card-list {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      padding: 30px;
+      .card-item {
+         background: #f7f6fa;
+         border: 1px solid #ddd;
+         margin: 10px 10px;
+         border-radius: 5px;
+         width: 30%;
+         padding: 30px;
+         .card-item-title {
+            display: flex;
+            .card-item-info {
+               margin-left: 20px;
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               .name-teacher {
+                  font-size: 18px;
+                  font-weight: 600;
+               }
+               .major {
+                  height: 38px;
+                  overflow: hidden;
+               }
+            }
+         }
+         .name-course {
+            font-size: 20px;
+            font-weight: 400;
+            margin: 10px 0;
+            width: 100%;
+            height: 50px;
+            overflow: hidden;
+         }
+
+         button {
             padding: 10px;
             border-radius: 10px;
-            border: 1px solid #044cc8;
-            background-color: white;
-            color: #044cc8;
+            border: none;
+            color: white;
+            background: #044cc8;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
+            transition: transform 0.3s;
             &:hover {
-                background-color: #044cc8;
-                color: white;
+               background-color: #002e81;
+               //background: white;
+               transform: scale(1.03);
             }
-        }
-    }
-
-    .card-list {
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        padding: 30px;
-        .card-item {
-            background: #f7f6fa;
-            border: 1px solid #ddd;
-            margin: 10px 10px;
-            border-radius: 5px;
-            width: 30%;
-            padding: 30px;
-            .card-item-title {
-                display: flex;
-                .card-item-info {
-                    margin-left: 20px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    .name-teacher {
-                        font-size: 18px;
-                        font-weight: 600;
-                    }
-                    .major {
-                        height: 38px;
-                        overflow: hidden;
-                    }
-                }
-            }
-            .name-course {
-                font-size: 20px;
-                font-weight: 400;
-                margin: 10px 0;
-                width: 100%;
-                height: 50px;
-                overflow: hidden;
-            }
-
-            button {
-                padding: 10px;
-                border-radius: 10px;
-                border: none;
-                color: white;
-                background: #044cc8;
-                font-weight: 600;
-                cursor: pointer;
-                transition: transform 0.3s;
-                &:hover {
-                    background-color: #002e81;
-                    //background: white;
-                    transform: scale(1.03);
-                }
-            }
-        }
-    }
+         }
+      }
+   }
 }
 
 @include respond-to(lg) {
-    .list-appointment-container {
-        .card-list {
-            .card-item {
-                width: 45%;
-                margin: 10px 10px;
-            }
-        }
-    }
+   .list-appointment-container {
+      .card-list {
+         .card-item {
+            width: 45%;
+            margin: 10px 10px;
+         }
+      }
+   }
 }
 
 @include respond-to(md) {
-    .list-appointment-container {
-        .card-list {
-            .card-item {
-                width: 100%;
-                margin: 10px 10px;
-            }
-        }
-    }
+   .list-appointment-container {
+      .card-list {
+         .card-item {
+            width: 100%;
+            margin: 10px 10px;
+         }
+      }
+   }
 }

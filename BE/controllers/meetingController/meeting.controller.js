@@ -34,6 +34,46 @@ const meetingController = {
         })
     },
 
+    filterMeetings: async(req, res) => {
+        const { tutorName, majorId, title } = req.query
+        const meetings = await meetingService.filterMeetings({ tutorName, majorId, title })
+        if(meetings !== null) return sendResponse(res, {
+            status: 200,
+            message: 'Filter meetings successfully',
+            data: meetings,
+            EC: 0
+        })
+        else return sendResponse(res, {
+            status: 500,
+            message: 'Failed to filter meetings',
+            EC: -1,
+            data: null
+        })
+    },
+
+    getMeetingsByTutorName: async(req, res) => {
+        const { name } = req.query
+        // if(!name) return sendResponse(res, {
+        //     status: 400,
+        //     message: 'Query param name is required',
+        //     EC: -1,
+        //     data: null
+        // })
+        const meetings = await meetingService.getMeetingsByTutorName(name)
+        if(meetings !== null) return sendResponse(res, {
+            status: 200,
+            message: 'Get meetings by tutor name successfully',
+            data: meetings,
+            EC: 0
+        })
+        else return sendResponse(res, {
+            status: 500,
+            message: 'Failed to get meetings by tutor name',
+            EC: -1,
+            data: null
+        })
+    },
+
     getMeetingById: async(req, res) => {
         const { id } = req.params
         const meeting = await meetingService.getMeetingById(id)
