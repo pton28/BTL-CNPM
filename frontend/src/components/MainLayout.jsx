@@ -14,17 +14,11 @@ const MainLayout = () => {
     const location = useLocation()
     const showSlide = location.pathname === '/'
 
-    // // use for Header or HeaderStudent
-    // const isStudent =
-    //     location.pathname !== '/' &&
-    //     location.pathname !== '/pre-login' &&
-    //     location.pathname !== '/student/login'
-    // // && location.pathname.includes('student');
 
-    // const isTutor =
-    //     location.pathname !== '/' &&
-    //     location.pathname !== '/pre-login' &&
-    //     location.pathname !== '/tutor/login'
+   // use for Header or HeaderStudent
+   const isStudent = location.pathname.includes('student');
+
+   const isTutor = location.pathname.includes('tutor')
 
     const userStr = localStorage.getItem('user')
     const user = userStr ? JSON.parse(userStr) : null

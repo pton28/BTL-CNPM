@@ -26,6 +26,9 @@ const studentWithSessionSlotSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+// Tạo compound unique index cho cặp (student, session)
+studentWithSessionSlotSchema.index({ student: 1, session: 1 }, { unique: true });
+
 const StudentWithSessionSlot = mongoose.model('StudentWithSessionSlot', studentWithSessionSlotSchema);
 export default StudentWithSessionSlot;
 

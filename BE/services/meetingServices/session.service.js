@@ -1,4 +1,5 @@
 import Session from '../../models/meetingModel/session.model.js';
+import mongoose from 'mongoose';
 
 const sessionService = {
     createSession: async(sessionData) => {
@@ -42,6 +43,24 @@ const sessionService = {
             return session
         } catch (error) {
             console.log('Error at getSessionById', error)
+            return null
+        }
+    },
+
+    getSessionsByMeetingId: async(meetingId) => {
+        try {
+            if (!mongoose.Types.ObjectId.isValid(meetingId)) {
+                return null
+            }
+            const sessions = await Session.find({ meeting: meetingId })
+                .populate({
+                    path: 'meeting',
+                    select: 'title_meeting date_of_event tutor'
+                })
+                .sort({ createdAt: -1 })
+            return sessions
+        } catch (error) {
+            console.log('Error at getSessionsByMeetingId', error)
             return null
         }
     },
