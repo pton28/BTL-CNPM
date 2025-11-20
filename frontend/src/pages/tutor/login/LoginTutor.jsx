@@ -1,75 +1,89 @@
-import { useState } from 'react'
 import './LoginTutor.scss'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import { BASE_API } from '../../../constants'
+import { ButtonLogin } from '@/components/common/ui/button/Button.jsx'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useState } from 'react'
 
 const LoginTutor = () => {
-   const navigate = useNavigate()
+    const navigate = useNavigate()
+    const location = useLocation()
 
-   // State lưu trữ email và password
-   const [formData, setFormData] = useState({
-      email: '',
-      password: '',
-   })
+    const from = location.state?.from?.pathname || '/tutor/list-subjects'
 
-   // handle change cho input
-   const handleChange = e => {
-      const { name, value } = e.target
-      setFormData(prev => ({
-         ...prev,
-         [name]: value, // cập nhật đúng field email hoặc password
-      }))
-   }
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-   const handleLoginTutor = async () => {
-      try {
-         const res = await axios.post(`${BASE_API}/tutor/login`, formData)
+    // const handleLoginTutor = () => {
+    //     const fakeTutorUser = {
+    //         id: 'gv001',
+    //         name: 'Thầy Nguyễn Văn A',
+    //         role: 'tutor', // Quan trọng
+    //         email: 'gv@hcmut.edu.vn',
+    //     }
 
-         console.log('Login success:', res.data)
+    //     localStorage.setItem('user', JSON.stringify(fakeTutorUser))
+    //     navigate(from, { replace: true })
+    // }
 
-         // Ví dụ: lưu token
-         // localStorage.setItem('token', res.data.token)
+    const handleLoginTutor = async () => {
+        try {
+            // const response = await loginAPI(email, password);
+            // const { user, accessToken } = response.data;
 
-         navigate('../list-subjects')
-      } catch (error) {
-         console.error('Login failed:', error)
-      }
-   }
+            // --- DỮ LIỆU GIẢ LẬP TỪ BE TRẢ VỀ ---
+            const fakeResponseData = {
+                accessToken: 'eyJhbGciOiJIUzI1NiIs...',
+                user: {
+                    id: '2313640',
+                    name: 'Thầy Nguyễn Văn A',
+                    role: 'tutor', // Quan trọng
+                    email: 'gv@hcmut.edu.vn',
+                },
+            }
 
-   return (
-      <div className="form-login-container">
-         <div className="box">
-            <h1>Đăng nhập cho giảng viên</h1>
-            <p>Vui lòng điền đầy đủ thông tin đăng nhập</p>
+            const { user, accessToken } = fakeResponseData
 
-            <div className="input-container">
-               <label>Email giảng viên</label>
-               <input
-                  name="email"
-                  placeholder="email@gmail.com"
-                  value={formData.email}
-                  onChange={handleChange}
-               />
+            localStorage.setItem('accessToken', accessToken)
+            localStorage.setItem('user', JSON.stringify(user))
+
+            // Bước 3: Điều hướng
+            navigate(from, { replace: true })
+        } catch (error) {
+            alert('Đăng nhập thất bại!')
+        }
+    }
+
+    return (
+        <div className="form-login-container">
+            <div className="box">
+                <h1>Đăng nhập cho giảng viên</h1>
+                <p>Vui lòng điền đầy đủ thông tin đăng nhập</p>
+
+                <div className="input-container">
+                    <label>Email giảng viên</label>
+                    <input
+                        type="email"
+                        placeholder="email@gmail.com"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                </div>
+
+                <div className="input-container">
+                    <label>Mật khẩu</label>
+                    <input
+                        type="password"
+                        placeholder="Mật khẩu"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                </div>
+
+                <button className="btn-login" onClick={handleLoginTutor}>
+                    Login
+                </button>
             </div>
-
-            <div className="input-container">
-               <label>Mật khẩu</label>
-               <input
-                  name="password"
-                  type="password"
-                  placeholder="Mật khẩu"
-                  value={formData.password}
-                  onChange={handleChange}
-               />
-            </div>
-
-            <button className="btn-login" onClick={handleLoginTutor}>
-               Login
-            </button>
-         </div>
-      </div>
-   )
+        </div>
+    )
 }
 
 export default LoginTutor

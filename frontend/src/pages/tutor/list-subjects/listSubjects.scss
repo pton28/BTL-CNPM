@@ -3,146 +3,145 @@
 
 // --- Biến màu sắc (Tùy chỉnh theo theme của bạn) ---
 $primary-color: #008ebc; // Màu xanh chủ đạo của BK
-$bg-container: #f9f9fb; // Màu nền xám nhạt của khung danh sách
-$text-main: #333333; // Màu chữ chính
-$text-sub: #555555; // Màu chữ phụ (chi tiết)
-$border-color: #e0e0e0; // Màu đường kẻ
-$thumbnail-bg: #d9d9d9; // Màu xám của ô hình ảnh
+$bg-container: #f9f9fb;  // Màu nền xám nhạt của khung danh sách
+$text-main: #333333;     // Màu chữ chính
+$text-sub: #555555;      // Màu chữ phụ (chi tiết)
+$border-color: #e0e0e0;  // Màu đường kẻ
+$thumbnail-bg: #d9d9d9;  // Màu xám của ô hình ảnh
 
 // --- Styles chính ---
 
 .list-subject-title {
-   box-sizing: border-box;
-   width: 100%;
-   max-width: 1312px;
-   margin: 0 auto;
-   padding: 20px;
-   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1312px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-   h1 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 24px;
-      color: $text-main;
-   }
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: $text-main;
+  }
 }
 
 .list-subject-container {
-   background-color: $bg-container;
-   border-radius: 12px;
-   padding: 30px;
-   width: 1312;
+  background-color: $bg-container;
+  border-radius: 12px; 
+  padding: 30px;
+  width: 1312;
 
-   h2 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 25px;
-      color: $text-main;
-   }
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: $text-main;
+  }
 
-   .subject-item {
+  .subject-item {
+    display: flex;       
+    align-items: flex-start;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .thumbnail, .btn-thumbnail {
+      width: 200px;
+      height: 110px;
+      background-color: $thumbnail-bg;
+      border-radius: 8px;
+      flex-shrink: 0; 
+      margin-right: 24px; 
+      cursor: pointer;
+    }
+
+    .subject-info {
       display: flex;
-      align-items: flex-start;
-      padding-bottom: 20px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid $border-color;
+      flex-direction: column;
+      justify-content: center;
+      height: 110px; 
 
-      &:last-child {
-         border-bottom: none;
-         margin-bottom: 0;
-         padding-bottom: 0;
+      // Tên môn học (Nút bấm)
+      .btn-subject-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: $text-main;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+
+        // --- YÊU CẦU CỦA BẠN: Hover đậm và gạch chân ---
+        &:hover {
+          text-decoration: underline; // Gạch chân
+          color: $primary-color;   // (Tuỳ chọn) Đổi sang màu xanh cho nổi bật
+        }
       }
 
-      .thumbnail,
-      .btn-thumbnail {
-         width: 200px;
-         height: 110px;
-         background-color: $thumbnail-bg;
-         border-radius: 8px;
-         flex-shrink: 0;
-         margin-right: 24px;
-         cursor: pointer;
+      // Dòng ngày bắt đầu
+      .subject-schedule {
+        font-size: 14px;
+        color: $text-sub;
+        margin-bottom: 6px;
       }
 
-      .subject-info {
-         display: flex;
-         flex-direction: column;
-         justify-content: center;
-         height: 110px;
-
-         // Tên môn học (Nút bấm)
-         .btn-subject-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: $text-main;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-
-            // --- YÊU CẦU CỦA BẠN: Hover đậm và gạch chân ---
-            &:hover {
-               text-decoration: underline; // Gạch chân
-               color: $primary-color; // (Tuỳ chọn) Đổi sang màu xanh cho nổi bật
-            }
-         }
-
-         // Dòng ngày bắt đầu
-         .subject-schedule {
-            font-size: 14px;
-            color: $text-sub;
-            margin-bottom: 6px;
-         }
-
-         // Dòng số lượng sinh viên
-         .subject-detail {
-            font-size: 14px;
-            color: $text-sub;
-         }
+      // Dòng số lượng sinh viên
+      .subject-detail {
+        font-size: 14px;
+        color: $text-sub;
       }
-   }
+    }
+  }
 }
 
 // --- CSS cho phân trang (Pagination) ---
 // (Đảm bảo bạn đặt class pagination-wrapper bên trong hoặc ngoài container tùy HTML)
 .pagination-wrapper {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   margin-top: 40px;
-   gap: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  gap: 8px;
 
-   .page-link {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 6px;
-      background-color: #fff;
-      border: 1px solid #eee;
-      color: #555;
-      text-decoration: none;
-      font-size: 14px;
-      transition: all 0.2s;
+  .page-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
 
-      &:hover {
-         background-color: #f0f0f0;
-      }
+    &:hover {
+      background-color: #f0f0f0;
+    }
 
-      &.active {
-         background-color: $primary-color;
-         color: white;
-         border-color: $primary-color;
-         font-weight: bold;
-      }
+    &.active {
+      background-color: $primary-color;
+      color: white;
+      border-color: $primary-color;
+      font-weight: bold;
+    }
 
-      i {
-         font-size: 12px;
-      }
-   }
+    i {
+      font-size: 12px;
+    }
+  }
 
-   .page-dots {
-      color: #999;
-      margin: 0 4px;
-   }
+  .page-dots {
+    color: #999;
+    margin: 0 4px;
+  }
 }

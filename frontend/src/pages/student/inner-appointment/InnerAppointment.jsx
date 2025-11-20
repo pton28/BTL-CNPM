@@ -12,6 +12,7 @@ import { useFetchMeetingById } from '../../../services/fetchAPI/useFetchMeetingB
  */
 
 const InnerAppointment = () => {
+
    const { id } = useParams()
    const [refresh, setRefresh] = useState(true)
    const {data: meeting, loading: loading} = useFetchMeetingById(refresh, id)
@@ -46,11 +47,10 @@ const InnerAppointment = () => {
                >
                   Chi tiết
                </button>
+
             </div>
-            {mapStatus()}
-         </div>
-      </div>
-   )
+        </div>
+    )
 }
 
 export default InnerAppointment

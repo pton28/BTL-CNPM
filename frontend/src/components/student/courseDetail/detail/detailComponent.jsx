@@ -5,6 +5,7 @@ import { useFetchAllSessionOfAMeeting } from '../../../../services/fetchAPI/useF
 import { useParams } from 'react-router-dom'
 
 const DetailComponent = () => {
+
    const [showFormChangeSchedule, setShowFormChangeSchedule] = useState(false)
    const [selectedSSId, setSelectedSSId] = useState(null)
    const [mode, setMode] = useState(null) // Thêm state để lưu mode
@@ -106,6 +107,7 @@ const DetailComponent = () => {
          )}
       </div>
    )
+
 }
 
 export default DetailComponent

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useFetchMaterialByMeeting } from '../../../../services/fetchAPI/useFetchMaterialByMeeting'
 
 const CourseComponent = () => {
+
    const { id } = useParams()
 
    const [refresh, setRefresh] = useState(true)
@@ -23,6 +24,7 @@ const CourseComponent = () => {
          ))}
       </div>
    )
+
 }
 
 export default CourseComponent

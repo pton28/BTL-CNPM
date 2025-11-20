@@ -1,138 +1,217 @@
-import { useState } from 'react'
 import './SearchCourse.scss'
-import { useFetchAllMeeting } from '../../../services/fetchAPI/useFetchAllMeeting'
-import axios from 'axios'
-import { BASE_API } from '../../../constants'
-import { useFetchAllTutor } from '../../../services/fetchAPI/useFetchAllTutor'
 
-//! Chưa làm bộ lọc
 const SearchCourse = () => {
-   const faculties = [
-      { value: 'cntt', name: 'Công nghệ thông tin' },
-      { value: 'dtvt', name: 'Điện - Điện tử Viễn thông' },
-      { value: 'ck', name: 'Cơ khí' },
-      { value: 'xd', name: 'Xây dựng' },
-      { value: 'qtkd', name: 'Quản trị kinh doanh' },
-      { value: 'kt', name: 'Kinh tế' },
-      { value: 'qlcn', name: 'Quản lý công nghiệp' },
-      { value: 'hh', name: 'Hóa học' },
-      { value: 'mt', name: 'Môi trường' },
-      { value: 'nn', name: 'Ngoại ngữ' },
-   ]
-   const [refresh, setRefresh] = useState(true)
-   const { data: courses, loading } = useFetchAllMeeting(refresh)
+    const faculties = [
+        { value: 'cntt', name: 'Công nghệ thông tin' },
+        { value: 'dtvt', name: 'Điện - Điện tử Viễn thông' },
+        { value: 'ck', name: 'Cơ khí' },
+        { value: 'xd', name: 'Xây dựng' },
+        { value: 'qtkd', name: 'Quản trị kinh doanh' },
+        { value: 'kt', name: 'Kinh tế' },
+        { value: 'qlcn', name: 'Quản lý công nghiệp' },
+        { value: 'hh', name: 'Hóa học' },
+        { value: 'mt', name: 'Môi trường' },
+        { value: 'nn', name: 'Ngoại ngữ' },
+    ]
 
-   const [refreshTutor, setRefreshTutor] = useState(true)
-   const { tutors, loading: loadingtutor } = useFetchAllTutor(refreshTutor)
+    const courses = [
+        {
+            subject: 'Nhập môn Trí tuệ nhân tạo',
+            lecturer: 'Lê Thành Sách',
+            department: 'Khoa học máy tính',
+            mode: 'Online',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Phân tích và xử lý ngôn ngữ tự nhiên nâng cao',
+            lecturer: 'Nguyễn Minh Khôi',
+            department: 'Trí tuệ nhân tạo',
+            mode: 'Online',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Học sâu ứng dụng trong thị giác máy tính',
+            lecturer: 'Trần Thị Ngọc Hân',
+            department: 'Khoa học dữ liệu',
+            mode: 'Offline',
+            status: 'Đã đăng ký',
+        },
+        {
+            subject: 'Cơ sở dữ liệu và khai phá dữ liệu',
+            lecturer: 'Phạm Hoàng Tuấn',
+            department: 'Hệ thống thông tin',
+            mode: 'Offline',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Phát triển ứng dụng web với ReactJS',
+            lecturer: 'Nguyễn Văn An',
+            department: 'Công nghệ phần mềm',
+            mode: 'Online',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Mạng máy tính và truyền thông dữ liệu',
+            lecturer: 'Bùi Đức Phước',
+            department: 'Mạng máy tính',
+            mode: 'Offline',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Nhập môn lập trình Python cơ bản',
+            lecturer: 'Trần Hữu Tín',
+            department: 'Công nghệ thông tin',
+            mode: 'Online',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Phát triển phần mềm hướng đối tượng',
+            lecturer: 'Nguyễn Hữu Nghĩa',
+            department: 'Kỹ thuật phần mềm',
+            mode: 'Offline',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Xử lý ảnh số và thị giác máy tính',
+            lecturer: 'Lê Minh Hải',
+            department: 'Khoa học máy tính',
+            mode: 'Offline',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Lập trình di động với Flutter và Dart',
+            lecturer: 'Phan Ngọc Bảo',
+            department: 'Phát triển ứng dụng',
+            mode: 'Online',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Phân tích hệ thống và thiết kế phần mềm',
+            lecturer: 'Đỗ Hoàng Tùng',
+            department: 'Công nghệ phần mềm',
+            mode: 'Offline',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'An toàn và bảo mật thông tin mạng',
+            lecturer: 'Võ Ngọc Long',
+            department: 'An ninh mạng',
+            mode: 'Online',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Trí tuệ nhân tạo ứng dụng trong giáo dục',
+            lecturer: 'Nguyễn Thị Bích Phượng',
+            department: 'Trí tuệ nhân tạo',
+            mode: 'Offline',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Phân tích dữ liệu lớn với Hadoop và Spark',
+            lecturer: 'Phạm Duy Nam',
+            department: 'Khoa học dữ liệu',
+            mode: 'Online',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Thiết kế giao diện người dùng nâng cao',
+            lecturer: 'Hoàng Đức Dũng',
+            department: 'Thiết kế phần mềm',
+            mode: 'Offline',
+            status: 'Đăng ký',
+        },
+        {
+            subject: 'Lập trình hướng sự kiện với JavaScript',
+            lecturer: 'Lâm Gia Bảo',
+            department: 'Công nghệ phần mềm',
+            mode: 'Online',
+            status: 'Đăng ký',
+        },
+    ]
 
-   const [filterObj, setFilterObj] = useState({ major: '', tutor: '' })
+    return (
+        <div className="search-course-container">
+            <div className="filter">
+                <h2>Bộ lọc</h2>
+                <div className="filter-container">
+                    <h3>Khoa</h3>
+                    <select>
+                        {faculties.map((item, index) => (
+                            <option key={index} value={item.value}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-   const HandleSignUpMeeting = async meeting_id => {
-      const studentId = localStorage.getItem('id')
+                <div className="filter-container">
+                    <h3>Giảng viên</h3>
+                    <select>
+                        {faculties.map((item, index) => (
+                            <option key={index} value={item.value}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-      try {
-         const obj = {
-            student_id: studentId,
-            meeting_id: meeting_id,
-         }
-         const resp = await axios.post(`${BASE_API}/student-with-meeting`, obj)
-         if (resp.status === 201) setRefresh(refresh => !refresh)
-      } catch (error) {
-         console.log('Error at Search Course: sign up meeting by student', error)
-      }
-   }
+                <div className="filter-container">
+                    <h3>Lĩnh vực</h3>
+                    <select>
+                        {faculties.map((item, index) => (
+                            <option key={index} value={item.value}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-   const Handlefillter = () => {}
-   return (
-      <div className="search-course-container">
-         <div className="filter">
-            <h2>Bộ lọc</h2>
-            {/* <div className="filter-container">
-               <h3>Khoa</h3>
-               <select>
-                  {faculties.map((item, index) => (
-                     <option key={index} value={item.value}>
-                        {item.name}
-                     </option>
-                  ))}
-               </select>
-            </div> */}
-
-            <div className="filter-container">
-               <h3>Giảng viên</h3>
-               <select onChange={e => setFilterObj(prev => ({ ...prev, major: e.target.value }))}>
-                  {loadingtutor ? (
-                     <>Đang tải ...</>
-                  ) : (
-                     tutors.map(item => (
-                        <option key={item.id} value={item.full_name}>
-                           {item.full_name}
-                        </option>
-                     ))
-                  )}
-               </select>
+                <button className={'btn-login'}>Tìm kiếm</button>
             </div>
 
-            <div className="filter-container">
-               <h3>Lĩnh vực</h3>
-               <select onChange={e => setFilterObj(prev => ({ ...prev, major: e.target.value }))}>
-                  {faculties.map((item, index) => (
-                     <option key={index} value={item.value}>
-                        {item.name}
-                     </option>
-                  ))}
-               </select>
+            <div className="list-container">
+                <input
+                    type={'text'}
+                    placeholder={'Tìm kiếm khóa học'}
+                    className={'search-course-input'}
+                />
+                <h2>Tất cả các khóa học</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Môn học</th>
+                            <th>Giảng viên</th>
+                            <th>Bộ môn</th>
+                            <th>Hình thức</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {courses.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.subject}</td>
+                                <td>{item.lecturer}</td>
+                                <td>{item.department}</td>
+                                <td>{item.mode}</td>
+                                <td>
+                                    <span
+                                        className={
+                                            item.status === 'Đã đăng ký'
+                                                ? 'status-badge registered'
+                                                : 'status-badge register'
+                                        }
+                                    >
+                                        {item.status}
+                                    </span>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-
-            <button className={'btn-login'} onClick={Handlefillter}>
-               Lọc
-            </button>
-         </div>
-
-         <div className="list-container">
-            <input
-               type={'text'}
-               placeholder={'Tìm kiếm khóa học'}
-               className={'search-course-input'}
-            />
-            <h2>Tất cả các khóa học</h2>
-
-            <table>
-               <thead>
-                  <tr>
-                     <th>Môn học</th>
-                     <th>Giảng viên</th>
-                     <th>Bộ môn</th>
-                     <th>Hình thức</th>
-                     <th>Trạng thái</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  {courses.map((item, index) => (
-                     <tr key={index}>
-                        <td>{item.subject}</td>
-                        <td>{item.lecturer}</td>
-                        <td>{item.department}</td>
-                        <td>{item.mode}</td>
-                        <td>
-                           {item.status === 'Registered' ? (
-                              <span className="status-badge register">Đã đăng ký</span>
-                           ) : (
-                              <span
-                                 className="status-badge registered"
-                                 onClick={() => HandleSignUpMeeting(item.id)}
-                              >
-                                 Đăng ký
-                              </span>
-                           )}
-                        </td>
-                     </tr>
-                  ))}
-               </tbody>
-            </table>
-         </div>
-      </div>
-   )
+        </div>
+    )
 }
 
 export default SearchCourse

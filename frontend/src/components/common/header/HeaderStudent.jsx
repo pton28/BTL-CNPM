@@ -14,12 +14,13 @@ const HeaderStudent = () => {
                <p onClick={() => navigate('list-appointment')}>Danh sách của tôi</p>
             </div>
 
-            <div className={'content-right'}>
-               <img src={Account} alt="account" />
+
+                <div className={'content-right'}>
+                    <img src={Account} alt="account" />
+                </div>
             </div>
-         </div>
-      </div>
-   )
+        </div>
+    )
 }
 
 export default HeaderStudent
