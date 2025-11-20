@@ -15,16 +15,9 @@ const MainLayout = () => {
    const showSlide = location.pathname === '/'
 
    // use for Header or HeaderStudent
-   const isStudent =
-      location.pathname !== '/' &&
-      location.pathname !== '/pre-login' &&
-      location.pathname !== '/student/login'
-   // && location.pathname.includes('student');
+   const isStudent = location.pathname.includes('student');
 
-   const isTutor =
-      location.pathname !== '/' &&
-      location.pathname !== '/pre-login' &&
-      location.pathname !== '/tutor/login'
+   const isTutor = location.pathname.includes('tutor')
 
    const images = [img1, img2, img3, img4, img5]
    const [currentIndex, setCurrentIndex] = useState(0)
