@@ -10,8 +10,8 @@ const HeaderStudent = () => {
          <div className="header-student-content">
             <div className={'content-left'}>
                <p>Trang chủ</p>
-               <p>Tìm kiếm khóa học</p>
-               <p>Danh sách của tôi</p>
+               <p onClick={() => navigate('search-course')}>Tìm kiếm khóa học</p>
+               <p onClick={() => navigate('list-appointment')}>Danh sách của tôi</p>
             </div>
 
             <div className={'content-right'}>

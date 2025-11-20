@@ -1,4 +1,5 @@
 import SessionSlot from '../../models/meetingModel/sessionSlot.model.js';
+import mongoose from 'mongoose';
 
 const sessionSlotService = {
     createSessionSlot: async(sessionSlotData) => {
@@ -39,6 +40,24 @@ const sessionSlotService = {
             return sessionSlot
         } catch (error) {
             console.log('Error at getSessionSlotById', error)
+            return null
+        }
+    },
+
+    getSessionSlotsBySessionId: async(sessionId) => {
+        try {
+            if (!mongoose.Types.ObjectId.isValid(sessionId)) {
+                return null
+            }
+            const sessionSlots = await SessionSlot.find({ session: sessionId })
+                .populate({
+                    path: 'session',
+                    select: 'title meeting'
+                })
+                .sort({ createdAt: -1 })
+            return sessionSlots
+        } catch (error) {
+            console.log('Error at getSessionSlotsBySessionId', error)
             return null
         }
     },

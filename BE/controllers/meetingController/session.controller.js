@@ -51,6 +51,23 @@ const sessionController = {
         })
     },
 
+    getSessionsByMeetingId: async(req, res) => {
+        const { meetingId } = req.params
+        const sessions = await sessionService.getSessionsByMeetingId(meetingId)
+        if(sessions !== null) return sendResponse(res, {
+            status: 200,
+            message: 'Get sessions by meeting id successfully',
+            data: sessions,
+            EC: 0
+        })
+        else return sendResponse(res, {
+            status: 500,
+            message: 'Failed to get sessions by meeting id',
+            EC: -1,
+            data: null
+        })
+    },
+
     updateSession: async(req, res) => {
         const { id } = req.params
         const session = await sessionService.updateSession(id, req.body)

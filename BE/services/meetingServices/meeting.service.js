@@ -1,4 +1,5 @@
 import Meeting from '../../models/meetingModel/meeting.model.js';
+import mongoose from 'mongoose';
 
 const meetingService = {
     createMeeting: async(meetingData) => {
@@ -89,7 +90,18 @@ const meetingService = {
 
     getMeetingById: async(id) => {
         try {
-            const meeting = await Meeting.findOne({id})
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return null
+            }
+            const meeting = await Meeting.findById(id)
+                .populate({
+                    path: 'major',
+                    select: 'name -_id'
+                })
+                .populate({
+                    path: 'tutor',
+                    select: 'full_name email -_id'
+                })
             return meeting
         } catch (error) {
             console.log('Error at getMeetingById', error)

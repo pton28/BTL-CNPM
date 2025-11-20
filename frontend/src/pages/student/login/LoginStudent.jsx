@@ -3,6 +3,7 @@ import './LoginStudent.scss'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { BASE_API } from '../../../constants'
+import { ButtonLogin } from '../../../components/common/ui/button/Button'
 
 const LoginStudent = () => {
    const navigate = useNavigate()
@@ -26,7 +27,6 @@ const LoginStudent = () => {
       try {
          const res = await axios.post(`${BASE_API}/student/login`, formData)
 
-         console.log('Student login success:', res.data.data._id)
 
          localStorage.setItem('id', res.data.data._id)
 
@@ -49,6 +49,7 @@ const LoginStudent = () => {
                   placeholder="email@gmail.com"
                   value={formData.email}
                   onChange={handleChange}
+                  required
                />
             </div>
 
@@ -60,12 +61,15 @@ const LoginStudent = () => {
                   placeholder="Mật khẩu"
                   value={formData.password}
                   onChange={handleChange}
+                  required
                />
             </div>
 
             <button className="btn-login" onClick={handleLoginStudent}>
-               Login
+               Đăng nhập
             </button>
+
+            {/* <ButtonLogin /> */}
          </div>
       </div>
    )

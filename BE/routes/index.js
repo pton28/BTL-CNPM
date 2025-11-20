@@ -7,6 +7,7 @@ import routeStudentWithMeeting from './studentWithMeeting.route.js';
 import routeSession from './meetingRoutes/session.route.js';
 import routeSessionSlot from './meetingRoutes/sessionSlot.route.js';
 import routeStudentWithSessionSlot from './meetingRoutes/studentWithSessionSlot.route.js';
+import routeMaterial from './material.route.js';
 
 
 function initRoutes(app) {
@@ -19,6 +20,7 @@ function initRoutes(app) {
   app.use("/session", routeSession)
   app.use("/session-slot", routeSessionSlot)
   app.use("/student-with-session-slot", routeStudentWithSessionSlot)
+  app.use("/material", routeMaterial)
 }
 
 export default initRoutes
