@@ -14,17 +14,28 @@ const MainLayout = () => {
    const location = useLocation()
    const showSlide = location.pathname === '/'
 
-   // use for Header or HeaderStudent
-   const isStudent =
-      location.pathname !== '/' &&
-      location.pathname !== '/pre-login' &&
-      location.pathname !== '/student/login'
-   // && location.pathname.includes('student');
+   // // use for Header or HeaderStudent
+   // const isStudent =
+   //     location.pathname !== '/' &&
+   //     location.pathname !== '/pre-login' &&
+   //     location.pathname !== '/student/login'
+   // // && location.pathname.includes('student');
 
-   const isTutor =
-      location.pathname !== '/' &&
-      location.pathname !== '/pre-login' &&
-      location.pathname !== '/tutor/login'
+   // const isTutor =
+   //     location.pathname !== '/' &&
+   //     location.pathname !== '/pre-login' &&
+   //     location.pathname !== '/tutor/login'
+
+   const userStr = localStorage.getItem('user')
+   const user = userStr ? JSON.parse(userStr) : null
+
+   const isAuthPage =
+      location.pathname === '/pre-login' ||
+      location.pathname === '/student/login' ||
+      location.pathname === '/tutor/login'
+
+   const isStudent = user?.role === 'student' && !isAuthPage
+   const isTutor = user?.role === 'tutor' && !isAuthPage
 
    const images = [img1, img2, img3, img4, img5]
    const [currentIndex, setCurrentIndex] = useState(0)
@@ -64,12 +75,12 @@ const MainLayout = () => {
                   className={`slideshow-img ${fade ? 'fade' : ''}`}
                />
 
-               <button className="arrow left" onClick={handlePrev}>
-                  &#10094;
-               </button>
-               <button className="arrow right" onClick={handleNext}>
-                  &#10095;
-               </button>
+               {/* <button className="arrow left" onClick={handlePrev}>
+                        &#10094;
+                    </button>
+                    <button className="arrow right" onClick={handleNext}>
+                        &#10095;
+                    </button> */}
             </div>
          )}
 

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 /*
  * Define public routes and private routes
@@ -26,74 +26,132 @@ import MainTutorLayout from '../pages/tutor/MainTutorLayout.jsx'
 import LoginTutor from '@/pages/tutor/login/LoginTutor.jsx'
 import ListSubjects from '@/pages/tutor/list-subjects/listSubjects.jsx'
 import SubjectDetails from '@/pages/tutor/list-subjects/subjectDetails/subjectDetails.jsx'
+import OpenClass from '@/pages/tutor/open-class/OpenClass.jsx'
 
 export const router = createBrowserRouter([
    {
       path: '/',
       element: <MainLayout />,
       children: [
+         { path: 'pre-login', element: <PreLogin /> },
+         { path: 'unauthorized', element: <Unauthorized /> },
+         { path: 'student/login', element: <LoginStudent /> },
+         { path: 'tutor/login', element: <LoginTutor /> },
+
          {
-            path: '/unauthorized',
-            element: <Unauthorized />,
-         },
-         {
-            path: '/pre-login',
-            element: <PreLogin />,
-         },
-         {
-            path: '/student/login',
-            element: <LoginStudent />,
-         },
-         {
-            path: '/tutor/login',
-            element: <LoginTutor />,
-         },
-         {
-            // Route private
-            path: 'history',
-            element: <HistoryAppointment />,
-         },
-         {
-            // Route private
-            path: 'list-appointment/:id',
-            element: <InnerAppointment />,
-         },
-         {
-            // Route private
-            path: 'list-appointment',
-            element: <ListAppointment />,
-         },
-         {
-            // Route private
-            path: 'search-course',
-            element: <SearchCourse />,
-         },
-         {
-            // Route private
-            path: 'list-subjects',
-            element: <ListSubjects />,
-         },
-         {
-            // Route private
-            path: 'subject-details',
-            element: <SubjectDetails />,
-         },
-         {
-            element: <ProtectedRoute />,
+            element: <ProtectedRoute allowedRoles={['student']} />,
             children: [
-               // student
                {
-                  path: '/student',
-                  element: <MainStudentLayout />,
-                  children: [],
+                  path: 'student', // Đường dẫn gốc: /student
+                  // element: <MainStudentLayout />, // Nếu bạn muốn layout riêng lồng trong MainLayout
+                  children: [
+                     // Redirect: Vào /student tự động nhảy sang /student/dashboard (hoặc trang chính)
+                     { index: true, element: <Navigate to="search-course" replace /> },
+
+                     // Các đường dẫn con (Relative paths - KHÔNG CÓ DẤU / Ở ĐẦU)
+                     // URL: /student/search-course
+                     { path: 'search-course', element: <SearchCourse /> },
+
+                     // URL: /student/list-appointment
+                     { path: 'list-appointment', element: <ListAppointment /> },
+
+                     // URL: /student/list-appointment/123
+                     { path: 'list-appointment/:id', element: <InnerAppointment /> },
+
+                     // URL: /student/history
+                     { path: 'history', element: <HistoryAppointment /> },
+                  ],
                },
+            ],
+         },
+
+         /* --- KHU VỰC TUTOR (Chỉ Tutor mới vào được) --- */
+         {
+            element: <ProtectedRoute allowedRoles={['tutor']} />,
+            children: [
                {
-                  path: '/tutor',
-                  element: <MainTutorLayout />,
-                  children: [],
+                  path: 'tutor', // Đường dẫn gốc: /tutor
+                  // element: <MainTutorLayout />,
+                  children: [
+                     // Redirect mặc định cho tutor
+                     { index: true, element: <Navigate to="list-subjects" replace /> },
+
+                     // URL: /tutor/list-subjects
+                     { path: 'list-subjects', element: <ListSubjects /> },
+
+                     // URL: /tutor/subject-details
+                     { path: 'subject-details', element: <SubjectDetails /> },
+
+                     { path: 'open-class', element: <OpenClass /> },
+                  ],
                },
             ],
          },
       ],
+
+      // children: [
+      //     {
+      //         path: '/unauthorized',
+      //         element: <Unauthorized />,
+      //     },
+      //     {
+      //         path: '/pre-login',
+      //         element: <PreLogin />,
+      //     },
+      //     {
+      //         path: '/student/login',
+      //         element: <LoginStudent />,
+      //     },
+      //     {
+      //         path: '/tutor/login',
+      //         element: <LoginTutor />,
+      //     },
+      //     {
+      //         // Route private
+      //         path: 'history',
+      //         element: <HistoryAppointment />,
+      //     },
+      //     {
+      //         // Route private
+      //         path: 'list-appointment/:id',
+      //         element: <InnerAppointment />,
+      //     },
+      //     {
+      //         // Route private
+      //         path: 'list-appointment',
+      //         element: <ListAppointment />,
+      //     },
+      //     {
+      //         // Route private
+      //         path: 'search-course',
+      //         element: <SearchCourse />,
+      //     },
+      //     {
+      //         // Route private
+      //         path: 'list-subjects',
+      //         element: <ListSubjects />,
+      //     },
+      //     {
+      //         // Route private
+      //         path: '/subject-details',
+      //         element: <SubjectDetails />,
+      //     },
+      //     {
+      //         element: <ProtectedRoute />,
+      //         children: [
+      //             // student
+      //             {
+      //                 path: '/student',
+      //                 element: <MainStudentLayout />,
+      //                 children: [],
+      //             },
+      //             {
+      //                 path: '/tutor',
+      //                 element: <MainTutorLayout />,
+      //                 children: [],
+      //             },
+      //         ],
+      //     },
+      // ],
    },
 ])

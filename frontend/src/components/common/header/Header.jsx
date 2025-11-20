@@ -4,12 +4,26 @@ import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
    const navigate = useNavigate()
+
+   const handleHome = () => {
+      navigate('/')
+   }
+
+   const handlePreLogin = () => {
+      navigate('/pre-login')
+   }
+
    return (
       <div className="header-container">
-         <img src={logo} alt="logo" />
+         <img src={logo} alt="logo" onClick={handleHome} />
          <div className="header-content">
-            <span>Trang chủ</span>
-            <span onClick={() => navigate('/pre-login')}>Đăng nhập</span>
+            <div className="nav-item" onClick={handleHome}>
+               Trang chủ
+            </div>
+
+            <div className="nav-item" onClick={handlePreLogin}>
+               Đăng nhập
+            </div>
          </div>
       </div>
    )
