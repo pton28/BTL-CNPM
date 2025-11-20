@@ -7,5 +7,5 @@ export function ButtonLogin() {
 }
 
 export function ButtonConfirm() {
-   return <>This button confirm</>
+   return <button></button>
 }
