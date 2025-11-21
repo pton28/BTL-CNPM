@@ -7,5 +7,9 @@ export function ButtonLogin() {
 }
 
 export function ButtonConfirm() {
+<<<<<<< HEAD
     return <>This button confirm</>
+=======
+   return <button></button>
+>>>>>>> trinh
 }

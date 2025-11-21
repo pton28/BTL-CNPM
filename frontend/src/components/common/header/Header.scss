@@ -1,4 +1,5 @@
 .header-container {
+<<<<<<< HEAD
     width: 100%;
     height: 60px;
     background: #0388b4;
@@ -38,4 +39,45 @@
             }
         }
     }
+=======
+   width: 100%;
+   height: 60px;
+   background: #0388b4;
+   display: flex;
+   align-items: center;
+   padding: 0 20px;
+   box-sizing: border-box;
+   position: relative;
+   z-index: 10;
+
+   img {
+      width: 55px;
+      height: auto;
+      margin-right: 20px;
+      cursor: pointer;
+   }
+   .header-content {
+      display: flex;
+      flex: 1;
+      justify-content: space-between; /* Đẩy các nav-item sang phải */
+      align-items: center;
+      color: white; /* Màu chữ mặc định */
+      font-weight: 500;
+      height: 100%;
+
+      .nav-item {
+         cursor: pointer;
+         height: 100%; /* Chiếm toàn bộ chiều cao của header-content */
+         display: flex; /* Dùng flex để căn giữa chữ bên trong nav-item */
+         align-items: center; /* Căn giữa chữ theo chiều dọc */
+         padding: 0 20px; /* Padding cho vùng bấm và màu nền */
+         background-color: transparent; /* Mặc định trong suốt */
+         transition: background-color 0.2s ease; /* Hiệu ứng chuyển màu nền mượt mà */
+
+         &:hover {
+            background-color: rgba(4, 76, 200, 1);
+         }
+      }
+   }
+>>>>>>> trinh
 }

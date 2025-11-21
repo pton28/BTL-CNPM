@@ -11,76 +11,55 @@ import HeaderStudent from '@/components/common/header/HeaderStudent.jsx'
 import HeaderTutor from '@/components/common/header/HeaderTutor.jsx'
 
 const MainLayout = () => {
-    const location = useLocation()
-    const showSlide = location.pathname === '/'
+   const location = useLocation()
+   const showSlide = location.pathname === '/'
 
+   const userStr = localStorage.getItem('user')
+   const user = userStr ? JSON.parse(userStr) : null
 
-   // use for Header or HeaderStudent
-   const isStudent = location.pathname.includes('student');
+   const isAuthPage =
+      location.pathname === '/pre-login' ||
+      location.pathname === '/student/login' ||
+      location.pathname === '/tutor/login'
 
-   const isTutor = location.pathname.includes('tutor')
+   const isStudent = user?.role === 'student' && !isAuthPage
+   const isTutor = user?.role === 'tutor' && !isAuthPage
 
-    const userStr = localStorage.getItem('user')
-    const user = userStr ? JSON.parse(userStr) : null
+   const images = [img1, img2, img3, img4, img5]
+   const [currentIndex, setCurrentIndex] = useState(0)
+   const [fade, setFade] = useState(false)
 
-    const isAuthPage =
-        location.pathname === '/pre-login' ||
-        location.pathname === '/student/login' ||
-        location.pathname === '/tutor/login'
+   useEffect(() => {
+      if (!showSlide) return
+      const interval = setInterval(() => handleNext(), 5000)
+      return () => clearInterval(interval)
+   }, [currentIndex])
 
-    const isStudent = user?.role === 'student' && !isAuthPage
-    const isTutor = user?.role === 'tutor' && !isAuthPage
+   const handleNext = () => {
+      setFade(true)
+      setTimeout(() => {
+         setCurrentIndex(prev => (prev + 1) % images.length)
+         setFade(false)
+      }, 500)
+   }
 
-    const images = [img1, img2, img3, img4, img5]
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [fade, setFade] = useState(false)
+   return (
+      <div className="main-layout-container">
+         {isStudent ? <HeaderStudent /> : isTutor ? <HeaderTutor /> : <Header />}
 
-    useEffect(() => {
-        if (!showSlide) return
-        const interval = setInterval(() => handleNext(), 5000)
-        return () => clearInterval(interval)
-    }, [currentIndex])
+         {showSlide && (
+            <div className="slideshow-container">
+               <img
+                  src={images[currentIndex]}
+                  alt="BK slideshow"
+                  className={`slideshow-img ${fade ? 'fade' : ''}`}
+               />
+            </div>
+         )}
 
-    const handleNext = () => {
-        setFade(true)
-        setTimeout(() => {
-            setCurrentIndex(prev => (prev + 1) % images.length)
-            setFade(false)
-        }, 500)
-    }
-
-    const handlePrev = () => {
-        setFade(true)
-        setTimeout(() => {
-            setCurrentIndex(prev => (prev - 1 + images.length) % images.length)
-            setFade(false)
-        }, 500)
-    }
-
-    return (
-        <div className="main-layout-container">
-            {isStudent ? <HeaderStudent /> : isTutor ? <HeaderTutor /> : <Header />}
-
-            {showSlide && (
-                <div className="slideshow-container">
-                    <img
-                        src={images[currentIndex]}
-                        alt="BK slideshow"
-                        className={`slideshow-img ${fade ? 'fade' : ''}`}
-                    />
-
-                    {/* <button className="arrow left" onClick={handlePrev}>
-                        &#10094;
-                    </button>
-                    <button className="arrow right" onClick={handleNext}>
-                        &#10095;
-                    </button> */}
-                </div>
-            )}
-
-            <Outlet />
-        </div>
-    )
+         <Outlet />
+      </div>
+   )
 }
 
 export default MainLayout

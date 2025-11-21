@@ -1,0 +1,48 @@
+// Định nghĩa màu xanh chủ đạo (Bạn có thể thay mã màu này cho khớp chính xác với design của bạn)
+$primary-blue: rgba(4, 76, 200, 0.73);
+
+.common-btn {
+   /* --- Cấu trúc cơ bản --- */
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   padding: 10px 24px; /* Độ dày của nút */
+   font-size: 16px;
+   font-weight: 600; /* Chữ hơi đậm */
+   border-radius: 15px; /* Bo tròn kiểu viên thuốc (Pill shape) */
+   cursor: pointer;
+   outline: none;
+   text-decoration: none;
+
+   background-color: white;
+   color: $primary-blue;
+   border: 1.5px solid $primary-blue; /* Viền mỏng màu xanh */
+
+   /* --- Hiệu ứng chuyển đổi mượt mà --- */
+   transition: all 0.1s ease-in-out;
+
+   /* --- Trạng thái khi di chuột (Hình 2: Nền xanh, chữ trắng) --- */
+   &:hover {
+      background-color: $primary-blue;
+      color: white;
+      /* Viền vẫn giữ màu xanh hoặc đổi màu tùy ý, ở đây giữ nguyên để không bị nhảy kích thước */
+      border-color: $primary-blue;
+
+      /* Thêm bóng nhẹ cho đẹp (tùy chọn) */
+      box-shadow: 0 4px 8px rgba(0, 86, 179, 0.2);
+   }
+
+   /* --- Trạng thái khi bấm (Active) --- */
+   &:active {
+      transform: scale(0.98); /* Nút co lại một chút khi bấm */
+   }
+
+   /* --- Trạng thái Disabled (nếu cần) --- */
+   &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background-color: #e0e0e0;
+      border-color: #e0e0e0;
+      color: #888;
+   }
+}
