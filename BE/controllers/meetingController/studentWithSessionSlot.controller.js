@@ -83,6 +83,31 @@ const studentWithSessionSlotController = {
             EC: -1,
             data: null
         })
+    },
+
+    getStudentWithSessionSlotByStudentAndMeeting: async(req, res) => {
+        const { studentId, meetingId } = req.params
+        if(!studentId || !meetingId) {
+            return sendResponse(res, {
+                status: 400,
+                message: 'studentId and meetingId are required',
+                data: null,
+                EC: -1
+            })
+        }
+        const response = await studentWithSessionSlotService.getStudentWithSessionSlotByStudentAndMeeting(studentId, meetingId)
+        if(response !== null) return sendResponse(res, {
+            status: 200,
+            message: 'Get studentWithSessionSlot by student and meeting successfully',
+            data: response,
+            EC: 0
+        })
+        else return sendResponse(res, {
+            status: 500,
+            message: 'Failed to get studentWithSessionSlot by student and meeting',
+            EC: -1,
+            data: null
+        })
     }
 }
 

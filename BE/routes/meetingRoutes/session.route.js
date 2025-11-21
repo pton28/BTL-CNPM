@@ -4,6 +4,7 @@ const routeSession = express.Router()
 
 routeSession.post('/', sessionController.createSession)
 routeSession.get('/', sessionController.getAllSessions)
+routeSession.get('/meeting/:meetingId', sessionController.getSessionsByMeetingId)
 routeSession.get('/:id', sessionController.getSessionById)
 routeSession.put('/:id', sessionController.updateSession)
 routeSession.delete('/:id', sessionController.deleteSession)

@@ -51,6 +51,23 @@ const sessionSlotController = {
         })
     },
 
+    getSessionSlotsBySessionId: async(req, res) => {
+        const { sessionId } = req.params
+        const sessionSlots = await sessionSlotService.getSessionSlotsBySessionId(sessionId)
+        if(sessionSlots !== null) return sendResponse(res, {
+            status: 200,
+            message: 'Get sessionSlots by session id successfully',
+            data: sessionSlots,
+            EC: 0
+        })
+        else return sendResponse(res, {
+            status: 500,
+            message: 'Failed to get sessionSlots by session id',
+            EC: -1,
+            data: null
+        })
+    },
+
     updateSessionSlot: async(req, res) => {
         const { id } = req.params
         const sessionSlot = await sessionSlotService.updateSessionSlot(id, req.body)
