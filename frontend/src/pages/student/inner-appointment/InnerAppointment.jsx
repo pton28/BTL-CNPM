@@ -12,10 +12,9 @@ import { useFetchMeetingById } from '../../../services/fetchAPI/useFetchMeetingB
  */
 
 const InnerAppointment = () => {
-
    const { id } = useParams()
    const [refresh, setRefresh] = useState(true)
-   const {data: meeting, loading: loading} = useFetchMeetingById(refresh, id)
+   const { data: meeting, loading: loading } = useFetchMeetingById(refresh, id)
 
    const [status, setStatus] = useState('course')
    const mapStatus = () => {
@@ -27,7 +26,9 @@ const InnerAppointment = () => {
    return (
       <div className="inner-appointment-container">
          <div className="box">
-            {!loading && meeting && <h1>{`${meeting.tutor.full_name} _ ${meeting.title_meeting} _ ${meeting.method}`}</h1>}
+            {!loading && meeting && (
+               <h1>{`${meeting.tutor.full_name} _ ${meeting.title_meeting} _ ${meeting.method}`}</h1>
+            )}
             <div className="button-container">
                <button
                   className={status === 'course' ? 'active' : ''}
@@ -47,10 +48,10 @@ const InnerAppointment = () => {
                >
                   Chi tiết
                </button>
-
             </div>
-        </div>
-    )
+         </div>
+      </div>
+   )
 }
 
 export default InnerAppointment

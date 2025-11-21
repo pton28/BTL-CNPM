@@ -2,7 +2,7 @@ import './ListAppointment.scss'
 import Avt from '@/assets/student/avt.svg'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useFetchListAppointmentByStudent } from '@/services/fetchAPI/useFetchListAppointmentByStudent'
+import { useFetchListAppointmentByStudent } from '../../../services/fetchAPI/useFetchListAppointmentByStudent'
 
 const ListAppointment = () => {
    const navigate = useNavigate()
@@ -26,7 +26,7 @@ const ListAppointment = () => {
          <div className="card-list">
             {/* Case 1: Đang Loading */}
             {loading && <p className="loading-text">Đang tải dữ liệu...</p>}
-
+            {/* {console.log('data in cmn', appointmentList, appointmentList.length)} */}
             {/* Case 2: Có dữ liệu */}
             {!loading &&
                appointmentList &&
@@ -36,23 +36,27 @@ const ListAppointment = () => {
                      item.status == 'studying' && (
                         <div className="card-item" key={item._id || index}>
                            <div className="card-item-title">
+                              {/* Hiển thị avatar thật nếu có, không thì dùng ảnh mặc định */}
                               <img src={Avt} alt="avt" />
 
                               <div className="card-item-info">
+                                 {/* Hiển thị tên giáo viên từ dữ liệu đã gộp */}
                                  <p className="name-teacher">{item.tutorName || 'Giáo viên'}</p>
                                  <p className="major">
+                                    {/* Hiển thị chuyên ngành từ dữ liệu đã gộp */}
                                     Lĩnh vực: {item.majorName || 'Chưa cập nhật'}
                                  </p>
                               </div>
                            </div>
 
                            <p className="name-course">
+                              {/* Tên khóa học/Tiêu đề cuộc hẹn */}
                               {item.meeting_id.title_meeting || 'Chi tiết cuộc hẹn...'}
                            </p>
 
                            <button
                               className="btn-detail"
-                              onClick={() => navigate(`/list-appointment/${item.meeting_id._id}`)}
+                              onClick={() => navigate(`/list-appointment/${item.id}`)}
                            >
                               Xem chi tiết
                            </button>

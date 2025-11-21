@@ -4,7 +4,6 @@ import axios from 'axios'
 import { ButtonLogin } from '@/components/common/ui/button/Button.jsx'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { BASE_API } from '../../../constants'
-import { ButtonLogin } from '../../../components/common/ui/button/Button'
 
 const LoginStudent = () => {
    const navigate = useNavigate()
