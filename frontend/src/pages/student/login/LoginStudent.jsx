@@ -34,8 +34,6 @@ const LoginStudent = () => {
          // const response = await loginAPI(email, password);
          // const { user, accessToken } = response.data;
 
-<<<<<<< HEAD
-=======
          // --- DỮ LIỆU GIẢ LẬP TỪ BE TRẢ VỀ ---
          const fakeResponseData = {
             accessToken: 'eyJhbGciOiJIUzI1NiIs...',
@@ -46,7 +44,6 @@ const LoginStudent = () => {
                email: 'sv@hcmut.edu.vn',
             },
          }
->>>>>>> trinh
 
          const { user, accessToken } = fakeResponseData
 
@@ -71,14 +68,8 @@ const LoginStudent = () => {
                <input
                   type="email"
                   placeholder="email@gmail.com"
-<<<<<<< HEAD
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-=======
                   value={email}
                   onChange={e => setEmail(e.target.value)}
->>>>>>> trinh
                />
             </div>
 
@@ -87,14 +78,8 @@ const LoginStudent = () => {
                <input
                   type="password"
                   placeholder="Mật khẩu"
-<<<<<<< HEAD
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-=======
                   value={password}
                   onChange={e => setPassword(e.target.value)}
->>>>>>> trinh
                />
             </div>
 
