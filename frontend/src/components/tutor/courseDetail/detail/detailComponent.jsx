@@ -166,9 +166,9 @@ const DetailComponent = () => {
 
    const renderScheduleList = () => (
       <div className="schedule-list-view">
-         <div className="view-header">
+         {/* <div className="view-header">
             <h2>Lịch giảng dạy môn {schedules[0]?.courseName || '...'}</h2>
-         </div>
+         </div> */}
 
          <div className="schedule-cards-container">
             {schedules.map(item => (

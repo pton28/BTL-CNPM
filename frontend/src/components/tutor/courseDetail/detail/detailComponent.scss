@@ -94,17 +94,17 @@ $green-text: #00695c;
                }
             }
 
-            .card-right {
-               .btn-view-list {
-                  background-color: #7ba4e7; // Màu xanh nhạt hơn nút chính
-                  color: white;
-                  border: none;
-                  font-weight: 500;
-                  &:hover {
-                     background-color: $primary-blue;
-                  }
-               }
-            }
+            // .card-right {
+            //    .btn-view-list {
+            //       background-color: #7ba4e7; // Màu xanh nhạt hơn nút chính
+            //       color: white;
+            //       border: none;
+            //       font-weight: 500;
+            //       &:hover {
+            //          background-color: $primary-blue;
+            //       }
+            //    }
+            // }
          }
       }
    }
@@ -124,10 +124,10 @@ $green-text: #00695c;
          }
       }
 
-      .view-header h2 {
-         font-size: 22px;
-         margin-bottom: 20px;
-      }
+      // .view-header h2 {
+      //    font-size: 22px;
+      //    margin-bottom: 20px;
+      // }
 
       .session-info-panel {
          background: white;
