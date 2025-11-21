@@ -15,6 +15,7 @@ import {
    parseISO,
 } from 'date-fns'
 import Button from '@/components/common/ui/button/buttonClickForm/button.jsx'
+import DayDetailModal from './DayDetailModal'
 
 // --- GIẢ LẬP DỮ LIỆU API ---
 // Trong thực tế, đây là response từ Backend trả về
@@ -60,12 +61,27 @@ const OpenClass = () => {
    const nextMonth = () => setCurrentDate(addMonths(currentDate, 1))
    const prevMonth = () => setCurrentDate(subMonths(currentDate, 1))
 
+   const [selectedDate, setSelectedDate] = useState(null)
+   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
+
+   // Hàm xử lý khi click vào ô lịch
+   const handleDayClick = day => {
+      setSelectedDate(day)
+      setIsDetailModalOpen(true)
+   }
+
+   // Hàm lưu sự kiện mới (Giả lập)
+   const handleSaveNewEvent = () => {
+      alert('Đã tạo sự kiện thành công!')
+      setIsDetailModalOpen(false)
+   }
+
    // 3. Logic tạo lưới lịch (Grid Generation)
    const generateCalendarGrid = () => {
       const monthStart = startOfMonth(currentDate)
       const monthEnd = endOfMonth(monthStart)
-      const startDate = startOfWeek(monthStart) // Ngày bắt đầu của tuần đầu tiên (có thể lấn sang tháng trước)
-      const endDate = endOfWeek(monthEnd) // Ngày kết thúc của tuần cuối cùng (có thể lấn sang tháng sau)
+      const startDate = startOfWeek(monthStart)
+      const endDate = endOfWeek(monthEnd)
 
       const dateFormat = 'd'
       const rows = []
@@ -76,19 +92,18 @@ const OpenClass = () => {
       while (day <= endDate) {
          for (let i = 0; i < 7; i++) {
             formattedDate = format(day, dateFormat)
-            const cloneDay = day // Lưu biến để dùng trong closure map/onClick
+            const cloneDay = day
 
-            // Tìm các sự kiện trong ngày này
             const dayEvents = events.filter(evt => isSameDay(parseISO(evt.date), cloneDay))
 
             days.push(
                <div
                   className={`calendar-cell ${!isSameMonth(day, monthStart) ? 'disabled' : ''}`}
                   key={day}
+                  onClick={() => handleDayClick(cloneDay)}
                >
                   <span className="day-number">{formattedDate}</span>
 
-                  {/* Hiển thị sự kiện */}
                   <div className="events-list">
                      {dayEvents.map(evt => (
                         <div key={evt.id} className={`event-tag ${evt.type}`}>
@@ -162,7 +177,6 @@ const OpenClass = () => {
             </div>
          </div>
 
-         {/* Modal (Giữ nguyên logic cũ nhưng CSS đẹp hơn) */}
          {isModalOpen && (
             <div className="modal-overlay">
                <div className="modal-content zoom-in">
@@ -187,6 +201,13 @@ const OpenClass = () => {
                </div>
             </div>
          )}
+         <DayDetailModal
+            isOpen={isDetailModalOpen}
+            onClose={() => setIsDetailModalOpen(false)}
+            date={selectedDate || new Date()}
+            events={events.filter(evt => isSameDay(parseISO(evt.date), selectedDate))}
+            onSave={handleSaveNewEvent}
+         />
       </div>
    )
 }

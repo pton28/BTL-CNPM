@@ -1,5 +1,5 @@
 // Định nghĩa màu xanh chủ đạo (Bạn có thể thay mã màu này cho khớp chính xác với design của bạn)
-$primary-blue: rgba(4, 76, 200, 1);
+$primary-blue: rgba(4, 76, 200, 0.73);
 
 .common-btn {
    /* --- Cấu trúc cơ bản --- */
@@ -14,7 +14,6 @@ $primary-blue: rgba(4, 76, 200, 1);
    outline: none;
    text-decoration: none;
 
-   /* --- Trạng thái mặc định (Hình 1: Nền trắng, viền xanh) --- */
    background-color: white;
    color: $primary-blue;
    border: 1.5px solid $primary-blue; /* Viền mỏng màu xanh */
