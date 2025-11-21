@@ -3,13 +3,9 @@
 import './Button.css'
 
 export function ButtonLogin() {
-    return <button className="btn-login">Login</button>
+   return <button className="btn-login">Login</button>
 }
 
 export function ButtonConfirm() {
-<<<<<<< HEAD
-    return <>This button confirm</>
-=======
-   return <button></button>
->>>>>>> trinh
+   return <>This button confirm</>
 }
