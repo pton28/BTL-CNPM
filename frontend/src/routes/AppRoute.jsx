@@ -42,23 +42,16 @@ export const router = createBrowserRouter([
             element: <ProtectedRoute allowedRoles={['student']} />,
             children: [
                {
-                  path: 'student', // Đường dẫn gốc: /student
-                  // element: <MainStudentLayout />, // Nếu bạn muốn layout riêng lồng trong MainLayout
+                  path: 'student',
                   children: [
-                     // Redirect: Vào /student tự động nhảy sang /student/dashboard (hoặc trang chính)
                      { index: true, element: <Navigate to="search-course" replace /> },
 
-                     // Các đường dẫn con (Relative paths - KHÔNG CÓ DẤU / Ở ĐẦU)
-                     // URL: /student/search-course
                      { path: 'search-course', element: <SearchCourse /> },
 
-                     // URL: /student/list-appointment
                      { path: 'list-appointment', element: <ListAppointment /> },
 
-                     // URL: /student/list-appointment/123
                      { path: 'list-appointment/:id', element: <InnerAppointment /> },
 
-                     // URL: /student/history
                      { path: 'history', element: <HistoryAppointment /> },
                   ],
                },

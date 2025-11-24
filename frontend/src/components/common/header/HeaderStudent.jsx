@@ -10,22 +10,6 @@ const HeaderStudent = () => {
    const handleListAppointment = () => navigate('/student/list-appointment')
    const handleProfile = () => navigate('/student/profile')
 
-   // return (
-   //    <div className="header-student-container">
-   //       <img src={logo} alt="logo" />
-   //       <div className="header-student-content">
-   //          <div className={'content-left'}>
-   //             <p>Trang chủ</p>
-   //             <p onClick={() => navigate('/student/search-course')}>Tìm kiếm khóa học</p>
-   //             <p onClick={() => navigate('/student/list-appointment')}>Danh sách của tôi</p>
-   //          </div>
-
-   //          <div className={'content-right'}>
-   //             <img src={Account} alt="account" />
-   //          </div>
-   //       </div>
-   //    </div>
-   // )
    return (
       <div className="header-tutor-container">
          <img src={logo} alt="logo" className="header-logo" onClick={handleHome} />

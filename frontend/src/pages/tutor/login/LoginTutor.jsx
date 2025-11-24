@@ -15,21 +15,6 @@ const LoginTutor = () => {
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('')
 
-   // const handleLoginTutor = async () => {
-   //    try {
-   //       const res = await axios.post(`${BASE_API}/tutor/login`, formData)
-
-   //       console.log('Login success:', res.data)
-
-   //       // Ví dụ: lưu token
-   //       // localStorage.setItem('token', res.data.token)
-
-   //       navigate('../list-subjects')
-   //    } catch (error) {
-   //       console.error('Login failed:', error)
-   //    }
-   // }
-
    const handleLoginTutor = async () => {
       try {
          // const response = await loginAPI(email, password);
@@ -40,7 +25,7 @@ const LoginTutor = () => {
             accessToken: 'eyJhbGciOiJIUzI1NiIs...',
             user: {
                id: '2313640',
-               name: 'Thầy Nguyễn Văn A',
+               name: 'Nguyễn Văn A',
                role: 'tutor', // Quan trọng
                email: 'gv@hcmut.edu.vn',
             },

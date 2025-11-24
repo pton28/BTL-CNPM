@@ -38,6 +38,9 @@ $bg-gray: #f5f5f5;
          // Button gốc đã đẹp rồi, ở đây có thể override kích thước nếu muốn nhỏ hơn
          padding: 8px 20px;
          font-size: 14px;
+         &.hidden {
+            display: none;
+         }
       }
    }
 
