@@ -1,38 +1,363 @@
-.detail-appointment-container {
-   border: 1px solid #dee2e6;
-   border-radius: 5px;
-   padding: 20px;
-   h2 {
-      padding: 20px 0 40px 0;
-   }
-   table {
-      width: 100%;
+$primary-blue: #0044cc; // Màu xanh BK
+$bg-light: #f9f9fc; // Nền xám nhạt
+$text-dark: #333;
+$border-color: #e0e0e0;
+$green-btn: #a6e9d5; // Màu xanh nhạt của nút trạng thái
+$green-text: #00695c;
 
-      th {
-         text-align: center;
-         padding-bottom: 20px;
+.detail-component-wrapper {
+   width: 100%;
+   font-family: 'Arial', sans-serif;
+
+   // --- CHUNG: Ô hiển thị giá trị (Value Box) giống input ---
+   .value-box {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 8px 15px;
+      font-size: 14px;
+      color: #555;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      min-width: 150px;
+      display: flex;
+      align-items: center;
+   }
+
+   .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      span {
+         width: 30px;
+         height: 30px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         background: #eee;
+         border-radius: 4px;
+         cursor: pointer;
+         font-size: 12px;
+         &.active {
+            background: $primary-blue;
+            color: white;
+         }
       }
-      td {
-         text-align: center;
-         padding: 20px 10px;
-         border-top: 1px solid #dee2e6;
-         &:nth-child(4),
-         &:nth-child(6) {
-            text-align: left;
+   }
+
+   // === VIEW 1: SCHEDULE LIST ===
+   .schedule-list-view {
+      .view-header h2 {
+         font-size: 20px;
+         font-weight: 600;
+         margin-bottom: 20px;
+      }
+
+      .schedule-cards-container {
+         display: flex;
+         flex-direction: column;
+         gap: 15px;
+
+         .schedule-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+            .card-left {
+               display: flex;
+               flex-direction: column;
+               gap: 12px;
+
+               .date-title {
+                  color: #007bff;
+                  font-size: 18px;
+                  margin: 0 0 5px 0;
+               }
+
+               .info-row {
+                  display: flex;
+                  align-items: center;
+                  gap: 15px;
+                  .label {
+                     width: 100px;
+                     font-weight: 600;
+                     color: #007bff;
+                     font-size: 13px;
+                  }
+                  .value-box {
+                     width: 250px;
+                  }
+               }
+            }
+
+            // .card-right {
+            //    .btn-view-list {
+            //       background-color: #7ba4e7; // Màu xanh nhạt hơn nút chính
+            //       color: white;
+            //       border: none;
+            //       font-weight: 500;
+            //       &:hover {
+            //          background-color: $primary-blue;
+            //       }
+            //    }
+            // }
+         }
+      }
+   }
+
+   // === VIEW 2: STUDENT LIST ===
+   .student-list-view {
+      .back-nav {
+         cursor: pointer;
+         display: flex;
+         align-items: center;
+         gap: 5px;
+         color: #666;
+         margin-bottom: 15px;
+         font-weight: 500;
+         &:hover {
+            color: $primary-blue;
+         }
+      }
+
+      // .view-header h2 {
+      //    font-size: 22px;
+      //    margin-bottom: 20px;
+      // }
+
+      .session-info-panel {
+         background: white;
+         border-radius: 12px;
+         padding: 20px;
+         margin-bottom: 30px;
+
+         .date-highlight {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 15px;
          }
 
-         .change-btn {
-            padding: 5px 10px;
-            border: none;
-            background: #df0404;
-            font-size: 14px;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: transform 0.3s;
-            &:hover {
-               background: #c01036;
-               transform: scale(1.05);
+         .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            .info-item {
+               display: flex;
+               align-items: center;
+               gap: 15px;
+               .label {
+                  color: #007bff;
+                  font-weight: 600;
+                  font-size: 13px;
+                  width: 80px;
+               }
+               .value-box {
+                  width: 200px;
+               }
+               &.full-width .value-box {
+                  width: 400px;
+               }
+            }
+         }
+      }
+
+      .student-table-section {
+         background: white;
+         border-radius: 12px;
+         padding: 30px;
+         h3 {
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 20px;
+         }
+
+         .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            th {
+               text-align: left;
+               color: #999;
+               font-weight: 500;
+               padding: 15px 0;
+               border-bottom: 1px solid #eee;
+               font-size: 13px;
+            }
+            td {
+               padding: 20px 0;
+               border-bottom: 1px solid #f5f5f5;
+               font-size: 15px;
+               font-weight: 500;
+               color: #333;
+            }
+
+            .status-btn {
+               padding: 8px 16px;
+               border-radius: 6px;
+               font-weight: 600;
+               font-size: 13px;
+               cursor: pointer;
+               transition: 0.2s;
+
+               // Trạng thái chưa ghi nhận (Xanh đặc)
+               &.pending {
+                  background-color: $green-btn;
+                  color: $green-text;
+                  border: none;
+                  &:hover {
+                     opacity: 0.8;
+                  }
+               }
+               // Trạng thái đã ghi nhận (Trắng viền xanh)
+               &.done {
+                  background-color: white;
+                  color: $green-text;
+                  border: 1px solid $green-btn;
+                  &:hover {
+                     background-color: #f0fffa;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   // === MODAL: ASSESSMENT (Ảnh 3) ===
+   .assess-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .assess-modal-content {
+         background: #0044cc; // Nền xanh đậm
+         width: 600px;
+         border-radius: 16px;
+         padding: 30px;
+         color: white;
+         box-shadow: 0 10px 30px rgba(0, 68, 204, 0.3);
+
+         .modal-header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 30px;
+            h3 {
+               font-size: 24px;
+               font-weight: 700;
+               margin: 0;
+            }
+            .close-icon {
+               position: absolute;
+               right: 0;
+               top: 0;
+               cursor: pointer;
+               font-size: 18px;
+               &:hover {
+                  opacity: 0.8;
+               }
+            }
+         }
+
+         .modal-body {
+            .read-only-box {
+               background: white;
+               color: #333;
+               padding: 10px 15px;
+               border-radius: 8px;
+               font-weight: 600;
+               font-size: 14px;
+               height: 40px;
+               display: flex;
+               align-items: center;
+            }
+
+            .student-info-row {
+               margin-bottom: 15px;
+               .info-group {
+                  margin-bottom: 10px;
+                  label {
+                     display: block;
+                     font-size: 13px;
+                     font-weight: 600;
+                     margin-bottom: 5px;
+                     margin-left: 5px;
+                  }
+               }
+               &.split {
+                  display: flex;
+                  gap: 20px;
+                  .info-group {
+                     width: 120px;
+                  }
+                  .info-group.flex-grow {
+                     flex: 1;
+                  }
+               }
+            }
+
+            .form-group {
+               margin-bottom: 20px;
+               label {
+                  display: block;
+                  font-size: 14px;
+                  font-weight: 600;
+                  margin-bottom: 10px;
+                  margin-left: 5px;
+               }
+
+               .custom-input {
+                  width: 100%;
+                  padding: 12px 15px;
+                  border-radius: 8px;
+                  border: none;
+                  font-size: 14px;
+                  box-sizing: border-box;
+                  &:focus {
+                     outline: none;
+                     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+                  }
+                  &.textarea {
+                     resize: none;
+                  }
+               }
+            }
+         }
+
+         .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            .btn-save {
+               background: white;
+               color: #0044cc;
+               font-weight: 700;
+               padding: 10px 30px;
+               &:hover {
+                  background: #eee;
+               }
+            }
+
+            .change-btn {
+               padding: 5px 10px;
+               border: none;
+               background: #df0404;
+               font-size: 14px;
+               color: #fff;
+               border-radius: 5px;
+               cursor: pointer;
+               transition: transform 0.3s;
+               &:hover {
+                  background: #c01036;
+                  transform: scale(1.05);
+               }
             }
          }
       }

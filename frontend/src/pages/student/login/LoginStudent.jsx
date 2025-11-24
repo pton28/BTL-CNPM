@@ -1,38 +1,58 @@
 import { useState } from 'react'
 import './LoginStudent.scss'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { ButtonLogin } from '@/components/common/ui/button/Button.jsx'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { BASE_API } from '../../../constants'
-import { ButtonLogin } from '../../../components/common/ui/button/Button'
 
 const LoginStudent = () => {
    const navigate = useNavigate()
+   const location = useLocation()
 
-   // State lưu email + password
-   const [formData, setFormData] = useState({
-      email: '',
-      password: '',
-   })
+   const from = location.state?.from?.pathname || '/student/list-appointment'
 
-   // Xử lý nhập input
-   const handleChange = e => {
-      const { name, value } = e.target
-      setFormData(prev => ({
-         ...prev,
-         [name]: value, // cập nhật đúng field
-      }))
-   }
+   const [email, setEmail] = useState('')
+   const [password, setPassword] = useState('')
+
+   // const handleLoginStudent = async () => {
+   //    try {
+   //       const res = await axios.post(`${BASE_API}/student/login`, formData)
+
+   //       console.log('Student login success:', res.data.data._id)
+
+   //       localStorage.setItem('id', res.data.data._id)
+
+   //       navigate('/list-appointment')
+   //    } catch (error) {
+   //       console.error('Student login failed:', error)
+   //    }
+   // }
 
    const handleLoginStudent = async () => {
       try {
-         const res = await axios.post(`${BASE_API}/student/login`, formData)
+         // const response = await loginAPI(email, password);
+         // const { user, accessToken } = response.data;
 
+         // --- DỮ LIỆU GIẢ LẬP TỪ BE TRẢ VỀ ---
+         const fakeResponseData = {
+            accessToken: 'eyJhbGciOiJIUzI1NiIs...',
+            user: {
+               id: '2313640',
+               name: 'Nguyễn Văn A',
+               role: 'student',
+               email: 'sv@hcmut.edu.vn',
+            },
+         }
 
-         localStorage.setItem('id', res.data.data._id)
+         const { user, accessToken } = fakeResponseData
 
-         navigate('/list-appointment')
+         localStorage.setItem('accessToken', accessToken)
+         localStorage.setItem('user', JSON.stringify(user))
+
+         // Bước 3: Điều hướng
+         navigate(from, { replace: true })
       } catch (error) {
-         console.error('Student login failed:', error)
+         alert('Đăng nhập thất bại!')
       }
    }
 
@@ -45,23 +65,20 @@ const LoginStudent = () => {
             <div className="input-container">
                <label>Email sinh viên</label>
                <input
-                  name="email"
+                  type="email"
                   placeholder="email@gmail.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                />
             </div>
 
             <div className="input-container">
                <label>Mật khẩu</label>
                <input
-                  name="password"
                   type="password"
                   placeholder="Mật khẩu"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                />
             </div>
 

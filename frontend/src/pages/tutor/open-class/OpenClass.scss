@@ -1,0 +1,301 @@
+.open-class-page {
+   // Tạo nền xám nhạt cho toàn trang để làm nổi bật cái card ở giữa
+   background-color: #f5f7fa;
+   min-height: calc(100vh - 60px);
+   padding: 30px 20px;
+   display: flex;
+   justify-content: center; // Căn giữa thẻ Card
+   align-items: flex-start;
+   font-family: 'Arial', sans-serif;
+
+   // --- 1. BOX LAYOUT STYLE (Giao diện vuông vức) ---
+   .main-card {
+      background: white;
+      width: 100%;
+      max-width: 1100px; // Giới hạn chiều rộng, tạo cảm giác vuông vức
+      border-radius: 12px; // Bo góc nhẹ
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); // Đổ bóng nhẹ
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      min-height: 600px;
+
+      .card-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 25px;
+
+         .month-navigation {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            h2 {
+               margin: 0;
+               font-size: 24px;
+               font-weight: 700;
+               color: #333;
+               min-width: 180px; // Để chữ không bị nhảy khi đổi tháng
+               text-align: center;
+            }
+
+            .nav-btn {
+               background: transparent;
+               border: 1px solid #eee;
+               border-radius: 50%;
+               width: 32px;
+               height: 32px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               cursor: pointer;
+               color: #555;
+               transition: all 0.2s;
+
+               &:hover {
+                  background: #f0f0f0;
+                  color: #0044cc;
+                  border-color: #0044cc;
+               }
+            }
+         }
+
+         .btn-primary-blue {
+            background-color: #0044cc;
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 68, 204, 0.3);
+            transition: transform 0.1s;
+
+            &:active {
+               transform: scale(0.98);
+            }
+         }
+      }
+
+      // --- 2. CALENDAR GRID STYLES ---
+      .calendar-container {
+         border: 1px solid #e0e0e0;
+         border-radius: 8px;
+         overflow: hidden; // Để bo góc ăn nhập với border
+
+         .calendar-days-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); // 7 cột đều nhau
+            background-color: #fafafa;
+            border-bottom: 1px solid #e0e0e0;
+
+            .day-name {
+               padding: 15px 10px;
+               text-align: left;
+               font-weight: 600;
+               color: #888;
+               font-size: 13px;
+               border-right: 1px solid #f0f0f0;
+               &:last-child {
+                  border-right: none;
+               }
+            }
+         }
+
+         .loading-state {
+            padding: 50px;
+            text-align: center;
+            color: #999;
+         }
+
+         .calendar-body {
+            display: flex;
+            flex-direction: column;
+
+            .row {
+               display: grid;
+               grid-template-columns: repeat(7, 1fr);
+               border-bottom: 1px solid #f0f0f0;
+               min-height: 120px; // Chiều cao tối thiểu mỗi ô
+
+               &:last-child {
+                  border-bottom: none;
+               }
+
+               .calendar-cell {
+                  border-right: 1px solid #f0f0f0;
+                  padding: 10px;
+                  position: relative;
+                  transition: background 0.2s;
+
+                  &:last-child {
+                     border-right: none;
+                  }
+
+                  &.disabled {
+                     background-color: #fcfcfc; // Màu nền cho ngày tháng khác
+                     .day-number {
+                        color: #ccc;
+                     }
+                  }
+
+                  &:hover:not(.disabled) {
+                     background-color: #f8fbff;
+                  }
+
+                  .day-number {
+                     display: block;
+                     font-weight: 500;
+                     margin-bottom: 8px;
+                     font-size: 15px;
+                  }
+
+                  .events-list {
+                     display: flex;
+                     flex-direction: column;
+                     gap: 5px;
+
+                     .event-tag {
+                        font-size: 11px;
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                        // Theme màu sự kiện
+                        &.blue {
+                           background: #e3f2fd;
+                           color: #1565c0;
+                        }
+                        &.orange {
+                           background: #fff3e0;
+                           color: #ef6c00;
+                        }
+                        &.pink {
+                           background: #fce4ec;
+                           color: #c2185b;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   // --- 3. MODAL STYLES (Giống hệt ảnh mẫu) ---
+   .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4); // Nền tối mờ nhẹ
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+
+      .modal-content {
+         background: #0044cc; // Nền xanh đậm đặc trưng
+         width: 550px;
+         padding: 40px;
+         border-radius: 16px;
+         color: white;
+         box-shadow: 0 10px 30px rgba(0, 68, 204, 0.4);
+         position: relative;
+
+         // Hiệu ứng hiện lên
+         &.zoom-in {
+            animation: zoomIn 0.2s ease-out;
+         }
+
+         .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+
+            h3 {
+               font-size: 28px;
+               margin: 0;
+               font-weight: 700;
+            }
+
+            .close-icon {
+               position: absolute;
+               top: 20px;
+               right: 20px;
+               font-size: 20px;
+               cursor: pointer;
+               opacity: 0.7;
+               transition: opacity 0.2s;
+               &:hover {
+                  opacity: 1;
+               }
+            }
+         }
+
+         .modal-body {
+            margin-bottom: 30px;
+
+            label {
+               display: block;
+               margin-bottom: 10px;
+               font-weight: 500;
+               font-size: 14px;
+            }
+
+            input {
+               width: 100%;
+               padding: 16px;
+               border-radius: 8px;
+               border: none;
+               font-size: 15px;
+               box-sizing: border-box;
+               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+               &:focus {
+                  outline: none;
+                  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+               }
+            }
+         }
+
+         .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+
+            .btn-submit {
+               background: white;
+               color: #0044cc;
+               padding: 12px 24px;
+               border: none;
+               border-radius: 25px;
+               font-weight: 700;
+               cursor: pointer;
+               font-size: 14px;
+               transition: background 0.2s;
+
+               &:hover {
+                  background: #f2f2f2;
+               }
+            }
+         }
+      }
+   }
+}
+
+@keyframes zoomIn {
+   from {
+      transform: scale(0.9);
+      opacity: 0;
+   }
+   to {
+      transform: scale(1);
+      opacity: 1;
+   }
+}

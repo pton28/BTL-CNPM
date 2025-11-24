@@ -1,5 +1,5 @@
 const Unauthorized = () => {
-   return <>404 Unauthorized.</>
+    return <>404 Unauthorized.</>
 }
 
 export default Unauthorized

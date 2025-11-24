@@ -14,10 +14,16 @@ const MainLayout = () => {
    const location = useLocation()
    const showSlide = location.pathname === '/'
 
-   // use for Header or HeaderStudent
-   const isStudent = location.pathname.includes('student');
+   const userStr = localStorage.getItem('user')
+   const user = userStr ? JSON.parse(userStr) : null
 
-   const isTutor = location.pathname.includes('tutor')
+   const isAuthPage =
+      location.pathname === '/pre-login' ||
+      location.pathname === '/student/login' ||
+      location.pathname === '/tutor/login'
+
+   const isStudent = user?.role === 'student' && !isAuthPage
+   const isTutor = user?.role === 'tutor' && !isAuthPage
 
    const images = [img1, img2, img3, img4, img5]
    const [currentIndex, setCurrentIndex] = useState(0)
@@ -37,14 +43,6 @@ const MainLayout = () => {
       }, 500)
    }
 
-   const handlePrev = () => {
-      setFade(true)
-      setTimeout(() => {
-         setCurrentIndex(prev => (prev - 1 + images.length) % images.length)
-         setFade(false)
-      }, 500)
-   }
-
    return (
       <div className="main-layout-container">
          {isStudent ? <HeaderStudent /> : isTutor ? <HeaderTutor /> : <Header />}
@@ -56,13 +54,6 @@ const MainLayout = () => {
                   alt="BK slideshow"
                   className={`slideshow-img ${fade ? 'fade' : ''}`}
                />
-
-               <button className="arrow left" onClick={handlePrev}>
-                  &#10094;
-               </button>
-               <button className="arrow right" onClick={handleNext}>
-                  &#10095;
-               </button>
             </div>
          )}
 

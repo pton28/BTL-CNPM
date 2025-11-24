@@ -2,13 +2,17 @@
    display: flex;
    flex-direction: column;
    min-height: 100vh;
+   position: relative;
 }
 
 .slideshow-container {
-   position: relative;
+   position: fixed; /* Cố định vị trí so với màn hình trình duyệt */
+   top: 0;
+   left: 0;
    width: 100%;
-   height: calc(100vh - 70px); // trừ phần header
+   height: 100vh; /* Chiếm trọn 100% chiều cao màn hình */
    overflow: hidden;
+   z-index: -1;
 }
 
 .slideshow-img {
@@ -24,39 +28,39 @@
 }
 
 /* === Nút mũi tên === */
-.arrow {
-   position: absolute;
-   top: 50%;
-   transform: translateY(-50%);
-   background-color: rgba(0, 0, 0, 0.3);
-   color: white;
-   font-size: 2rem;
-   padding: 0.5rem 0.9rem;
-   border: none;
-   border-radius: 50%;
-   cursor: pointer;
-   z-index: 2;
-   transition:
-      background-color 0.1s ease,
-      transform 0.1s ease;
+// .arrow {
+//     position: absolute;
+//     top: 50%;
+//     transform: translateY(-50%);
+//     background-color: rgba(0, 0, 0, 0.3);
+//     color: white;
+//     font-size: 2rem;
+//     padding: 0.5rem 0.9rem;
+//     border: none;
+//     border-radius: 50%;
+//     cursor: pointer;
+//     z-index: 2;
+//     transition:
+//         background-color 0.1s ease,
+//         transform 0.1s ease;
 
-   &:hover {
-      background-color: rgba(0, 0, 0, 0.6);
-      transform: translateY(-50%) scale(1.1);
-   }
+//     &:hover {
+//         background-color: rgba(0, 0, 0, 0.6);
+//         transform: translateY(-50%) scale(1.1);
+//     }
 
-   &.left {
-      left: 20px;
-   }
+//     &.left {
+//         left: 20px;
+//     }
 
-   &.right {
-      right: 20px;
-   }
-}
+//     &.right {
+//         right: 20px;
+//     }
+// }
 
-@media (max-width: 768px) {
-   .arrow {
-      font-size: 1.5rem;
-      padding: 0.3rem 0.6rem;
-   }
-}
+// @media (max-width: 768px) {
+//     .arrow {
+//         font-size: 1.5rem;
+//         padding: 0.3rem 0.6rem;
+//     }
+// }

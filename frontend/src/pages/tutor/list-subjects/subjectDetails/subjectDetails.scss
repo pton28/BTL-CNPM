@@ -1,7 +1,7 @@
 @use '@/styles/mixin/reponsive' as *;
 
-$primary-blue: #044cc8;
-$light-blue-bg: #8eaace;
+// Màu trùng với màu trong Button.scss (để đồng bộ)
+$primary-blue: #0056b3;
 $bg-gray: #f5f5f5;
 
 .subject-details-wrapper {
@@ -33,20 +33,11 @@ $bg-gray: #f5f5f5;
          margin: 0;
       }
 
-      .btn-edit {
-         padding: 8px 24px;
-         background-color: white;
-         border: 1px solid $primary-blue;
-         color: $primary-blue;
-         border-radius: 20px;
-         font-weight: 600;
+      // Tùy chỉnh thêm cho nút Edit (nếu cần)
+      .custom-btn-edit {
+         // Button gốc đã đẹp rồi, ở đây có thể override kích thước nếu muốn nhỏ hơn
+         padding: 8px 20px;
          font-size: 14px;
-         cursor: pointer;
-         transition: all 0.2s;
-
-         &:hover {
-            background-color: #eef4ff;
-         }
       }
    }
 
@@ -55,33 +46,37 @@ $bg-gray: #f5f5f5;
       gap: 15px;
       margin-bottom: 30px;
 
-      .tab-btn {
-         padding: 10px 24px;
-         border-radius: 20px;
-         border: none;
-         font-weight: 600;
-         font-size: 15px;
-         cursor: pointer;
-         transition: all 0.2s;
+      .custom-tab-btn {
+         // Trạng thái mặc định: Button Component sẽ lo (Nền trắng, chữ xanh)
 
-         background-color: #8aaae5;
-         color: white;
-
-         &:hover {
-            opacity: 0.9;
-         }
-
+         // Trạng thái Active (Đang chọn): Nền xanh, chữ trắng
          &.active {
             background-color: $primary-blue;
             color: white;
-            box-shadow: 0 2px 4px rgba(4, 76, 200, 0.3);
+            border-color: $primary-blue;
+            box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
+
+            // Đảm bảo khi hover vào nút đang active nó không bị đổi màu lạ
+            &:hover {
+               opacity: 0.9;
+            }
          }
       }
    }
 
-   .content-body {
-      width: 100%;
+   &:hover {
+      opacity: 0.9;
    }
+
+   &.active {
+      background-color: $primary-blue;
+      color: white;
+      box-shadow: 0 2px 4px rgba(4, 76, 200, 0.3);
+   }
+}
+
+.content-body {
+   width: 100%;
 }
 
 @include respond-to(md) {

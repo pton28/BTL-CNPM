@@ -1,0 +1,301 @@
+.modal-backdrop {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 9999;
+
+   .modal-container {
+      background-color: rgba(4, 76, 200, 0.73);
+      width: 600px;
+      border-radius: 15px;
+      padding: 25px 35px;
+      position: relative;
+      color: white;
+      box-shadow: 0 10px 30px rgba(0, 68, 204, 0.3);
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+
+      .close-icon {
+         position: absolute;
+         top: 20px;
+         right: 20px;
+         font-size: 20px;
+         cursor: pointer;
+         &:hover {
+            opacity: 0.8;
+         }
+      }
+
+      // --- Tab Navigation ---
+      .tab-nav {
+         display: flex;
+         gap: 10px;
+         margin-bottom: 15px;
+         button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            background-color: rgba(196, 196, 196, 1);
+            transition: all 0.1s ease-in-out;
+            border: 1.5px solid black;
+
+            &.active {
+               background: white;
+               color: #0044cc;
+            }
+            &:hover {
+               background-color: white;
+               border-color: rgba(196, 196, 196, 1);
+               //    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.2);
+            }
+         }
+      }
+
+      .modal-body {
+         overflow-y: auto;
+         padding-right: 5px;
+         // Scrollbar đẹp
+         &::-webkit-scrollbar {
+            width: 6px;
+         }
+         &::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+         }
+      }
+
+      .modal-title {
+         text-align: center;
+         font-size: 24px;
+         font-weight: 700;
+         margin-bottom: 20px;
+         margin-top: 0;
+      }
+
+      // --- STYLE CHO TAB DANH SÁCH ---
+      .class-list {
+         display: flex;
+         flex-direction: column;
+         gap: 15px;
+         .empty-message {
+            text-align: center;
+            opacity: 0.8;
+            font-style: italic;
+         }
+
+         .class-card-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            color: #333;
+
+            .class-name {
+               color: #2196f3; // Màu xanh tiêu đề lớp
+               margin: 0 0 8px 0;
+               font-size: 16px;
+            }
+
+            .class-meta {
+               display: flex;
+               justify-content: space-between; // Tách 2 bên như ảnh
+               font-size: 14px;
+               font-weight: 500;
+               color: #555;
+
+               .badge {
+                  background: #f5f5f5;
+                  padding: 4px 10px;
+                  border-radius: 6px;
+                  margin-left: 8px;
+                  border: 1px solid #e0e0e0;
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+               }
+            }
+         }
+      }
+
+      // --- STYLE CHO TAB TẠO MỚI ---
+      .form-layout {
+         .form-group {
+            margin-bottom: 15px;
+            label {
+               display: block;
+               font-weight: 600;
+               margin-bottom: 8px;
+               font-size: 14px;
+            }
+         }
+
+         .form-row-split {
+            display: flex;
+            gap: 20px;
+            .half {
+               flex: 1;
+            }
+         }
+
+         // Các ô input trắng
+         .custom-input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            box-sizing: border-box;
+            &:focus {
+               outline: none;
+               box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+            }
+            &.textarea {
+               resize: none;
+            }
+         }
+
+         // Các ô select nhỏ (Ngày, Giờ...)
+         .row-inputs {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            .divider {
+               font-weight: bold;
+            }
+
+            .input-wrapper {
+               background: white;
+               border-radius: 6px;
+               height: 40px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               overflow: hidden; // Để input không bị tràn ra ngoài border-radius
+
+               &.small {
+                  width: 60px;
+               }
+               &.medium {
+                  width: 80px;
+               }
+
+               input {
+                  width: 100%;
+                  height: 100%;
+                  border: none;
+                  text-align: center; // Căn giữa số
+                  font-size: 14px;
+                  font-weight: 600;
+                  color: #333;
+                  outline: none;
+                  background: transparent;
+
+                  // Ẩn nút tăng giảm (spinner) mặc định của input number cho đẹp
+                  &::-webkit-outer-spin-button,
+                  &::-webkit-inner-spin-button {
+                     -webkit-appearance: none;
+                     margin: 0;
+                  }
+
+                  // Hiệu ứng khi focus
+                  &:focus {
+                     background-color: #f9f9f9;
+                  }
+               }
+            }
+
+            .select-box {
+               background: white;
+               color: #333;
+               height: 40px;
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               padding: 0 10px;
+               border-radius: 6px;
+               font-weight: 600;
+               font-size: 14px;
+               cursor: pointer;
+
+               &.small {
+                  width: 60px;
+               }
+               &.medium {
+                  width: 80px;
+               }
+
+               svg {
+                  color: #ccc;
+                  font-size: 12px;
+                  margin-left: 5px;
+               }
+            }
+         }
+
+         // Radio button
+         .radio-group {
+            .radio-item {
+               display: flex;
+               align-items: center;
+               gap: 8px;
+               margin-bottom: 5px;
+               &.mt-2 {
+                  margin-top: 10px;
+               }
+               input[type='radio'] {
+                  width: 16px;
+                  height: 16px;
+                  cursor: pointer;
+                  accent-color: white;
+               }
+               label {
+                  margin: 0;
+                  font-weight: normal;
+                  cursor: pointer;
+               }
+            }
+            .link-input {
+               margin-top: 5px;
+               margin-left: 24px;
+               width: calc(100% - 24px);
+            }
+            .location-inputs {
+               margin-top: 5px;
+               margin-left: 24px;
+            }
+         }
+      }
+
+      .modal-footer {
+         display: flex;
+         justify-content: flex-end;
+         margin-top: 20px;
+
+         .btn-white-submit {
+            background: white;
+            color: #0044cc;
+            font-weight: bold;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+            &:hover {
+               background: rgba(4, 76, 200, 0.73);
+               color: white;
+            }
+         }
+      }
+   }
+}

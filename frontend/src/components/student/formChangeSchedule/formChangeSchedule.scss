@@ -2,132 +2,132 @@
 @use '@/styles/mixin/reponsive' as *;
 
 .form-change-schedule-container {
-   //width: 40vw;
-   height: 70%;
-   background: #e2e7eb;
-   position: fixed;
-   top: 15%;
-   right: 25%;
-   left: 25%;
-   border-radius: 10px;
-   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-   display: flex;
-   flex-direction: column;
+    //width: 40vw;
+    height: 70%;
+    background: #e2e7eb;
+    position: fixed;
+    top: 15%;
+    right: 25%;
+    left: 25%;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
 
-   h3 {
-      text-align: center;
-      margin: 30px 0;
-      font-size: 20px;
-   }
-   .table-wrapper {
-      flex: 1; /* quan trọng */
-      overflow-y: auto;
-      max-height: 80%;
+    h3 {
+        text-align: center;
+        margin: 30px 0;
+        font-size: 20px;
+    }
+    .table-wrapper {
+        flex: 1; /* quan trọng */
+        overflow-y: auto;
+        max-height: 80%;
 
-      @include custom-scrollbar();
+        @include custom-scrollbar();
 
-      table {
-         font-size: 15px;
-         padding: 0 10px;
-         thead {
-            position: sticky;
-            top: 0;
-            background: #e2e7eb;
-            th {
-               padding-top: 20px;
-               border-bottom: 1px solid #545454;
+        table {
+            font-size: 15px;
+            padding: 0 10px;
+            thead {
+                position: sticky;
+                top: 0;
+                background: #e2e7eb;
+                th {
+                    padding-top: 20px;
+                    border-bottom: 1px solid #545454;
+                }
             }
-         }
-         tbody {
-            //overflow-y: auto;
-            tr {
-               td {
-                  &:last-child {
-                     cursor: pointer;
+            tbody {
+                //overflow-y: auto;
+                tr {
+                    td {
+                        &:last-child {
+                            cursor: pointer;
 
-                     background-color: #cbe4ff; /* màu khác so với các cột còn lại */
-                     width: 80px;
-                     height: 50%;
-                     text-align: center;
-                     font-weight: 500;
-                     border-radius: 4px;
-                     transition: background-color 0.2s ease;
+                            background-color: #cbe4ff; /* màu khác so với các cột còn lại */
+                            width: 80px;
+                            height: 50%;
+                            text-align: center;
+                            font-weight: 500;
+                            border-radius: 4px;
+                            transition: background-color 0.2s ease;
 
-                     &:hover {
-                        background-color: #1780d5;
-                        color: white;
-                     }
-                     &.active {
-                        background-color: #1780d5;
-                        color: white;
-                        font-weight: 600;
-                     }
-                  }
-               }
+                            &:hover {
+                                background-color: #1780d5;
+                                color: white;
+                            }
+                            &.active {
+                                background-color: #1780d5;
+                                color: white;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
             }
-         }
-      }
-   }
-   .group-button {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-      button {
-         margin: 20px 10px;
-         padding: 10px;
-         border: none;
-         border-radius: 10px;
-         width: 70px;
-         cursor: pointer;
-         color: white;
-         font-size: 14px;
-         transition: 0.2s all;
-      }
-      .btn-close {
-         background: #df0404;
-         &:hover {
-            background: #b60101;
-            transform: scale(1.05);
-         }
-      }
-      .btn-save {
-         background: #27c840;
-         &:hover {
-            background: #1d962f;
-            transform: scale(1.05);
-         }
-      }
-   }
+        }
+    }
+    .group-button {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+        button {
+            margin: 20px 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            width: 70px;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
+            transition: 0.2s all;
+        }
+        .btn-close {
+            background: #df0404;
+            &:hover {
+                background: #b60101;
+                transform: scale(1.05);
+            }
+        }
+        .btn-save {
+            background: #27c840;
+            &:hover {
+                background: #1d962f;
+                transform: scale(1.05);
+            }
+        }
+    }
 }
 
 @include respond-to(lg) {
-   .form-change-schedule-container {
-      //width: 60vw;
-      right: 20%;
-      left: 20%;
-   }
+    .form-change-schedule-container {
+        //width: 60vw;
+        right: 20%;
+        left: 20%;
+    }
 }
 
 @include respond-to(md) {
-   .form-change-schedule-container {
-      //width: 60vw;
-      right: 15%;
-      left: 15%;
-   }
+    .form-change-schedule-container {
+        //width: 60vw;
+        right: 15%;
+        left: 15%;
+    }
 }
 
 @include respond-to(sm) {
-   .form-change-schedule-container {
-      //width: 60vw;
-      right: 10%;
-      left: 10%;
-   }
+    .form-change-schedule-container {
+        //width: 60vw;
+        right: 10%;
+        left: 10%;
+    }
 }
 
 @include respond-to(xs) {
-   .form-change-schedule-container {
-      //width: 60vw;
-      right: 5%;
-      left: 5%;
-   }
+    .form-change-schedule-container {
+        //width: 60vw;
+        right: 5%;
+        left: 5%;
+    }
 }

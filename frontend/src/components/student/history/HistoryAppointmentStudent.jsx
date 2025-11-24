@@ -1,77 +1,90 @@
-import { useEffect, useState } from 'react'
 import './HistoryAppointmentStudent.scss'
-import { useFetchListAppointmentByStudent } from '@/services/fetchAPI/useFetchListAppointmentByStudent'
-import { useFetchStudentSlot } from '../../../services/fetchAPI/useFetchStudentSlot'
 
 const HistoryAppointmentStudentComponent = props => {
-   let history = props.history || 'all'
+    let history = props.history || 'all'
 
-   const [refresh, setRefresh] = useState('all')
-   const { data: listAppointment, loading } = useFetchListAppointmentByStudent(refresh)
+    /*
+     const [data, setData] = useState([])
 
-   const { data: listSlot, loading: loadingSlot } = useFetchStudentSlot()
-   const [appointmentFilter, setAppointmentFilter] = useState([])
+     const HISTORY_API = {
+     all: '/api/history/all',
+     upcoming: '/api/history/upcoming',
+     completed: '/api/history/completed',
+     teacher: '/api/history/teacher'
+     }
 
-   const [countById, setCountById] = useState({})
+     useEffect(() => {
+         const fetchData = async () => {
+             try {
+                 const res = await axios.get(HISTORY_API[history])
+                 setData(res.data)
+             } catch (err) {
+                 console.error(err)
+             }
+         }
+         fetchData()
+     }, [history])
+    */
+    return (
+        <div className="list-history-container">
+            <h2>Danh sách tất cả khóa học của bạn theo {history}</h2>
 
-   useEffect(() => {
-      if (loading || loadingSlot) return
-
-      const newCount = {}
-
-      listSlot.forEach(slot => {
-         const id = slot.meeting._id
-         newCount[id] = (newCount[id] || 0) + 1
-      })
-
-      setCountById(newCount)
-      console.log('id', newCount)
-      if (history === 'all') setAppointmentFilter(listAppointment)
-      else setAppointmentFilter(listAppointment.filter(appt => appt.status === history))
-   }, [history, listAppointment, listSlot, loading, loadingSlot])
-
-   const formatDate = dateStr => {
-      if (!dateStr) return ''
-      return new Date(dateStr).toLocaleDateString('vi-VN', {
-         day: '2-digit',
-         month: '2-digit',
-         year: 'numeric',
-      })
-   }
-
-   return (
-      <div className="list-history-container">
-         <h2>Danh sách tất cả khóa học của bạn theo {history}</h2>
-
-         <table className="course-table">
-            <thead>
-               <tr>
-                  <th>Tên khóa học</th>
-                  <th>Ngày bắt đầu</th>
-                  <th>Ngày kết thúc</th>
-                  <th>Số lượng buổi</th>
-                  <th>Tiến độ</th>
-                  <th>Giảng viên</th>
-                  <th>Hình thức</th>
-               </tr>
-            </thead>
-            <tbody>
-               {!loading &&
-                  appointmentFilter.map(appt => (
-                     <tr key={appt._id}>
-                        <td>{appt.meeting_id.title_meeting}</td>
-                        <td>{formatDate(appt.data_signup)}</td>
-                        <td>{formatDate(appt.meeting_id.date_of_event)}</td>
-                        <td>{appt.meeting_id.session_count}</td>
-                        <td>{countById[appt.meeting_id._id] / appt.meeting_id.session_count * 100 || 0}%</td>
-                        <td>{appt.tutorName}</td>
-                        <td>{appt.status}</td>
-                     </tr>
-                  ))}
-            </tbody>
-         </table>
-      </div>
-   )
+            <table className="course-table">
+                <thead>
+                    <tr>
+                        <th>Tên khóa học</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th>Số lượng buổi</th>
+                        <th>Tiến độ</th>
+                        <th>Giảng viên</th>
+                        <th>Hình thức</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Giai tich 1</td>
+                        <td>22/06/2025</td>
+                        <td>Chưa hoàn thành</td>
+                        <td>10</td>
+                        <td>80%</td>
+                        <td>Lê Thành Sách</td>
+                        <td>Offline</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Xử lý ngôn ngữ tự nhiên Xử lý ngôn ngữ tự nhiên gôn ngữ tự nhiên Xử lý
+                            ngôn
+                        </td>
+                        <td>22/06/2025</td>
+                        <td>22/09/2025</td>
+                        <td>10</td>
+                        <td>50%</td>
+                        <td>Lê Thành Sách</td>
+                        <td>Offline</td>
+                    </tr>
+                    <tr>
+                        <td>Xử lý ngôn ngữ tự nhiên</td>
+                        <td>22/06/2025</td>
+                        <td>Chưa hoàn thành</td>
+                        <td>10</td>
+                        <td>30%</td>
+                        <td>Lê Thành Sách</td>
+                        <td>Offline</td>
+                    </tr>
+                    <tr>
+                        <td>Xử lý ngôn ngữ tự nhiên</td>
+                        <td>22/06/2025</td>
+                        <td>Chưa hoàn thành</td>
+                        <td>10</td>
+                        <td>10%</td>
+                        <td>Lê Thành Sách Lê Thành Sách</td>
+                        <td>Offline</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 export default HistoryAppointmentStudentComponent

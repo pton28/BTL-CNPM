@@ -11,9 +11,15 @@ const listSubjects = () => {
          <div className="list-subject-container">
             <h2>Thông tin chi tiết</h2>
             <div className="subject-item">
-               <div className="btn-thumbnail" onClick={() => navigate('/subject-Details')}></div>
+               <div
+                  className="btn-thumbnail"
+                  onClick={() => navigate('/tutor/subject-Details')}
+               ></div>
                <div className="subject-info">
-                  <div className="btn-subject-name" onClick={() => navigate('/subject-Details')}>
+                  <div
+                     className="btn-subject-name"
+                     onClick={() => navigate('/tutor/subject-Details')}
+                  >
                      Xử lý ngôn ngữ tự nhiên
                   </div>
                   <div className="subject-schedule">Ngày bắt đầu: 22/06/2025</div>
@@ -21,9 +27,15 @@ const listSubjects = () => {
                </div>
             </div>
             <div className="subject-item">
-               <div className="btn-thumbnail" onClick={() => navigate('/subject-Details')}></div>
+               <div
+                  className="btn-thumbnail"
+                  onClick={() => navigate('/tutor/subject-Details')}
+               ></div>
                <div className="subject-info">
-                  <div className="btn-subject-name" onClick={() => navigate('/subject-Details')}>
+                  <div
+                     className="btn-subject-name"
+                     onClick={() => navigate('/tutor/subject-Details')}
+                  >
                      Xử lý ngôn ngữ tự nhiên
                   </div>
                   <div className="subject-schedule">Ngày bắt đầu: 22/06/2025</div>
@@ -31,9 +43,15 @@ const listSubjects = () => {
                </div>
             </div>
             <div className="subject-item">
-               <div className="btn-thumbnail" onClick={() => navigate('/subject-Details')}></div>
+               <div
+                  className="btn-thumbnail"
+                  onClick={() => navigate('/tutor/subject-Details')}
+               ></div>
                <div className="subject-info">
-                  <div className="btn-subject-name" onClick={() => navigate('/subject-Details')}>
+                  <div
+                     className="btn-subject-name"
+                     onClick={() => navigate('/tutor/subject-Details')}
+                  >
                      Xử lý ngôn ngữ tự nhiên
                   </div>
                   <div className="subject-schedule">Ngày bắt đầu: 22/06/2025</div>
@@ -41,9 +59,15 @@ const listSubjects = () => {
                </div>
             </div>
             <div className="subject-item">
-               <div className="btn-thumbnail" onClick={() => navigate('/subject-Details')}></div>
+               <div
+                  className="btn-thumbnail"
+                  onClick={() => navigate('/tutor/subject-Details')}
+               ></div>
                <div className="subject-info">
-                  <div className="btn-subject-name" onClick={() => navigate('/subject-Details')}>
+                  <div
+                     className="btn-subject-name"
+                     onClick={() => navigate('/tutor/subject-Details')}
+                  >
                      Xử lý ngôn ngữ tự nhiên
                   </div>
                   <div className="subject-schedule">Ngày bắt đầu: 22/06/2025</div>
@@ -51,9 +75,15 @@ const listSubjects = () => {
                </div>
             </div>
             <div className="subject-item">
-               <div className="btn-thumbnail" onClick={() => navigate('/subject-Details')}></div>
+               <div
+                  className="btn-thumbnail"
+                  onClick={() => navigate('/tutor/subject-Details')}
+               ></div>
                <div className="subject-info">
-                  <div className="btn-subject-name" onClick={() => navigate('/subject-Details')}>
+                  <div
+                     className="btn-subject-name"
+                     onClick={() => navigate('/tutor/subject-Details')}
+                  >
                      Xử lý ngôn ngữ tự nhiên
                   </div>
                   <div className="subject-schedule">Ngày bắt đầu: 22/06/2025</div>
@@ -61,9 +91,15 @@ const listSubjects = () => {
                </div>
             </div>
             <div className="subject-item">
-               <div className="btn-thumbnail" onClick={() => navigate('/subject-Details')}></div>
+               <div
+                  className="btn-thumbnail"
+                  onClick={() => navigate('/tutor/subject-Details')}
+               ></div>
                <div className="subject-info">
-                  <div className="btn-subject-name" onClick={() => navigate('/subject-Details')}>
+                  <div
+                     className="btn-subject-name"
+                     onClick={() => navigate('/tutor/subject-Details')}
+                  >
                      Xử lý ngôn ngữ tự nhiên
                   </div>
                   <div className="subject-schedule">Ngày bắt đầu: 22/06/2025</div>
