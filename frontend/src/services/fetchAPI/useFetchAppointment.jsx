@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from '@/services/axios.customize'
 
 export function useFetchAppointment(refresh) {
     const [appointment, setAppointment] = useState([])

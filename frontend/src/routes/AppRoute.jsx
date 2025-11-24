@@ -8,14 +8,14 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
  * */
 
 // Common --------------------------------------------------------------------------
-import MainLayout from '../components/MainLayout.jsx'
-import PreLogin from '../pages/common/preLogin/PreLogin.jsx'
+import MainLayout from '@/components/MainLayout.jsx'
+import PreLogin from '@/pages/common/preLogin/PreLogin.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
-import Unauthorized from '../pages/common/unauthorized/Unauthorized.jsx'
+import Unauthorized from '@/pages/common/unauthorized/Unauthorized.jsx'
 
 // Student --------------------------------------------------------------------------
 import MainStudentLayout from '../pages/student/MainStudentLayout.jsx'
-import LoginStudent from '../pages/student/login/LoginStudent.jsx'
+import LoginStudent from '@/pages/student/login/LoginStudent.jsx'
 import HistoryAppointment from '@/pages/student/history/HistoryAppointment.jsx'
 import InnerAppointment from '@/pages/student/inner-appointment/InnerAppointment.jsx'
 import ListAppointment from '@/pages/student/list-appointment/ListAppointment.jsx'
@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
             element: <ProtectedRoute allowedRoles={['student']} />,
             children: [
                {
-                  path: 'student', // Đường dẫn gốc: /student
+                  path: '/student', // Đường dẫn gốc: /student
                   // element: <MainStudentLayout />, // Nếu bạn muốn layout riêng lồng trong MainLayout
                   children: [
                      // Redirect: Vào /student tự động nhảy sang /student/dashboard (hoặc trang chính)

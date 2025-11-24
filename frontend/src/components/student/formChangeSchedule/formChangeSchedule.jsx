@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '@/services/axios.customize'
 import './formChangeSchedule.scss'
 import { useEffect, useState } from 'react'
 import { BASE_API } from '../../../constants'
