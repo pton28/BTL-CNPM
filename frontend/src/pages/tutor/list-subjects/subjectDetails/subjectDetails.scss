@@ -1,9 +1,14 @@
 @use '@/styles/mixin/reponsive' as *;
 
-// Màu trùng với màu trong Button.scss (để đồng bộ)
+// --- VARIABLES ---
 $primary-blue: #0056b3;
 $bg-gray: #f5f5f5;
+$danger-red: #dc3545;
+$text-color: #333;
+$border-color: #e0e0e0;
+$link-blue: #2196f3;
 
+// --- MAIN WRAPPER ---
 .subject-details-wrapper {
    background-color: $bg-gray;
    min-height: 100vh;
@@ -12,6 +17,7 @@ $bg-gray: #f5f5f5;
    justify-content: center;
 }
 
+// --- CONTAINER CHÍNH ---
 .subject-details-container {
    background-color: white;
    width: 100%;
@@ -20,6 +26,7 @@ $bg-gray: #f5f5f5;
    padding: 40px;
    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
+   // 1. HEADER & BUTTONS (Edit/Save/Cancel)
    .header-section {
       display: flex;
       justify-content: space-between;
@@ -29,37 +36,87 @@ $bg-gray: #f5f5f5;
       .subject-title {
          font-size: 24px;
          font-weight: 600;
-         color: #333;
+         color: $text-color;
          margin: 0;
       }
 
-      // Tùy chỉnh thêm cho nút Edit (nếu cần)
-      .custom-btn-edit {
-         // Button gốc đã đẹp rồi, ở đây có thể override kích thước nếu muốn nhỏ hơn
-         padding: 8px 20px;
+      .action-buttons {
+         display: flex;
+         align-items: center;
+         gap: 12px;
+      }
+
+      // Mixin cho button base
+      %btn-base {
+         padding: 8px 24px;
          font-size: 14px;
-         &.hidden {
-            display: none;
+         font-weight: 500;
+         border-radius: 6px;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         border: 1px solid transparent;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+
+      .custom-btn-edit {
+         @extend %btn-base;
+         background-color: white;
+         color: $primary-blue;
+         border: 1px solid $primary-blue;
+
+         &:hover {
+            background-color: rgba($primary-blue, 0.1);
+            opacity: 0.9;
+         }
+      }
+
+      .custom-btn-save {
+         @extend %btn-base;
+         background-color: rgba(#00b087, 0.15); // Màu nền nhẹ hơn cho đẹp
+         color: #00b087;
+         border-color: #00b087;
+
+         &:hover {
+            background-color: #00b087;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 176, 135, 0.3);
+            transform: translateY(-1px);
+         }
+      }
+
+      .custom-btn-cancel {
+         @extend %btn-base;
+         background-color: rgba($danger-red, 0.15);
+         color: $danger-red;
+         border-color: $danger-red;
+
+         &:hover {
+            background-color: $danger-red;
+            color: white;
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
          }
       }
    }
 
+   // 2. TABS CONTAINER
    .tabs-container {
       display: flex;
       gap: 15px;
       margin-bottom: 30px;
+      border-bottom: 1px solid $border-color; // Thêm dòng kẻ dưới tab cho phân tách
+      padding-bottom: 10px;
 
       .custom-tab-btn {
-         // Trạng thái mặc định: Button Component sẽ lo (Nền trắng, chữ xanh)
-
-         // Trạng thái Active (Đang chọn): Nền xanh, chữ trắng
+         // Style mặc định nằm trong component Button của bạn
+         // Style Active
          &.active {
             background-color: $primary-blue;
             color: white;
             border-color: $primary-blue;
             box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
 
-            // Đảm bảo khi hover vào nút đang active nó không bị đổi màu lạ
             &:hover {
                opacity: 0.9;
             }
@@ -67,21 +124,176 @@ $bg-gray: #f5f5f5;
       }
    }
 
-   &:hover {
-      opacity: 0.9;
-   }
+   // 3. CONTENT BODY (Chứa CourseComponent)
+   .content-body {
+      width: 100%;
 
-   &.active {
-      background-color: $primary-blue;
-      color: white;
-      box-shadow: 0 2px 4px rgba(4, 76, 200, 0.3);
+      // --- STYLE CHO LOGIC CHỈNH SỬA & HIỂN THỊ ---
+      .course-content-wrapper {
+         display: flex;
+         flex-direction: column;
+         gap: 20px;
+
+         // .section-wrapper {
+         //    //
+         //    }
+         .btn-add-section-bottom {
+            width: 100%;
+            padding: 15px;
+            background-color: white; // Nền trắng
+            border: 2px dashed #ddd; // Viền nét đứt
+            color: #666;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+
+            &:hover {
+               border-color: $primary-blue;
+               color: $primary-blue;
+               background-color: rgba($primary-blue, 0.05);
+               transform: translateY(-2px); // Nổi lên nhẹ
+            }
+         }
+         .section-block {
+            border-radius: 16px;
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+
+            .section-header {
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               margin-bottom: 15px;
+               border-bottom: none;
+
+               .header-left {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+
+                  .icon-chevron {
+                     display: flex;
+                     align-items: center;
+                     color: #555;
+                     cursor: pointer;
+                  }
+
+                  h3 {
+                     font-size: 18px;
+                     font-weight: 600;
+                     color: #222;
+                     margin: 0;
+                     padding-left: 0;
+                     border-left: none; // Bỏ cái vạch xanh bên trái bài cũ
+                  }
+                  .section-title-input {
+                     font-size: 18px;
+                     font-weight: 600;
+                     color: #333;
+                     border: 1px solid #ddd; // Viền mỏng
+                     border-radius: 6px;
+                     padding: 5px 10px;
+                     margin-left: 5px;
+                     outline: none;
+                     width: 300px; // Độ rộng vừa phải
+                     transition: all 0.2s;
+
+                     &:focus {
+                        border-color: $primary-blue; // Đổi màu xanh khi click vào
+                        background-color: #fff;
+                        box-shadow: 0 0 0 2px rgba($primary-blue, 0.1);
+                     }
+                  }
+               }
+
+               .btn-add-item-small {
+                  background-color: rgba(#00b087, 0.12);
+                  color: #00b087;
+                  border: none;
+                  padding: 6px 12px;
+                  border-radius: 4px;
+                  font-size: 13px;
+                  font-weight: 500;
+                  cursor: pointer;
+                  transition: all 0.2s;
+
+                  &:hover {
+                     background-color: #00b087;
+                     color: white;
+                     box-shadow: 0 4px 8px rgba(0, 176, 135, 0.3);
+                     transform: translateY(-1px);
+                  }
+               }
+            }
+
+            .section-items {
+               display: flex;
+               flex-direction: column;
+               gap: 12px;
+
+               .item-row {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 12px 10px;
+
+                  .item-content {
+                     display: flex;
+                     align-items: center;
+                     gap: 12px;
+
+                     .icon-folder {
+                        display: flex;
+                        align-items: center;
+
+                        svg {
+                           fill: #333;
+                        }
+                     }
+
+                     .item-link {
+                        color: $link-blue;
+                        text-decoration: underline;
+                        font-size: 15px;
+                        cursor: pointer;
+
+                        &:hover {
+                           color: adjust-color($link-blue, $lightness: -10%);
+                        }
+                     }
+                  }
+
+                  // Nút xóa (Thùng rác)
+                  .btn-delete-item {
+                     background: none;
+                     border: none;
+                     cursor: pointer;
+                     color: #999;
+                     padding: 5px;
+                     border-radius: 4px;
+                     transition: all 0.2s;
+                     font-size: 16px;
+
+                     &:hover {
+                        color: $danger-red;
+                        background-color: rgba($danger-red, 0.1);
+                        transform: scale(1.1);
+                     }
+                  }
+               }
+            }
+         }
+      }
    }
 }
 
-.content-body {
-   width: 100%;
-}
-
+// --- RESPONSIVE ---
 @include respond-to(md) {
    .subject-details-container {
       width: 95%;
@@ -91,6 +303,11 @@ $bg-gray: #f5f5f5;
          flex-direction: column;
          align-items: flex-start;
          gap: 15px;
+
+         .action-buttons {
+            width: 100%;
+            justify-content: flex-start;
+         }
       }
    }
 }
