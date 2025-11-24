@@ -1,58 +1,72 @@
-import './courseComponent.scss'
+import React from 'react';
 
-const CourseComponent = () => {
+const CourseComponent = ({ isEditing, sections, onInsertSection, onAddItem, onDeleteItem, onUpdateTitle }) => {
     return (
-        <div className="course-component-container">
-            <div className="group-document">
-                <h3>Chung</h3>
-                <ul>
-                    <li>Kỹ năng Chuyên nghiệp cho Kỹ sư (CO2001)_VideoURL</li>
+        <div className="course-content-wrapper">
+            {sections.map((section, index) => (
+                <div key={section.id} className="section-wrapper">
+                    <div className="section-block">
+                        <div className="section-header">
+                            <div className="header-left">
+                                {/* Icon mũi tên xuống */}
+                                <span className="icon-chevron">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </span>
+                                {isEditing ? (
+                                    <input 
+                                        type="text" 
+                                        className="section-title-input"
+                                        value={section.title}
+                                        onChange={(e) => onUpdateTitle(section.id, e.target.value)}
+                                        placeholder="Nhập tên mục..."
+                                    />
+                                ) : (
+                                    <h3>{section.title}</h3>
+                                )}
+                            </div>
+                            
+                            {isEditing && (
+                                <button 
+                                    className="btn-add-item-small" 
+                                    onClick={() => onAddItem(section.id)}
+                                    title="Thêm tài liệu vào mục này"
+                                >
+                                    + Thêm tài liệu
+                                </button>
+                            )}
+                        </div>
 
-                    <li>Đề cương môn học</li>
+                        <div className="section-items">
+                            {section.items.map((item, itemIndex) => (
+                                <div key={itemIndex} className="item-row">
+                                    <div className="item-content">
+                                        <span className="icon-folder">
+                                           <svg width="20" height="20" viewBox="0 0 24 24" fill="#333" stroke="currentColor" strokeWidth="0" ><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>
+                                        </span>
+                                        <a href="#" className="item-link" onClick={(e) => e.preventDefault()}>{item}</a>
+                                    </div>
 
-                    <li>Đề cương môn học</li>
-
-                    <li>Đề cương môn học</li>
-
-                    <li>Đề cương môn học</li>
-                </ul>
-            </div>
-            <div className="group-document">
-                <h3>Tài liệu</h3>
-                <ul>
-                    <li>Kỹ năng Chuyên nghiệp cho Kỹ sư (CO2001)_VideoURL</li>
-
-                    <li>Đề cương môn học</li>
-
-                    <li>Đề cương môn học</li>
-
-                    <li>Đề cương môn học</li>
-
-                    <li>Đề cương môn học</li>
-                </ul>
-            </div>
-            <div className="group-document">
-                <h3>Bài tập</h3>
-                <ul>
-                    <li>Kỹ năng Chuyên nghiệp cho Kỹ sư (CO2001)_VideoURL</li>
-
-                    <li>Đề cương môn học</li>
-
-                    <li>Đề cương môn học</li>
-
-                    <li>Đề cương môn học</li>
-
-                    <li>Đề cương môn học</li>
-                </ul>
-            </div>
-            <div className="group-document">
-                <h3>Nội dung học tập tuần 1</h3>
-                <p>
-                    Chào các bạn, như nội dung hoạt động từng tuần thầy đã gửi cho các em, tuần 40 này chúng ta sẽ có buổi trình bày có chấm điểm liên quan đến nội dung: L.0.2 Thiết kế và hiện thực các giải pháp liên quan đến kỹ thuật dữ liệu đã phân tích ở trên.
-                </p>
-            </div>
+                                    {isEditing && (
+                                        <button 
+                                            className="btn-delete-item" 
+                                            onClick={() => onDeleteItem(section.id, itemIndex)}
+                                        >
+                                            🗑️ 
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            ))}
+            {isEditing && (
+                <button className="btn-add-section-bottom" onClick={onInsertSection}>
+                    + Thêm mục mới tại đây
+                </button>
+            )}
         </div>
-    )
-}
+    );
+};
 
-export default CourseComponent
+export default CourseComponent;
