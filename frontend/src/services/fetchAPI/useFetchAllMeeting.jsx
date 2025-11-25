@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from '@/services/axios.customize'
 import { BASE_API } from '../../constants'
 
 export function useFetchAllMeeting(refresh) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from '@/services/axios.customize';
 import { BASE_API } from '../../constants'
 
 export function useFetchMeetingById(refresh, meeting_id) {
@@ -9,9 +9,7 @@ export function useFetchMeetingById(refresh, meeting_id) {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const response = await axios.get(
-               `${BASE_API}/meeting/${meeting_id}`
-            )
+            const response = await axios.get(`${BASE_API}/meeting/${meeting_id}`)
             setMeeting(response.data.data)
             console.log('response', response)
             setLoading(false)

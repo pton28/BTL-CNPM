@@ -9,18 +9,19 @@ import routeSessionSlot from './meetingRoutes/sessionSlot.route.js';
 import routeStudentWithSessionSlot from './meetingRoutes/studentWithSessionSlot.route.js';
 import routeMaterial from './material.route.js';
 import routeAuth from './auth.route.js';
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 function initRoutes(app) {
-  app.use("/student", routeStudent)
-  app.use("/tutor", routeTutor)
-  app.use("/meeting", routeMeeting)
+  app.use("/student",authMiddleware, routeStudent)
+  app.use("/tutor", authMiddleware, routeTutor)
+  app.use("/meeting", authMiddleware, routeMeeting)
   app.use("/faculty", routeFaculty)
   app.use("/major", routeMajor)
-  app.use("/student-with-meeting", routeStudentWithMeeting)
-  app.use("/session", routeSession)
-  app.use("/session-slot", routeSessionSlot)
-  app.use("/student-with-session-slot", routeStudentWithSessionSlot)
-  app.use("/material", routeMaterial)
+  app.use("/student-with-meeting", authMiddleware, routeStudentWithMeeting)
+  app.use("/session", authMiddleware, routeSession)
+  app.use("/session-slot", authMiddleware, routeSessionSlot)
+  app.use("/student-with-session-slot", authMiddleware, routeStudentWithSessionSlot)
+  app.use("/material", authMiddleware, routeMaterial)
   app.use("/auth", routeAuth)
 }
 
