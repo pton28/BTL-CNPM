@@ -10,7 +10,7 @@ export function useFetchAppointment(refresh) {
             try {
                 const response = await axios.get(`https://dummyjson.com/users`)
                 setAppointment(response.data)
-                console.log('response', response)
+                // console.log('response', response)
                 setLoading(false)
             } catch (err) {
                 console.log('Error at useFetchAppointment', err)

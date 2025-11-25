@@ -13,7 +13,7 @@ export function useFetchAllMajor(refresh) {
                `${BASE_API}/major`
             )
             setMajors(response.data.data)
-            console.log('response major', response)
+            // console.log('response major', response)
             setLoading(false)
          } catch (err) {
             console.log('Error at useFetchAllMajor', err)

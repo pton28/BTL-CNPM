@@ -53,7 +53,7 @@ const DetailComponent = () => {
    return (
       <div className="detail-appointment-container">
          <h2>Chi tiết các buổi học</h2>
-         {!loading && console.log('list nek', list)}
+         {/* {!loading && console.log('list nek', list)} */}
          <table className="schedule-table">
             <thead>
                <tr>

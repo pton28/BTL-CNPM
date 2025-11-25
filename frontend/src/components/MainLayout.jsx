@@ -23,7 +23,7 @@ const MainLayout = () => {
 
    const validateAuth = () => {
       const user = getCurrentUser()
-      console.log('user', user)
+      // console.log('user', user)
       if(!user) return <Header />
       const role = user?.role
 

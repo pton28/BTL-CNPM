@@ -22,7 +22,7 @@ export function useFetchAllSessionOfAMeetingVu(refresh, meeting_id) {
             // ===========================================================
             // 3. KHU VỰC XỬ LÝ DỮ LIỆU (Nằm ở đây là chuẩn nhất)
             // ===========================================================
-            console.log('rawStdSlot', rawStdSlot, rawSessionByMeeting)
+            // console.log('rawStdSlot', rawStdSlot, rawSessionByMeeting)
             let finalResult = []
             rawSessionByMeeting.forEach(ss => {
                 const ssId = ss._id
@@ -30,7 +30,7 @@ export function useFetchAllSessionOfAMeetingVu(refresh, meeting_id) {
                 const StdWithSlot = rawStdSlot.find(slot => slot.session._id === ssId) || {}
 
                 const slot = StdWithSlot.slot || {}
-                console.log('slot inner', slot)
+               //  console.log('slot inner', slot)
                 const obj = {
                     ss_id: ss._id,
                     title: ss.title,
@@ -45,7 +45,7 @@ export function useFetchAllSessionOfAMeetingVu(refresh, meeting_id) {
             const sorted = finalResult.sort(
                (a, b) => new Date(a.title) - new Date(b.title)
             )
-            console.log('Dữ liệu sau khi xử lý 1:', sorted)
+            // console.log('Dữ liệu sau khi xử lý 1:', sorted)
 
             // 4. Lưu dữ liệu ĐÃ XỬ LÝ vào state
             setProcessedData(sorted)

@@ -11,7 +11,7 @@ export function useFetchMeetingById(refresh, meeting_id) {
          try {
             const response = await axios.get(`${BASE_API}/meeting/${meeting_id}`)
             setMeeting(response.data.data)
-            console.log('response', response)
+            // console.log('response', response)
             setLoading(false)
          } catch (err) {
             console.log('Error at useFetchAllMajor', err)

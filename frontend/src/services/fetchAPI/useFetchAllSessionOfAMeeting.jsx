@@ -40,7 +40,7 @@ export function useFetchAllSessionOfAMeeting(refresh) {
                finalResult.push(obj)
             })
 
-            console.log('Dữ liệu sau khi xử lý:', finalResult)
+            // console.log('Dữ liệu sau khi xử lý:', finalResult)
 
             // 4. Lưu dữ liệu ĐÃ XỬ LÝ vào state
             setProcessedData(finalResult)
