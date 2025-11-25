@@ -10,10 +10,10 @@ const CourseComponent = () => {
    const [refresh, setRefresh] = useState(true)
    const {data: listDocs, loading: loading} = useFetchMaterialByMeeting(refresh, id)
 
+   if(loading) return <p>Loading ...</p>
    return (
       <div className="course-component-container">
-         {!loading && console.log('docs', listDocs)}
-         {!loading && listDocs.length > 0 && listDocs.map(doc => (
+         {listDocs?.length > 0 && listDocs.map(doc => (
             <div className="group-document" key={doc._id}>
                <h3>{doc.title}</h3>
                <ul>

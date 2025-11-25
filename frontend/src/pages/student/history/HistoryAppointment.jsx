@@ -50,7 +50,7 @@ const HistoryAppointment = () => {
                         className={history === 'past' ? 'active' : ''}
                     >
                         <img src={dadienra} alt="dadienra" />
-                        Đã diễn ra
+                        Đã hoàn thành
                     </li>
 
                     <li
