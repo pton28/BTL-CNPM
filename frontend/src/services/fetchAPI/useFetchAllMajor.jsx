@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from '@/services/axios.customize'
 import { BASE_API } from '../../constants'
 
 export function useFetchAllMajor(refresh) {
@@ -12,8 +12,8 @@ export function useFetchAllMajor(refresh) {
             const response = await axios.get(
                `${BASE_API}/major`
             )
-            setMajors(response.data)
-            console.log('response', response)
+            setMajors(response.data.data)
+            // console.log('response major', response)
             setLoading(false)
          } catch (err) {
             console.log('Error at useFetchAllMajor', err)

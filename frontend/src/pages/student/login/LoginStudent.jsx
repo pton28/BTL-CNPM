@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import './LoginStudent.scss'
-import axios from 'axios'
 import { ButtonLogin } from '@/components/common/ui/button/Button.jsx'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { BASE_API } from '../../../constants'
+import axios from 'axios';
+import { setTokens } from '@/services/auth.services'
 
 const LoginStudent = () => {
    const navigate = useNavigate()
@@ -14,44 +15,21 @@ const LoginStudent = () => {
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('')
 
-   // const handleLoginStudent = async () => {
-   //    try {
-   //       const res = await axios.post(`${BASE_API}/student/login`, formData)
-
-   //       console.log('Student login success:', res.data.data._id)
-
-   //       localStorage.setItem('id', res.data.data._id)
-
-   //       navigate('/list-appointment')
-   //    } catch (error) {
-   //       console.error('Student login failed:', error)
-   //    }
-   // }
 
    const handleLoginStudent = async () => {
       try {
-         // const response = await loginAPI(email, password);
-         // const { user, accessToken } = response.data;
+         const response = await axios.post(`${BASE_API}/auth/login/student`, {email, password})
 
-         // --- DỮ LIỆU GIẢ LẬP TỪ BE TRẢ VỀ ---
-         const fakeResponseData = {
-            accessToken: 'eyJhbGciOiJIUzI1NiIs...',
-            user: {
-               id: '2313640',
-               name: 'Nguyễn Văn A',
-               role: 'student',
-               email: 'sv@hcmut.edu.vn',
-            },
-         }
+         console.log('1')
 
-         const { user, accessToken } = fakeResponseData
-
-         localStorage.setItem('accessToken', accessToken)
-         localStorage.setItem('user', JSON.stringify(user))
-
+         setTokens({
+            access_token: response.data.token,
+         })
+         localStorage.setItem('id', response.data.user._id)
          // Bước 3: Điều hướng
-         navigate(from, { replace: true })
+         navigate('/')
       } catch (error) {
+         console.log('error login', error)
          alert('Đăng nhập thất bại!')
       }
    }

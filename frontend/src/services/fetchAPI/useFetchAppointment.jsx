@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from '@/services/axios.customize'
 
 export function useFetchAppointment(refresh) {
     const [appointment, setAppointment] = useState([])
@@ -10,7 +10,7 @@ export function useFetchAppointment(refresh) {
             try {
                 const response = await axios.get(`https://dummyjson.com/users`)
                 setAppointment(response.data)
-                console.log('response', response)
+                // console.log('response', response)
                 setLoading(false)
             } catch (err) {
                 console.log('Error at useFetchAppointment', err)

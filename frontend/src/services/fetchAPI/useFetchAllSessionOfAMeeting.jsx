@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from '@/services/axios.customize'
 import { BASE_API } from '../../constants'
 
 export function useFetchAllSessionOfAMeeting(refresh) {
@@ -28,7 +28,7 @@ export function useFetchAllSessionOfAMeeting(refresh) {
                const status = rawAppointmentStudent.find(m => m.meeting_id._id === appt._id)
                   ? 'Registered'
                   : 'Unregistered'
-
+               console.log('apppt', appt)
                const obj = {
                   id: appt._id,
                   subject: appt.title_meeting,
@@ -40,7 +40,7 @@ export function useFetchAllSessionOfAMeeting(refresh) {
                finalResult.push(obj)
             })
 
-            console.log('Dữ liệu sau khi xử lý:', finalResult)
+            // console.log('Dữ liệu sau khi xử lý:', finalResult)
 
             // 4. Lưu dữ liệu ĐÃ XỬ LÝ vào state
             setProcessedData(finalResult)

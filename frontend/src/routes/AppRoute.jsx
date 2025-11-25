@@ -8,14 +8,14 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
  * */
 
 // Common --------------------------------------------------------------------------
-import MainLayout from '../components/MainLayout.jsx'
-import PreLogin from '../pages/common/preLogin/PreLogin.jsx'
+import MainLayout from '@/components/MainLayout.jsx'
+import PreLogin from '@/pages/common/preLogin/PreLogin.jsx'
 import ProtectedRoute from './ProtectedRoute.jsx'
-import Unauthorized from '../pages/common/unauthorized/Unauthorized.jsx'
+import Unauthorized from '@/pages/common/unauthorized/Unauthorized.jsx'
 
 // Student --------------------------------------------------------------------------
 import MainStudentLayout from '../pages/student/MainStudentLayout.jsx'
-import LoginStudent from '../pages/student/login/LoginStudent.jsx'
+import LoginStudent from '@/pages/student/login/LoginStudent.jsx'
 import HistoryAppointment from '@/pages/student/history/HistoryAppointment.jsx'
 import InnerAppointment from '@/pages/student/inner-appointment/InnerAppointment.jsx'
 import ListAppointment from '@/pages/student/list-appointment/ListAppointment.jsx'
@@ -42,7 +42,8 @@ export const router = createBrowserRouter([
             element: <ProtectedRoute allowedRoles={['student']} />,
             children: [
                {
-                  path: 'student',
+                  path: '/student', // Đường dẫn gốc: /student
+                  // element: <MainStudentLayout />, // Nếu bạn muốn layout riêng lồng trong MainLayout
                   children: [
                      { index: true, element: <Navigate to="search-course" replace /> },
 
@@ -63,7 +64,7 @@ export const router = createBrowserRouter([
             element: <ProtectedRoute allowedRoles={['tutor']} />,
             children: [
                {
-                  path: 'tutor', // Đường dẫn gốc: /tutor
+                  path: '/tutor', // Đường dẫn gốc: /tutor
                   // element: <MainTutorLayout />,
                   children: [
                      // Redirect mặc định cho tutor
@@ -81,70 +82,5 @@ export const router = createBrowserRouter([
             ],
          },
       ],
-
-      // children: [
-      //     {
-      //         path: '/unauthorized',
-      //         element: <Unauthorized />,
-      //     },
-      //     {
-      //         path: '/pre-login',
-      //         element: <PreLogin />,
-      //     },
-      //     {
-      //         path: '/student/login',
-      //         element: <LoginStudent />,
-      //     },
-      //     {
-      //         path: '/tutor/login',
-      //         element: <LoginTutor />,
-      //     },
-      //     {
-      //         // Route private
-      //         path: 'history',
-      //         element: <HistoryAppointment />,
-      //     },
-      //     {
-      //         // Route private
-      //         path: 'list-appointment/:id',
-      //         element: <InnerAppointment />,
-      //     },
-      //     {
-      //         // Route private
-      //         path: 'list-appointment',
-      //         element: <ListAppointment />,
-      //     },
-      //     {
-      //         // Route private
-      //         path: 'search-course',
-      //         element: <SearchCourse />,
-      //     },
-      //     {
-      //         // Route private
-      //         path: 'list-subjects',
-      //         element: <ListSubjects />,
-      //     },
-      //     {
-      //         // Route private
-      //         path: '/subject-details',
-      //         element: <SubjectDetails />,
-      //     },
-      //     {
-      //         element: <ProtectedRoute />,
-      //         children: [
-      //             // student
-      //             {
-      //                 path: '/student',
-      //                 element: <MainStudentLayout />,
-      //                 children: [],
-      //             },
-      //             {
-      //                 path: '/tutor',
-      //                 element: <MainTutorLayout />,
-      //                 children: [],
-      //             },
-      //         ],
-      //     },
-      // ],
    },
 ])

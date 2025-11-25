@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from '@/services/axios.customize'
 import { BASE_API } from '@/constants'
 
 export function useFetchMaterialByMeeting(refresh, meeting_id) {
@@ -8,6 +8,7 @@ export function useFetchMaterialByMeeting(refresh, meeting_id) {
 
    useEffect(() => {
       const fetchData = async () => {
+         // console.log('11')
          try {
             const response = await axios.get(
                `${BASE_API}/material/meeting/${meeting_id}`
@@ -18,7 +19,7 @@ export function useFetchMaterialByMeeting(refresh, meeting_id) {
             )
 
             setMaterials(sorted)
-            console.log('response material', meeting_id, response)
+            // console.log('response material', meeting_id, sorted)
             setLoading(false)
          } catch (err) {
             console.log('Error at useFetchMaterialByMeeting', err)
