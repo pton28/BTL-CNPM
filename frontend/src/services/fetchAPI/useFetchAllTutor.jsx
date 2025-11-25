@@ -13,7 +13,7 @@ export function useFetchAllTutor(refresh) {
                `${BASE_API}/tutor`
             )
             setTutors(response.data.data)
-            console.log('response', response)
+            // console.log('response', response)
             setLoading(false)
          } catch (err) {
             console.log('Error at useFetchAllTutor', err)

@@ -46,6 +46,9 @@ const HeaderStudent = () => {
             navigate('/student/profile')
             break
 
+         case 'account':
+            navigate('/student/history')
+            break
          default:
             break
       }
@@ -88,10 +91,10 @@ const HeaderStudent = () => {
             <div className="content-right">
                <div 
                   className={`nav-item ${activeItem === 'profile' ? 'item-active' : ''}`}
-                  data-name="profile" 
+                 
                   onClick={e => mapNavigate(e)}
                >
-                  <img src={Account} alt="account" className="account-icon" />
+                  <img src={Account} alt="account" className="account-icon" data-name='account'/>
                </div>
             </div>
          </div>

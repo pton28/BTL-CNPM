@@ -28,12 +28,12 @@ const FormChangeSchedule = ({refresh, setRefresh, selectedSSId, setShowFormChang
    useEffect(() => {
       const fetchData = async () => {
          try {
-            console.log('ss id', selectedSSId)
+            // console.log('ss id', selectedSSId)
             // dữ liệu hiển thị trong form
             const resp = await axios.get(`${BASE_API}/session-slot/session/${selectedSSId}`)
             if (resp) {
                setSlots(resp.data.data)
-               console.log('resp', resp.data.data)
+               // console.log('resp', resp.data.data)
             }
 
             // tất cả những slot sinh viên đã đk
@@ -42,7 +42,7 @@ const FormChangeSchedule = ({refresh, setRefresh, selectedSSId, setShowFormChang
                const filter_slot_of_student = resp_slot_of_student.data.data.filter(item => item.session._id === selectedSSId)[0]
                setSlotOfStudent(filter_slot_of_student)
                setSelectedId(filter_slot_of_student.slot._id)
-               console.log('resp slot of student', filter_slot_of_student)
+               // console.log('resp slot of student', filter_slot_of_student)
             }
 
          } catch (error) {

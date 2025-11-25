@@ -8,7 +8,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     function (config) {
         const token = getTokens(); // ✅ Giờ đây là string
-        console.log('test token', token)
+        // console.log('test token', token)
         if (token) {
             config.headers.Authorization = `Bearer ${token}`; // ✅ Dùng trực tiếp
         }

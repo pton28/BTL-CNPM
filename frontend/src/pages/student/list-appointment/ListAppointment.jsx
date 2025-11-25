@@ -28,7 +28,7 @@ const ListAppointment = () => {
             {loading && <p className="loading-text">Đang tải dữ liệu...</p>}
             {/* {console.log('data in cmn', appointmentList, appointmentList.length)} */}
             {/* Case 2: Có dữ liệu */}
-            {!loading && console.log('app', appointmentList)}
+            {/* {!loading && console.log('app', appointmentList)} */}
             {!loading &&
                appointmentList &&
                appointmentList.length > 0 &&

@@ -27,7 +27,7 @@ const LoginStudent = () => {
          })
          localStorage.setItem('id', response.data.user._id)
          // Bước 3: Điều hướng
-         navigate(from, { replace: true })
+         navigate('/')
       } catch (error) {
          console.log('error login', error)
          alert('Đăng nhập thất bại!')
