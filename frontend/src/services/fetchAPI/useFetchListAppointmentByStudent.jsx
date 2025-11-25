@@ -8,11 +8,12 @@ export function useFetchListAppointmentByStudent(refresh) {
 
    useEffect(() => {
       const fetchData = async () => {
+         const student_id = localStorage.getItem('id')
          setLoading(true)
          try {
             // 1. Dùng Promise.all để gọi 3 API cùng lúc và đợi tất cả xong
             const [resAppt, resMajor, resTutor] = await Promise.all([
-               axios.get(`${BASE_API}/student-with-meeting/6918473d48f8cffae6fe71e2`),
+               axios.get(`${BASE_API}/student-with-meeting/${student_id}`),
                axios.get(`${BASE_API}/major`),
                axios.get(`${BASE_API}/tutor`)
             ])
@@ -28,7 +29,7 @@ export function useFetchListAppointmentByStudent(refresh) {
             const finalResult = rawAppointments.map((appt) => {
                // Tìm Major tương ứng với appointment
                const majorInfo = rawMajors.find(m => m._id === appt.meeting_id.major) // thay majorId bằng tên trường thật
-               
+
                // Tìm Tutor tương ứng với appointment
                const tutorInfo = rawTutors.find(t => t._id === appt.meeting_id.tutor) // thay tutorId bằng tên trường thật
 
@@ -41,7 +42,7 @@ export function useFetchListAppointmentByStudent(refresh) {
                }
             })
 
-            console.log('Dữ liệu sau khi xử lý 1:', finalResult)
+            console.log('Dữ liệu sau khi xử lý bực:', finalResult)
 
             // 4. Lưu dữ liệu ĐÃ XỬ LÝ vào state
             setProcessedData(finalResult)
