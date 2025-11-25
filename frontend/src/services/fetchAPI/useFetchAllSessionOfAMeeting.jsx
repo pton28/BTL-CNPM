@@ -28,7 +28,7 @@ export function useFetchAllSessionOfAMeeting(refresh) {
                const status = rawAppointmentStudent.find(m => m.meeting_id._id === appt._id)
                   ? 'Registered'
                   : 'Unregistered'
-
+               console.log('apppt', appt)
                const obj = {
                   id: appt._id,
                   subject: appt.title_meeting,

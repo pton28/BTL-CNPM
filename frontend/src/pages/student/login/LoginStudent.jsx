@@ -25,6 +25,7 @@ const LoginStudent = () => {
          setTokens({
             access_token: response.data.token,
          })
+         localStorage.setItem('id', response.data.user._id)
          // Bước 3: Điều hướng
          navigate(from, { replace: true })
       } catch (error) {
