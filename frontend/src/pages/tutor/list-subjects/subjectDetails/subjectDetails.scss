@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '@/styles/mixin/reponsive' as *;
 
 // --- VARIABLES ---
@@ -264,7 +265,7 @@ $link-blue: #2196f3;
                         cursor: pointer;
 
                         &:hover {
-                           color: adjust-color($link-blue, $lightness: -10%);
+                           color: color.adjust($link-blue, $lightness: -10%);
                         }
                      }
                   }

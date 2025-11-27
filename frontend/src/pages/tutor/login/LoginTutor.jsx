@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import './LoginTutor.scss'
 import axios from 'axios'
-import { ButtonLogin } from '@/components/common/ui/button/Button.jsx'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { BASE_API } from '../../../constants'
+import { setTokens } from '@/services/auth.services'
 
 const LoginTutor = () => {
    const navigate = useNavigate()
@@ -19,22 +19,13 @@ const LoginTutor = () => {
       try {
          // const response = await loginAPI(email, password);
          // const { user, accessToken } = response.data;
+         const response = await axios.post(`${BASE_API}/auth/login/tutor`, { email, password })
 
-         // --- DỮ LIỆU GIẢ LẬP TỪ BE TRẢ VỀ ---
-         const fakeResponseData = {
-            accessToken: 'eyJhbGciOiJIUzI1NiIs...',
-            user: {
-               id: '2313640',
-               name: 'Nguyễn Văn A',
-               role: 'tutor', // Quan trọng
-               email: 'gv@hcmut.edu.vn',
-            },
-         }
+         setTokens({
+            access_token: response.data.token,
+         })
 
-         const { user, accessToken } = fakeResponseData
-
-         localStorage.setItem('accessToken', accessToken)
-         localStorage.setItem('user', JSON.stringify(user))
+         localStorage.setItem('id', response.data.user._id)
 
          // Bước 3: Điều hướng
          navigate(from, { replace: true })
