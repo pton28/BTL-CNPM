@@ -16,19 +16,11 @@ import {
 } from 'date-fns'
 import Button from '@/components/common/ui/button/buttonClickForm/button.jsx'
 import DayDetailModal from './DayDetailModal'
-
-// --- GIẢ LẬP DỮ LIỆU API ---
-// Trong thực tế, đây là response từ Backend trả về
-const MOCK_API_EVENTS = [
-   { id: 1, title: 'Trí tuệ nhân tạo', date: '2025-10-05', type: 'blue' },
-   { id: 2, title: 'Khởi nghiệp vui vẻ', date: '2025-10-05', type: 'orange' },
-   { id: 3, title: 'Cấu trúc dữ liệu', date: '2025-10-15', type: 'blue' },
-   { id: 4, title: 'Thi giữa kỳ', date: '2025-11-02', type: 'pink' }, // Test tháng sau
-]
+import axios from '@/services/axios.customize' // Import axios đã config
+import { BASE_API } from '@/constants'
 
 const OpenClass = () => {
-   // State quản lý thời gian và dữ liệu
-   const [currentDate, setCurrentDate] = useState(new Date(2025, 9, 1)) // Mặc định tháng 10/2025
+   const [currentDate, setCurrentDate] = useState(new Date())
    const [events, setEvents] = useState([])
    const [isLoading, setIsLoading] = useState(false)
 
@@ -36,17 +28,62 @@ const OpenClass = () => {
    const [isModalOpen, setIsModalOpen] = useState(false)
    const [courseName, setCourseName] = useState('')
 
-   // 1. Gọi API khi tháng thay đổi (currentDate thay đổi)
+   // State Refresh để load lại dữ liệu sau khi tạo mới
+   const [refresh, setRefresh] = useState(false)
+
+   // 1. GỌI API LẤY DỮ LIỆU LỊCH (SLOTS) CỦA TUTOR
    useEffect(() => {
-      const fetchEvents = async () => {
+      const fetchAllSlots = async () => {
          setIsLoading(true)
          try {
-            // Giả lập delay mạng 500ms
-            await new Promise(resolve => setTimeout(resolve, 500))
+            const tutorId = localStorage.getItem('id')
+            if (!tutorId) return
 
-            // Ở đây bạn sẽ gọi axios.get(`/api/schedule?month=${...}`)
-            // Tạm thời dùng mock data
-            setEvents(MOCK_API_EVENTS)
+            // Bước 1: Lấy danh sách Meeting của Tutor
+            const resMeeting = await axios.get(`${BASE_API}/meeting/tutor/${tutorId}`)
+            const meetings = resMeeting.data.data || []
+
+            // Bước 2: Với mỗi Meeting, lấy danh sách Session -> SessionSlot
+            // Lưu ý: Cách này hơi thủ công vì chưa có API "Get All Slots By Tutor".
+            // Tốt nhất nên bảo Backend viết thêm API đó.
+            // Dưới đây là cách xử lý tạm ở Frontend:
+            let allSlots = []
+
+            // Promise.all để chạy song song cho nhanh
+            await Promise.all(
+               meetings.map(async meeting => {
+                  try {
+                     // Lấy sessions của meeting
+                     const resSession = await axios.get(
+                        `${BASE_API}/session/meeting/${meeting._id}`
+                     )
+                     const sessions = resSession.data.data || []
+
+                     // Với mỗi session, lấy slots
+                     await Promise.all(
+                        sessions.map(async session => {
+                           const resSlot = await axios.get(
+                              `${BASE_API}/session-slot/session/${session._id}`
+                           )
+                           const slots = resSlot.data.data || []
+
+                           // Format lại dữ liệu để hiển thị lên lịch
+                           const formattedSlots = slots.map(slot => ({
+                              id: slot._id,
+                              title: session.title, // Tên hiển thị là tên bài học hoặc tên môn
+                              date: new Date(slot.date).toISOString(), // Chuẩn hóa ngày
+                              type: 'blue', // Màu sắc mặc định
+                           }))
+                           allSlots = [...allSlots, ...formattedSlots]
+                        })
+                     )
+                  } catch (e) {
+                     console.log('Lỗi load chi tiết môn:', meeting.title_meeting)
+                  }
+               })
+            )
+
+            setEvents(allSlots)
          } catch (error) {
             console.error('Lỗi lấy lịch:', error)
          } finally {
@@ -54,8 +91,8 @@ const OpenClass = () => {
          }
       }
 
-      fetchEvents()
-   }, [currentDate])
+      fetchAllSlots()
+   }, [currentDate, refresh]) // Chạy lại khi đổi tháng hoặc có lệnh refresh
 
    // 2. Các hàm điều hướng lịch
    const nextMonth = () => setCurrentDate(addMonths(currentDate, 1))
@@ -64,19 +101,18 @@ const OpenClass = () => {
    const [selectedDate, setSelectedDate] = useState(null)
    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
 
-   // Hàm xử lý khi click vào ô lịch
    const handleDayClick = day => {
       setSelectedDate(day)
       setIsDetailModalOpen(true)
    }
 
-   // Hàm lưu sự kiện mới (Giả lập)
+   // Hàm callback khi tạo xong ở Modal con
    const handleSaveNewEvent = () => {
-      alert('Đã tạo sự kiện thành công!')
+      setRefresh(prev => !prev) // Trigger useEffect chạy lại
       setIsDetailModalOpen(false)
    }
 
-   // 3. Logic tạo lưới lịch (Grid Generation)
+   // 3. Logic tạo lưới lịch (Grid)
    const generateCalendarGrid = () => {
       const monthStart = startOfMonth(currentDate)
       const monthEnd = endOfMonth(monthStart)
@@ -94,29 +130,33 @@ const OpenClass = () => {
             formattedDate = format(day, dateFormat)
             const cloneDay = day
 
+            // So sánh ngày (lưu ý parseISO để tránh lệch múi giờ)
             const dayEvents = events.filter(evt => isSameDay(parseISO(evt.date), cloneDay))
 
             days.push(
                <div
                   className={`calendar-cell ${!isSameMonth(day, monthStart) ? 'disabled' : ''}`}
-                  key={day}
+                  key={day.toString()}
                   onClick={() => handleDayClick(cloneDay)}
                >
                   <span className="day-number">{formattedDate}</span>
 
                   <div className="events-list">
-                     {dayEvents.map(evt => (
-                        <div key={evt.id} className={`event-tag ${evt.type}`}>
+                     {dayEvents.slice(0, 3).map((evt, idx) => (
+                        <div key={idx} className={`event-tag ${evt.type || 'blue'}`}>
                            {evt.title}
                         </div>
                      ))}
+                     {dayEvents.length > 3 && (
+                        <span className="more-evts">+{dayEvents.length - 3}</span>
+                     )}
                   </div>
                </div>
             )
             day = addDays(day, 1)
          }
          rows.push(
-            <div className="row" key={day}>
+            <div className="row" key={day.toString()}>
                {days}
             </div>
          )
@@ -125,24 +165,39 @@ const OpenClass = () => {
       return <div className="calendar-body">{rows}</div>
    }
 
-   // Xử lý mở lớp (API POST)
-   const handleOpenCourse = () => {
+   // 4. CHỨC NĂNG: MỞ MÔN HỌC (CREATE MEETING)
+   const handleOpenCourse = async () => {
       if (!courseName.trim()) return
 
-      // Gọi API tạo lớp ở đây...
-      console.log('Đang tạo lớp:', courseName)
+      try {
+         const tutorId = localStorage.getItem('id')
+         const payload = {
+            title_meeting: courseName,
+            tutor: tutorId,
+            date_of_event: new Date().toISOString(), // Ngày tạo
+            method: 'Offline', // Mặc định, có thể sửa sau
+            session_count: 10, // Mặc định
+            // major: "ID_MAJOR" // Nếu BE bắt buộc major, bạn cần dropdown chọn Major ở đây
+         }
 
-      // Reset và đóng modal
-      setCourseName('')
-      setIsModalOpen(false)
-      alert('Đã gửi yêu cầu mở lớp!')
+         const res = await axios.post(`${BASE_API}/meeting`, payload)
+         if (res.data && res.data.EC === 0) {
+            alert('Đã mở môn học thành công!')
+            setCourseName('')
+            setIsModalOpen(false)
+            setRefresh(prev => !prev)
+         } else {
+            alert(res.data.message || 'Lỗi khi tạo môn học')
+         }
+      } catch (error) {
+         console.error('Lỗi tạo môn:', error)
+         alert('Có lỗi xảy ra!')
+      }
    }
 
    return (
       <div className="open-class-page">
-         {/* Container chính để tạo khung boxy */}
          <div className="main-card">
-            {/* Header: Điều hướng tháng + Nút mở lớp */}
             <div className="card-header">
                <div className="month-navigation">
                   <button onClick={prevMonth} className="nav-btn">
@@ -153,13 +208,10 @@ const OpenClass = () => {
                      <FaChevronRight />
                   </button>
                </div>
-
                <Button onClick={() => setIsModalOpen(true)}>Mở môn học</Button>
             </div>
 
-            {/* Calendar Grid */}
             <div className="calendar-container">
-               {/* Header thứ trong tuần */}
                <div className="calendar-days-header">
                   {['MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT', 'SUN'].map(d => (
                      <div key={d} className="day-name">
@@ -167,16 +219,15 @@ const OpenClass = () => {
                      </div>
                   ))}
                </div>
-
-               {/* Body: Loading hoặc Lưới lịch */}
                {isLoading ? (
-                  <div className="loading-state">Đang tải lịch...</div>
+                  <div className="loading-state">Đang cập nhật lịch...</div>
                ) : (
                   generateCalendarGrid()
                )}
             </div>
          </div>
 
+         {/* Modal Mở Môn Học */}
          {isModalOpen && (
             <div className="modal-overlay">
                <div className="modal-content zoom-in">
@@ -185,27 +236,30 @@ const OpenClass = () => {
                      <FaTimes className="close-icon" onClick={() => setIsModalOpen(false)} />
                   </div>
                   <div className="modal-body">
-                     <label>Nhập tên hoặc Mã môn học</label>
+                     <label>Tên môn học</label>
                      <input
                         autoFocus
                         type="text"
-                        placeholder="Ví dụ: Cấu trúc rời rạc / CO1007"
+                        placeholder="Ví dụ: Lập trình Web"
                         value={courseName}
                         onChange={e => setCourseName(e.target.value)}
                         onKeyDown={e => e.key === 'Enter' && handleOpenCourse()}
                      />
                   </div>
                   <div className="modal-footer">
-                     <Button onClick={handleOpenCourse}>Mở môn học</Button>
+                     <Button onClick={handleOpenCourse}>Xác nhận</Button>
                   </div>
                </div>
             </div>
          )}
+
          <DayDetailModal
             isOpen={isDetailModalOpen}
             onClose={() => setIsDetailModalOpen(false)}
             date={selectedDate || new Date()}
-            events={events.filter(evt => isSameDay(parseISO(evt.date), selectedDate))}
+            events={events.filter(
+               evt => selectedDate && isSameDay(parseISO(evt.date), selectedDate)
+            )}
             onSave={handleSaveNewEvent}
          />
       </div>
