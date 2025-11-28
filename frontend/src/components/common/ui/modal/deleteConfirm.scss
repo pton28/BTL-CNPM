@@ -1,0 +1,77 @@
+// deleteConfirmModal.scss
+$primary-blue: #0056b3;
+$danger-red: #dc3545;
+
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); // Nền tối mờ nhẹ
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100; // Cao hơn modal thêm mới một chút
+}
+
+.delete-modal-container {
+  background: white;
+  width: 400px;
+  border-radius: 20px; // Bo góc giống Figma
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .delete-modal-title {
+    color: $primary-blue; // Màu chữ xanh dương
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .delete-modal-content {
+    p {
+      color: #333;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+  }
+
+  .delete-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+
+    button {
+      padding: 8px 25px;
+      border-radius: 20px; // Nút bo tròn
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-cancel {
+      background-color: #e0e0e0; // Màu xám cho nút hủy
+      color: #333;
+      
+      &:hover {
+        background-color: #d0d0d0;
+      }
+    }
+
+    .btn-confirm {
+      background-color: $danger-red; // Màu đỏ cho nút xóa
+      color: white;
+
+      &:hover {
+        background-color: darken($danger-red, 10%);
+      }
+    }
+  }
+}

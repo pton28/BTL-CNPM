@@ -80,6 +80,8 @@
         table {
             margin: 0 40px;
             width: 95%;
+            table-layout: fixed; // ✅ Thêm dòng này để fixed width hoạt động
+            
             tbody tr {
                 transition: 0.2s;
                 &:hover {
@@ -92,28 +94,57 @@
             }
             td {
                 padding: 20px 10px 20px 0;
-                //white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                white-space: nowrap;      // ✅ Text không xuống hàng
+                overflow: hidden;         // ✅ Ẩn phần tràn
+                text-overflow: ellipsis;  // ✅ Hiển thị "..."
                 border-top: 1px solid #dcdcdc;
             }
             th:nth-child(1),
             td:nth-child(1) {
-                width: 35%;
+                width: 27%;
             }
             th:nth-child(2),
             td:nth-child(2) {
-                width: 22%;
+                width: 20%;
             }
             th:nth-child(3),
             td:nth-child(3) {
-                width: 22%;
+                width: 15%;
             }
             th:nth-child(4),
             td:nth-child(4) {
-                width: 10%;
+                width: 13%;
                 text-align: center;
             }
+            th:nth-child(5),
+            td:nth-child(5) {
+                width: 13%;
+                text-align: center;
+            }
+            
+            // ✅ Thêm tooltip khi hover vào ô bị cắt
+            td:nth-child(1) {
+                cursor: help;
+                position: relative;
+                
+                &:hover::after {
+                    content: attr(title);
+                    position: absolute;
+                    left: 0;
+                    top: 100%;
+                    background: rgba(0, 0, 0, 0.9);
+                    color: white;
+                    padding: 8px 12px;
+                    border-radius: 5px;
+                    white-space: normal;
+                    max-width: 300px;
+                    z-index: 100;
+                    font-size: 13px;
+                    line-height: 1.4;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                }
+            }
+            
             .status-badge {
                 color: white;
                 padding: 5px 15px;

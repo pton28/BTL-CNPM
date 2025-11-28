@@ -26,6 +26,7 @@ const InnerAppointment = () => {
    return (
       <div className="inner-appointment-container">
          <div className="box">
+            {/* {!loading && console.log('meeting', meeting)} */}
             {!loading && meeting && (
                <h1>{`${meeting.tutor.full_name} _ ${meeting.title_meeting} _ ${meeting.method}`}</h1>
             )}
@@ -49,6 +50,7 @@ const InnerAppointment = () => {
                   Chi tiết
                </button>
             </div>
+            {mapStatus()}
          </div>
       </div>
    )

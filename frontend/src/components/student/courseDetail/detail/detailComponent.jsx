@@ -1,7 +1,7 @@
 import './detailComponent.scss'
 import { useState } from 'react'
 import FormChangeSchedule from '@/components/student/formChangeSchedule/formChangeSchedule.jsx'
-import { useFetchAllSessionOfAMeeting } from '../../../../services/fetchAPI/useFetchAllSessionOfAMeeting'
+import { useFetchAllSessionOfAMeetingVu } from '@/services/fetchAPI/useFetchAllSessionOfAMeetingVu'
 import { useParams } from 'react-router-dom'
 
 const DetailComponent = () => {
@@ -12,9 +12,7 @@ const DetailComponent = () => {
 
    const { id } = useParams()
    const [refresh, setRefresh] = useState(true)
-   const { data: list, loading: loading } = useFetchAllSessionOfAMeeting(refresh, id)
-
-
+   const { data: list, loading: loading } = useFetchAllSessionOfAMeetingVu(refresh, id)
 
 
    const formatDate = dateStr => {
@@ -51,10 +49,11 @@ const DetailComponent = () => {
       setShowFormChangeSchedule(true)
    }
 
+   if(loading) return <p>Loading ...</p>
    return (
       <div className="detail-appointment-container">
          <h2>Chi tiết các buổi học</h2>
-         {!loading && console.log('list nek', list)}
+         {/* {!loading && console.log('list nek', list)} */}
          <table className="schedule-table">
             <thead>
                <tr>

@@ -9,22 +9,34 @@ import img5 from '@/assets/common/bk5.jpg'
 import './MainLayout.scss'
 import HeaderStudent from '@/components/common/header/HeaderStudent.jsx'
 import HeaderTutor from '@/components/common/header/HeaderTutor.jsx'
+import { getCurrentUser } from '@/services/auth.services';
+
 
 const MainLayout = () => {
    const location = useLocation()
    const showSlide = location.pathname === '/'
-
-   const userStr = localStorage.getItem('user')
-   const user = userStr ? JSON.parse(userStr) : null
 
    const isAuthPage =
       location.pathname === '/pre-login' ||
       location.pathname === '/student/login' ||
       location.pathname === '/tutor/login'
 
-   const isStudent = user?.role === 'student' && !isAuthPage
-   const isTutor = user?.role === 'tutor' && !isAuthPage
+   const validateAuth = () => {
+      const user = getCurrentUser()
+      // console.log('user', user)
+      if(!user) return <Header />
+      const role = user?.role
 
+      switch (role) {
+         case 'student':
+            return <HeaderStudent />
+         case 'tutor':
+            return <HeaderTutor />
+      
+         default:
+            return <Header />
+      }
+   }
    const images = [img1, img2, img3, img4, img5]
    const [currentIndex, setCurrentIndex] = useState(0)
    const [fade, setFade] = useState(false)
@@ -45,7 +57,7 @@ const MainLayout = () => {
 
    return (
       <div className="main-layout-container">
-         {isStudent ? <HeaderStudent /> : isTutor ? <HeaderTutor /> : <Header />}
+         {validateAuth()}
 
          {showSlide && (
             <div className="slideshow-container">
