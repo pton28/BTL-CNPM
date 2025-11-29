@@ -24,4 +24,3 @@ export function useFetchAllTutor(refresh) {
    }, [refresh])
    return { tutors, loading } // array
 }
-

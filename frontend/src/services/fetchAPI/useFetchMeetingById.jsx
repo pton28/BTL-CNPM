@@ -22,4 +22,3 @@ export function useFetchMeetingById(refresh, meeting_id) {
    }, [refresh])
    return { data: meeting, loading: loading } // array
 }
-
