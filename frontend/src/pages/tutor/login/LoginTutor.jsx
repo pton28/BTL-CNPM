@@ -21,9 +21,16 @@ const LoginTutor = () => {
          // const { user, accessToken } = response.data;
          const response = await axios.post(`${BASE_API}/auth/login/tutor`, { email, password })
 
-         setTokens({
-            access_token: response.data.token,
-         })
+         // --- DỮ LIỆU GIẢ LẬP TỪ BE TRẢ VỀ ---
+         const fakeResponseData = {
+            accessToken: 'eyJhbGciOiJIUzI1NiIs...',
+            user: {
+               id: '2313640',
+               name: 'Nguyễn Văn A',
+               role: 'tutor', // Quan trọng
+               email: 'gv@hcmut.edu.vn',
+            },
+         }
 
          localStorage.setItem('id', response.data.user._id)
 
