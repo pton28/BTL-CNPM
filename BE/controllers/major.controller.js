@@ -87,4 +87,3 @@ const majorController = {
 }
 
 export default majorController;
-

@@ -1,12 +1,20 @@
 import './subjectDetails.scss'
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import CourseComponent from '@/components/tutor/courseDetail/course/courseComponent.jsx'
 import DetailComponent from '@/components/tutor/courseDetail/detail/detailComponent.jsx'
 import Button from '@/components/common/ui/button/buttonClickForm/button.jsx'
 import AddFile from './adjustment/adjustment.jsx' // Sửa đường dẫn cho đúng với dự án của bạn
 import DeleteConfirm from '@/components/common/ui/modal/deleteConfirm.jsx'
 
+import { useFetchMeetingById } from '@/services/fetchAPI/useFetchMeetingById'
+
 const SubjectDetails = () => {
+   const { id } = useParams()
+   console.log(id)
+   const { data: meeting, loading: loadingMeeting } = useFetchMeetingById(id, id)
+   console.log(meeting)
+
    const [isEditing, setIsEditing] = useState(false)
    const [status, setStatus] = useState('course')
    const [activeSectionId, setActiveSectionId] = useState(null)
@@ -169,7 +177,13 @@ const SubjectDetails = () => {
       <div className="subject-details-wrapper">
          <div className="subject-details-container">
             <div className="header-section">
-               <h1 className="subject-title">Kỹ năng Chuyên nghiệp cho Kỹ sư (CO2001)</h1>
+               <h1 className="subject-title">
+                  {loadingMeeting
+                     ? 'Đang tải...'
+                     : meeting && meeting.title_meeting
+                       ? meeting.title_meeting
+                       : 'Môn học không tồn tại'}
+               </h1>
                {!isEditing ? (
                   <button onClick={handleEdit} className="custom-btn-edit">
                      Chỉnh sửa

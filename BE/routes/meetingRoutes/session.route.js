@@ -10,4 +10,3 @@ routeSession.put('/:id', sessionController.updateSession)
 routeSession.delete('/:id', sessionController.deleteSession)
 
 export default routeSession
-
