@@ -20,7 +20,7 @@ const listSubjects = () => {
    console.log(subjects)
    // Hàm chuyển trang chi tiết kèm theo ID meeting
    const handleViewDetail = meetingId => {
-      navigate(`/tutor/subject-Details/${meetingId}`)
+      navigate(`/tutor/subject-details/${meetingId}`)
    }
 
    return (

@@ -1,5 +1,5 @@
 import './subjectDetails.scss'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import CourseComponent from '@/components/tutor/courseDetail/course/courseComponent.jsx'
 import DetailComponent from '@/components/tutor/courseDetail/detail/detailComponent.jsx'
@@ -11,27 +11,50 @@ import { useFetchMeetingById } from '@/services/fetchAPI/useFetchMeetingById'
 
 const SubjectDetails = () => {
    const { id } = useParams()
-   console.log(id)
    const { data: meeting, loading: loadingMeeting } = useFetchMeetingById(id, id)
-   console.log(meeting)
 
    const [isEditing, setIsEditing] = useState(false)
    const [status, setStatus] = useState('course')
    const [activeSectionId, setActiveSectionId] = useState(null)
    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
    const [itemToDelete, setItemToDelete] = useState(null)
-   const [sections, setSections] = useState([
-      {
-         id: 1,
-         title: 'Chung',
-         items: ['Kỹ năng Chuyên nghiệp cho Kỹ sư (CO2001)_VideoURL', 'Đề cương môn học'],
-      },
-      {
-         id: 2,
-         title: 'Tài liệu',
-         items: ['Bài giảng tuần 1', 'Bài tập lớn'],
-      },
-   ])
+   const [sections, setSections] = useState([])
+
+   useEffect(() => {
+      // Chỉ chạy khi biến meeting đã có dữ liệu
+      if (meeting) {
+         // LƯU Ý: Bạn cần thay 'meeting.materials' bằng tên trường thật sự API trả về
+         // Ví dụ: meeting.documents, meeting.data, hoặc nếu meeting chính là mảng thì dùng meeting
+         const rawData = meeting.materials || meeting.documents || []; 
+
+         if (rawData.length > 0) {
+             const groupedData = {};
+
+             // Bước 1: Duyệt qua từng bản ghi và gom nhóm
+             rawData.forEach(item => {
+                 const sectionTitle = item.title; // "Tài liệu buổi 1"
+                 const fileContent = item.content; // "Tên file..." (hoặc nội dung)
+
+                 // Nếu chưa có nhóm này thì tạo mảng rỗng
+                 if (!groupedData[sectionTitle]) {
+                     groupedData[sectionTitle] = [];
+                 }
+
+                 // Đẩy nội dung vào nhóm
+                 groupedData[sectionTitle].push(fileContent);
+             });
+
+             // Bước 2: Chuyển đổi Object thành Array cho State
+             const formattedSections = Object.keys(groupedData).map((key, index) => ({
+                 id: index + 1, // Tạo ID tạm cho section
+                 title: key,
+                 items: groupedData[key] // Mảng các string content
+             }));
+
+             setSections(formattedSections);
+         }
+      }
+   }, [meeting]);
 
    // Hàm mở modal (được truyền xuống CourseComponent)
    const handleOpenAddModal = sectionId => {

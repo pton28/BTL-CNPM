@@ -50,6 +50,10 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
    const fetchMyMeetings = async () => {
       try {
          const tutorId = localStorage.getItem('id')
+
+         console.log("Check Tutor ID:", tutorId); 
+         console.log("Check API URL:", `${BASE_API}/meeting/tutor/${tutorId}`);
+
          if (!tutorId) return
 
          const res = await axios.get(`${BASE_API}/meeting/tutor/${tutorId}`)

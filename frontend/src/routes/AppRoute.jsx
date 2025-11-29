@@ -73,8 +73,8 @@ export const router = createBrowserRouter([
                      // URL: /tutor/list-subjects
                      { path: 'list-subjects', element: <ListSubjects /> },
 
-                     // URL: /tutor/subject-details
-                     { path: 'subject-details', element: <SubjectDetails /> },
+                     // URL: /tutor/subject-Details
+                     { path: 'subject-details/:id', element: <SubjectDetails /> },
 
                      { path: 'open-class', element: <OpenClass /> },
                   ],
