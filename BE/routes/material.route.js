@@ -26,7 +26,8 @@ const fileFilter = (req, file, cb) => {
 };
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-routeMaterial.post('/', upload.single('content'), MaterialController.createMaterial);routeMaterial.get('/', MaterialController.getAllMaterials)
+routeMaterial.post('/', upload.single('file') , MaterialController.createMaterial);
+routeMaterial.get('/', MaterialController.getAllMaterials)
 routeMaterial.get('/meeting/:meetingId', MaterialController.getMaterialsByMeeting)
 routeMaterial.put('/:id', MaterialController.updateMaterial)
 routeMaterial.delete('/:id', MaterialController.deleteMaterial)

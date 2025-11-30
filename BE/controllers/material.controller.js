@@ -9,8 +9,8 @@ const MaterialController = {
         console.log("Body (Text):", req.body);
         console.log("File (Binary):", req.file);
 
-        const { title, meeting } = req.body;
-        const file = req.file;
+        const { title, meeting, content } = req.body;
+        const file_raw = req.file;
 
         if(!title || !meeting) {
             return sendResponse(res, {
@@ -20,10 +20,10 @@ const MaterialController = {
                 EC: -1
             })
         }
-        const content = file.originalname;
-        console.log("File Original name: ", content);
+        const file = file_raw.originalname;
+        // console.log("File Original name: ", content);
 
-        const response = await MaterialService.createMaterialService(title, content, meeting)
+        const response = await MaterialService.createMaterialService(title, file, content, meeting)
         console.log("RESPONSE: ", response)
         if(response) return sendResponse(res, {
             status: 201,

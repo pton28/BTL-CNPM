@@ -2,10 +2,11 @@ import Material from '../models/material.model.js';
 import mongoose from 'mongoose';
 
 const MaterialService = {
-    createMaterialService: async(title, content, meeting) => {
+    createMaterialService: async(title, file, content, meeting) => {
         try {
             const payload = {
                 title,
+                file,
                 content,
                 meeting
             }
@@ -13,7 +14,6 @@ const MaterialService = {
             const existingMaterial = await Material.findOne({ 
                 title: title, 
                 meeting: meeting,
-                content: content // Check thêm trường này
             })
             if (existingMaterial) {
                 console.log("File này đã tồn tại trong mục này rồi!");
