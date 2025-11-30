@@ -12,10 +12,27 @@ const FormChangeSchedule = ({refresh, setRefresh, selectedSSId, setShowFormChang
    const { id } = useParams()
    // lưu trữ chỉ số hàng được chọn
    const [selectedId, setSelectedId] = useState(null)
-   const handleChoose = index => {
+   const handleChoose = (index, isSlotPast) => {
+      if(isSlotPast) return
       setSelectedId(index)
    }
+   const isPast = (dateStr, hourStr) => {
+      if (dateStr === 'No') return false
+      const [h, m] = hourStr.split(':').map(Number)
 
+      const d = new Date(dateStr)
+      d.setHours(h)
+      d.setMinutes(m)
+      d.setSeconds(0)
+
+      const now = new Date()
+
+      if (d.getTime() > now.getTime()) {
+         return false
+      } else {
+         return true
+      }
+   }
    const formatDate = dateStr => {
       if (!dateStr) return ''
       return new Date(dateStr).toLocaleDateString('vi-VN', {
@@ -89,20 +106,24 @@ const FormChangeSchedule = ({refresh, setRefresh, selectedSSId, setShowFormChang
                   </tr>
                </thead>
                <tbody>
-                  {slots.map((row, index) => (
-                     <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{row.start_time}</td>
-                        <td>{formatDate(row.date)}</td>
-                        <td>{row.location_or_link}</td>
-                        <td
-                           onClick={() => handleChoose(row._id)}
-                           className={selectedId === row._id ? 'active' : ''}
-                        >
-                           {selectedId === row._id ? 'Đã chọn' : 'Chọn'}
-                        </td>
-                     </tr>
-                  ))}
+                  {slots.map((row, index) => {
+                     const isSlotPast = isPast(row.date, row.start_time)
+                     return (
+                        <tr key={index}>
+                           <td>{index + 1}</td>
+                           <td>{row.start_time}</td>
+                           <td>{formatDate(row.date)}</td>
+                           <td>{row.location_or_link}</td>
+                           <td
+                                 onClick={() => handleChoose(row._id, isSlotPast)}
+                                 className={`select-button ${selectedId === row._id ? 'active' : ''} ${isSlotPast ? 'ds' : ''}`}
+                                 disabled={isSlotPast} // Disable the button if the slot is in the past
+                                 >
+                                 {selectedId === row._id ? 'Đã chọn' : 'Chọn'}
+                           </td>
+                        </tr>
+                     )
+                  })}
                </tbody>
             </table>
          </div>

@@ -38,20 +38,19 @@ export function useFetchAllMeeting(refresh) {
                const status = rawAppointmentStudent.find(m => m.meeting_id._id === appt._id)
                   ? 'Registered'
                   : 'Unregistered'
-               // console.log('appt', appt)
                const obj = {
                   id: appt._id,
-                  subject: appt.title_meeting,
-                  lecturer: appt.tutor.full_name,
-                  department: appt.major.name,
-                  mode: appt.method,
+                  subject: appt.title_meeting || '',
+                  lecturer: appt.tutor.full_name || '',
+                  department: appt?.major?.name || '',
+                  mode: appt.method || '',
                   status: status,
                   date_of_event: formatDate(appt.date_of_event),
                }
                finalResult.push(obj)
             })
 
-            // console.log('Dữ liệu sau khi xử lý:', finalResult)
+            console.log('Dữ liệu sau khi xử lý:', finalResult)
 
             // 4. Lưu dữ liệu ĐÃ XỬ LÝ vào state
             setProcessedData(finalResult)
