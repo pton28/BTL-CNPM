@@ -88,4 +88,3 @@ const sessionSlotService = {
 }
 
 export default sessionSlotService;
-

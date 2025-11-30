@@ -104,4 +104,3 @@ const sessionSlotController = {
 }
 
 export default sessionSlotController;
-

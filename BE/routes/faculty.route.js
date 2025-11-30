@@ -9,4 +9,3 @@ routeFaculty.put('/:id', facultyController.updateFaculty)
 routeFaculty.delete('/:id', facultyController.deleteFaculty)
 
 export default routeFaculty
-

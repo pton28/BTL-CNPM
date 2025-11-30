@@ -43,13 +43,13 @@ const CourseComponent = ({ isEditing, sections, onInsertSection, onAddItem, onDe
                                         <span className="icon-folder">
                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#333" stroke="currentColor" strokeWidth="0" ><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>
                                         </span>
-                                        <a href="#" className="item-link" onClick={(e) => e.preventDefault()}>{item}</a>
+                                        <a href={`http://localhost:8000/${item.name}`} target="_blank" rel="noreferrer" className="item-link" onClick={(e) => e.preventDefault()}>{item.displayName || item.name}</a>
                                     </div>
 
                                     {isEditing && (
                                         <button 
                                             className="btn-delete-item" 
-                                            onClick={() => onDeleteItem(section.id, itemIndex)}
+                                            onClick={() => onDeleteItem(section.id, item._id)}
                                         >
                                             🗑️ 
                                         </button>

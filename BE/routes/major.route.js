@@ -9,4 +9,3 @@ routeMajor.put('/:id', majorController.updateMajor)
 routeMajor.delete('/:id', majorController.deleteMajor)
 
 export default routeMajor
-

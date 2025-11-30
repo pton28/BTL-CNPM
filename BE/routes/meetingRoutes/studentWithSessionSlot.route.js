@@ -10,4 +10,3 @@ routeStudentWithSessionSlot.put('/:id', studentWithSessionSlotController.updateS
 routeStudentWithSessionSlot.delete('/:id', studentWithSessionSlotController.deleteStudentWithSessionSlot)
 
 export default routeStudentWithSessionSlot
-

@@ -24,4 +24,3 @@ export function useFetchAllMajor(refresh) {
    }, [refresh])
    return { majors, loading } // array
 }
-

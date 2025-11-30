@@ -87,4 +87,3 @@ const facultyController = {
 }
 
 export default facultyController;
-
