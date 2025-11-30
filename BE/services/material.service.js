@@ -10,9 +10,14 @@ const MaterialService = {
                 meeting
             }
             // validate duplicate
-            const existingMaterial = await Material.findOne({ title, meeting })
+            const existingMaterial = await Material.findOne({ 
+                title: title, 
+                meeting: meeting,
+                content: content // Check thêm trường này
+            })
             if (existingMaterial) {
-                return null
+                console.log("File này đã tồn tại trong mục này rồi!");
+                return null;
             }
             const createdMaterial = await Material.create(payload)
             return createdMaterial

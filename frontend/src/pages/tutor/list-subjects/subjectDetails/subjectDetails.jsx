@@ -4,176 +4,200 @@ import { useParams } from 'react-router-dom'
 import CourseComponent from '@/components/tutor/courseDetail/course/courseComponent.jsx'
 import DetailComponent from '@/components/tutor/courseDetail/detail/detailComponent.jsx'
 import Button from '@/components/common/ui/button/buttonClickForm/button.jsx'
-import AddFile from './adjustment/adjustment.jsx' // Sửa đường dẫn cho đúng với dự án của bạn
+import AddFile from './adjustment/adjustment.jsx'
 import DeleteConfirm from '@/components/common/ui/modal/deleteConfirm.jsx'
+import { createNewMaterial, deleteMaterial, updateMaterial } from '@/services/materialService'; 
 
 import { useFetchMeetingById } from '@/services/fetchAPI/useFetchMeetingById'
 
 const SubjectDetails = () => {
    const { id } = useParams()
-   const { data: meeting, loading: loadingMeeting } = useFetchMeetingById(id, id)
+   // Thêm refresh để reload lại data sau khi Save thành công
+   const [refresh, setRefresh] = useState(false);
+   const { data: meeting, loading: loadingMeeting } = useFetchMeetingById(refresh, id)
 
    const [isEditing, setIsEditing] = useState(false)
    const [status, setStatus] = useState('course')
    const [activeSectionId, setActiveSectionId] = useState(null)
    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
    const [itemToDelete, setItemToDelete] = useState(null)
+   
    const [sections, setSections] = useState([])
+   
+   // --- STATE MỚI ĐỂ QUẢN LÝ HOÀN TÁC ---
+   const [backupSections, setBackupSections] = useState([]); // Lưu trạng thái cũ
+   const [deletedIds, setDeletedIds] = useState([]);         // Lưu các ID cần xoá khi bấm Save
 
+   // 1. Map dữ liệu từ API (Chỉ chạy khi không ở chế độ Edit hoặc khi mới load)
    useEffect(() => {
-      // Chỉ chạy khi biến meeting đã có dữ liệu
-      if (meeting) {
-         // LƯU Ý: Bạn cần thay 'meeting.materials' bằng tên trường thật sự API trả về
-         // Ví dụ: meeting.documents, meeting.data, hoặc nếu meeting chính là mảng thì dùng meeting
+      if (meeting && !isEditing) {
          const rawData = meeting.materials || meeting.documents || []; 
 
          if (rawData.length > 0) {
              const groupedData = {};
 
-             // Bước 1: Duyệt qua từng bản ghi và gom nhóm
-             rawData.forEach(item => {
-                 const sectionTitle = item.title; // "Tài liệu buổi 1"
-                 const fileContent = item.content; // "Tên file..." (hoặc nội dung)
+            rawData.forEach(item => {
+               const sectionTitle = item.title; 
+               const fileObj = {
+                     _id: item._id,          
+                     name: item.content,    
+                     displayName: item.content.split('/').pop().split('-').slice(1).join('-') || item.content,
+                     isNew: false // Đánh dấu đây là file cũ từ DB
+               };
 
-                 // Nếu chưa có nhóm này thì tạo mảng rỗng
-                 if (!groupedData[sectionTitle]) {
-                     groupedData[sectionTitle] = [];
-                 }
+               if (!groupedData[sectionTitle]) {
+                  groupedData[sectionTitle] = [];
+               }
+               groupedData[sectionTitle].push(fileObj);
+            });
 
-                 // Đẩy nội dung vào nhóm
-                 groupedData[sectionTitle].push(fileContent);
-             });
-
-             // Bước 2: Chuyển đổi Object thành Array cho State
              const formattedSections = Object.keys(groupedData).map((key, index) => ({
-                 id: index + 1, // Tạo ID tạm cho section
+                 id: index + 1,
                  title: key,
-                 items: groupedData[key] // Mảng các string content
+                 items: groupedData[key] 
              }));
 
              setSections(formattedSections);
+         } else {
+             setSections([]);
          }
       }
-   }, [meeting]);
+   }, [meeting, isEditing]); // Thêm isEditing để tránh re-render đè dữ liệu đang sửa
 
-   // Hàm mở modal (được truyền xuống CourseComponent)
-   const handleOpenAddModal = sectionId => {
-      setActiveSectionId(sectionId)
-   }
-
-   // Hàm đóng modal
-   const handleCloseModal = () => {
-      setActiveSectionId(null)
-   }
-
-   // Hàm xử lý khi ấn nút "Tạo" trong Modal
-   const handleConfirmAddFile = () => {
-      if (activeSectionId !== null) {
-         // Logic thêm file vào section tương ứng
-         setSections(
-            sections.map(section => {
-               if (section.id === activeSectionId) {
-                  return { ...section, items: [...section.items, 'Tài liệu chưa có tiêu đề'] }
-               }
-               return section
-            })
-         )
-
-         // Đóng modal sau khi tạo xong
-         handleCloseModal()
-      }
-   }
+   // --- CÁC HÀM LOGIC ---
 
    const handleEdit = () => {
-      setIsEditing(true)
-   }
-
-   const handleSave = () => {
-      setIsEditing(false)
-      // Xử lý lưu dữ liệu ở đây
-      console.log('Đã lưu thay đổi')
+      // Backup dữ liệu hiện tại
+      setBackupSections(JSON.parse(JSON.stringify(sections)));
+      setDeletedIds([]); // Reset danh sách xoá chờ
+      setIsEditing(true);
    }
 
    const handleCancel = () => {
-      setIsEditing(false)
-      // Reset về dữ liệu ban đầu nếu cần
-      console.log('Đã hủy thay đổi')
+      // Khôi phục dữ liệu từ backup
+      setSections(backupSections);
+      setDeletedIds([]);
+      setIsEditing(false);
    }
 
-   const handleAddSection = () => {
-      const newSection = {
-         id: Date.now(), // Dùng timestamp để tránh trùng id
-         title: 'Mục mới (Click để sửa tên)',
-         items: [],
-      }
-      setSections([...sections, newSection])
-      console.log('Đã thêm section mới', newSection)
-   }
+   // --- LOGIC ADD FILE (SỬA ĐỔI: Không gọi API, chỉ update UI) ---
+   const handleConfirmAddFile = (fileData) => {
+      if (activeSectionId !== null && fileData){
+         
+         // Tạo một object tạm (chưa có ID thật từ DB)
+         const tempId = `temp-${Date.now()}`;
+         
+         const newFileObj = {
+             _id: tempId, 
+             name: "#", // Chưa có link server
+             displayName: fileData.name,
+             fileRaw: fileData, // Lưu file gốc để tí nữa Save thì upload
+             isNew: true // Đánh dấu để biết tí nữa cần Upload
+         };
 
-   const handleUpdateTitle = (sectionId, newTitle) => {
-      setSections(
-         sections.map(section => {
-            if (section.id === sectionId) {
-               return { ...section, title: newTitle }
+         setSections(prevSections => prevSections.map(sec => {
+            if(sec.id === activeSectionId){
+               return{
+                  ...sec,
+                  items: [...sec.items, newFileObj]
+               }
             }
-            return section
-         })
-      )
+            return sec;
+         }));
+
+         handleCloseModal();
+      }
    }
 
-   const handleDeleteClick = (sectionId, itemIndex) => {
-      setItemToDelete({ sectionId, itemIndex })
-      setDeleteModalOpen(true)
+   // --- LOGIC DELETE (SỬA ĐỔI: Không gọi API, chỉ ẩn khỏi UI) ---
+   const handleDeleteClick = (sectionId, materialId) => {
+      setItemToDelete({ sectionId, materialId });
+      setDeleteModalOpen(true);
    }
 
    const confirmDelete = () => {
       if (itemToDelete) {
-         const { sectionId, itemIndex } = itemToDelete
+         const { sectionId, materialId } = itemToDelete;
 
-         // Logic xóa cũ của bạn
-         setSections(
-            sections.map(section => {
+         // Nếu là file cũ (có ID thật từ DB), thêm vào danh sách chờ xoá
+         if (!materialId.toString().startsWith('temp-')) {
+             setDeletedIds(prev => [...prev, materialId]);
+         }
+
+         // Xoá khỏi giao diện (UI)
+         setSections(prevSections => 
+            prevSections.map(section => {
                if (section.id === sectionId) {
                   return {
                      ...section,
-                     items: section.items.filter((_, index) => index !== itemIndex),
-                  }
+                     items: section.items.filter(item => item._id !== materialId)
+                  };
                }
-               return section
+               return section;
             })
-         )
+         );
 
-         // Đóng modal và reset
-         setDeleteModalOpen(false)
-         setItemToDelete(null)
+         setDeleteModalOpen(false);
+         setItemToDelete(null);
       }
    }
 
-   const handleAddItem = sectionId => {
-      setSections(
-         sections.map(section => {
-            if (section.id === sectionId) {
-               return { ...section, items: [...section.items, 'Tài liệu mới'] }
-            }
-            return section
-         })
-      )
+   // --- LOGIC SAVE (SỬA ĐỔI: Xử lý tất cả ở đây) ---
+   const handleSave = async () => {
+      try {
+         // 1. Xử lý XOÁ các file trong danh sách chờ
+         if (deletedIds.length > 0) {
+             const deletePromises = deletedIds.map(id => deleteMaterial(id));
+             await Promise.all(deletePromises);
+         }
+
+         // 2. Xử lý UPLOAD các file mới & UPDATE Title
+         const updatePromises = [];
+
+         for (const section of sections) {
+             for (const item of section.items) {
+                 
+                 // Trường hợp 1: File Mới -> Upload
+                 if (item.isNew && item.fileRaw) {
+                     // Upload file mới
+                     updatePromises.push(
+                         createNewMaterial(section.title, item.fileRaw, id)
+                     );
+                 } 
+                 // Trường hợp 2: File Cũ -> Update Title (nếu title section đổi)
+                 else if (!item.isNew) {
+                     // Chỉ gọi update title để đồng bộ
+                     updatePromises.push(
+                         updateMaterial(item._id, { title: section.title })
+                     );
+                 }
+             }
+         }
+
+         await Promise.all(updatePromises);
+         
+         alert("Lưu thay đổi thành công!");
+         setIsEditing(false);
+         setDeletedIds([]);
+         setRefresh(prev => !prev); // Trigger reload dữ liệu mới nhất từ Server
+
+      } catch (error) {
+         console.error("Lỗi khi lưu:", error);
+         alert("Có lỗi xảy ra. Một số thao tác có thể chưa được lưu.");
+      }
    }
 
-   const handleDeleteItem = (sectionId, itemIndex) => {
-      setSections(
-         sections.map(section => {
-            if (section.id === sectionId) {
-               return {
-                  ...section,
-                  items: section.items.filter((_, index) => index !== itemIndex),
-               }
-            }
-            return section
-         })
-      )
-   }
+   // ... Các hàm phụ trợ giữ nguyên ...
+   const handleOpenAddModal = sectionId => setActiveSectionId(sectionId);
+   const handleCloseModal = () => setActiveSectionId(null);
+   const handleAddSection = () => {
+      setSections([...sections, { id: Date.now(), title: 'Mục mới', items: [] }]);
+   };
+   const handleUpdateTitle = (sectionId, newTitle) => {
+      setSections(sections.map(s => s.id === sectionId ? { ...s, title: newTitle } : s));
+   };
 
+   // Render
    const renderContent = () => {
       switch (status) {
          case 'course':
@@ -194,64 +218,43 @@ const SubjectDetails = () => {
       }
    }
 
-   const editButtonClassName = `custom-btn-edit ${status === 'schedule' ? 'hidden' : ''}`
-
    return (
       <div className="subject-details-wrapper">
          <div className="subject-details-container">
+            {/* Header */}
             <div className="header-section">
                <h1 className="subject-title">
-                  {loadingMeeting
-                     ? 'Đang tải...'
-                     : meeting && meeting.title_meeting
-                       ? meeting.title_meeting
-                       : 'Môn học không tồn tại'}
+                  {loadingMeeting ? 'Đang tải...' : meeting?.title_meeting || 'Môn học'}
                </h1>
                {!isEditing ? (
-                  <button onClick={handleEdit} className="custom-btn-edit">
-                     Chỉnh sửa
-                  </button>
+                  <button onClick={handleEdit} className="custom-btn-edit">Chỉnh sửa</button>
                ) : (
                   <div className="action-buttons">
-                     <button onClick={handleSave} className="custom-btn-save">
-                        Lưu
-                     </button>
-                     <button onClick={handleCancel} className="custom-btn-cancel">
-                        Hủy
-                     </button>
+                     <button onClick={handleSave} className="custom-btn-save">Lưu</button>
+                     <button onClick={handleCancel} className="custom-btn-cancel">Hủy</button>
                   </div>
                )}
             </div>
 
+            {/* Tabs */}
             <div className="tabs-container">
-               <Button
-                  className={`custom-tab-btn ${status === 'course' ? 'active' : ''}`}
-                  onClick={() => setStatus('course')}
-               >
-                  Khóa học
-               </Button>
-
-               <Button
-                  className={`custom-tab-btn ${status === 'schedule' ? 'active' : ''}`}
-                  onClick={() => setStatus('schedule')}
-               >
-                  Lịch giảng dạy
-               </Button>
+               <Button className={`custom-tab-btn ${status === 'course' ? 'active' : ''}`} onClick={() => setStatus('course')}>Khóa học</Button>
+               <Button className={`custom-tab-btn ${status === 'schedule' ? 'active' : ''}`} onClick={() => setStatus('schedule')}>Lịch giảng dạy</Button>
             </div>
 
             <div className="content-body">{renderContent()}</div>
          </div>
 
          <AddFile
-            isOpen={activeSectionId !== null} // Mở khi có ID section active
+            isOpen={activeSectionId !== null} 
             onClose={handleCloseModal}
             onConfirm={handleConfirmAddFile}
          />
 
          <DeleteConfirm
             isOpen={deleteModalOpen}
-            onClose={() => setDeleteModalOpen(false)} // Đóng khi bấm Hủy
-            onConfirm={confirmDelete} // Xóa khi bấm xác nhận
+            onClose={() => setDeleteModalOpen(false)} 
+            onConfirm={confirmDelete} 
          />
       </div>
    )

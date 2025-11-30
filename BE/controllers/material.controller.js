@@ -1,10 +1,18 @@
 import MaterialService from '../services/material.service.js';
 import { sendResponse } from '../helper/sendResponse.js';
+import { connect } from 'mongoose';
 
 const MaterialController = {
     createMaterial: async(req, res) => {
-        const { title, content, meeting } = req.body
-        if(!title || !content || !meeting) {
+        
+        console.log("=== DEBUG UPLOAD ===");
+        console.log("Body (Text):", req.body);
+        console.log("File (Binary):", req.file);
+
+        const { title, meeting } = req.body;
+        const file = req.file;
+
+        if(!title || !meeting) {
             return sendResponse(res, {
                 status: 400,
                 message: 'title, content, and meeting are required',
@@ -12,7 +20,11 @@ const MaterialController = {
                 EC: -1
             })
         }
+        const content = file.originalname;
+        console.log("File Original name: ", content);
+
         const response = await MaterialService.createMaterialService(title, content, meeting)
+        console.log("RESPONSE: ", response)
         if(response) return sendResponse(res, {
             status: 201,
             message: 'Create material success',
