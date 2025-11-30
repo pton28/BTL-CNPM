@@ -21,7 +21,7 @@ export function useFetchAllMeeting(refresh) {
          setLoading(true)
          try {
             // 1. Dùng Promise.all để gọi 2 API cùng lúc và đợi tất cả xong
-            const [resApptSt, resMt, resTutor] = await Promise.all([
+            const [resApptSt, resMt] = await Promise.all([
                axios.get(`${BASE_API}/student-with-meeting/${student_id}`),
                axios.get(`${BASE_API}/meeting`),
             ])
@@ -43,7 +43,7 @@ export function useFetchAllMeeting(refresh) {
                   id: appt._id,
                   subject: appt.title_meeting,
                   lecturer: appt.tutor.full_name,
-                  department: appt.major.name,
+                  department: appt.major?.name || 'Chưa cập nhật',
                   mode: appt.method,
                   status: status,
                   date_of_event: formatDate(appt.date_of_event),
@@ -51,9 +51,6 @@ export function useFetchAllMeeting(refresh) {
                finalResult.push(obj)
             })
 
-            // console.log('Dữ liệu sau khi xử lý:', finalResult)
-
-            // 4. Lưu dữ liệu ĐÃ XỬ LÝ vào state
             setProcessedData(finalResult)
          } catch (err) {
             console.log('Error fetching data', err)
