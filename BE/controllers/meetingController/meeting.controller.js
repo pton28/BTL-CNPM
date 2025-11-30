@@ -145,7 +145,6 @@ const meetingController = {
 
     getMyMeetings: async (req, res) => {
         try {
-            // Lấy ID từ đường dẫn URL (ví dụ: /meeting/tutor/123 -> id = 123)
             const { tutorId } = req.params;
 
             if (!tutorId) {

@@ -162,37 +162,35 @@ const studentWithSessionSlotService = {
         }
     },
 
-    getStudentsBySessionId: async (req, res) => {
+    getStudentWithSessionSlotBySessionID: async (sessionId) => {
         try {
-            const { sessionId } = req.params; // Lấy ID buổi học từ URL
-
-            const result =
-                await studentWithSessionSlotService.getStudentsBySessionIdService(
-                    sessionId
-                );
-
-            if (result) {
-                return sendResponse(res, {
-                    status: 200,
-                    message: "Get students by session success",
-                    data: result,
-                    EC: 0,
-                });
-            } else {
-                return sendResponse(res, {
-                    status: 404,
-                    message: "No students found or error",
-                    data: [],
-                    EC: 0,
-                });
+            if (!mongoose.Types.ObjectId.isValid(sessionId)) {
+                return null;
             }
+            const response = await StudentWithSessionSlot.find({
+                session: sessionId,
+            })
+                .populate({
+                    path: "student",
+                    select: "id_student full_name email ",
+                })
+                .populate({
+                    path: "meeting",
+                    select: "title_meeting date_of_event method",
+                })
+                .populate({
+                    path: "session",
+                    select: "title",
+                })
+                .populate({
+                    path: "slot",
+                    select: "start_time end_time location_or_link duration date",
+                })
+                .sort({ createdAt: -1 });
+            return response;
         } catch (error) {
-            return sendResponse(res, {
-                status: 500,
-                message: "Internal Server Error",
-                EC: -1,
-                data: null,
-            });
+            console.log("Error in getStudentWithSessionSlotBySessionID", error);
+            return null;
         }
     },
 };

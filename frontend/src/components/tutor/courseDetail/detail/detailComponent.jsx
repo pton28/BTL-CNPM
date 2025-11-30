@@ -1,141 +1,119 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import { useParams } from 'react-router-dom'
 import './detailComponent.scss'
 import Button from '@/components/common/ui/button/buttonClickForm/button.jsx'
-import { FaChevronLeft, FaTimes } from 'react-icons/fa'
-// import axios from 'axios'
+import { FaChevronLeft, FaTimes } from 'react-icons/fa' // Thêm FaTimes cho nút đóng modal
+import axios from '@/services/axios.customize'
+import { BASE_API } from '@/constants'
 
-// --- 1. DỮ LIỆU GIẢ (MOCK DATA) ---
-const MOCK_SCHEDULES = [
-   {
-      id: 1,
-      date: '31/10/2025',
-      time: '07:00 - 09:00',
-      method: 'Trực tiếp',
-      location: 'H6 - 203 / Cơ sở 2',
-      courseName: 'Kỹ năng Chuyên nghiệp cho Kỹ sư',
-   },
-   {
-      id: 2,
-      date: '20/10/2025',
-      time: '07:00 - 09:00',
-      method: 'Trực tuyến',
-      location: 'Google Meet',
-      courseName: 'Kỹ năng Chuyên nghiệp cho Kỹ sư',
-   },
-   {
-      id: 3,
-      date: '15/11/2025', // Thay đổi ngày để kiểm tra sắp xếp
-      time: '07:00 - 09:00',
-      method: 'Trực tiếp',
-      location: 'H6 - 203 / Cơ sở 2',
-      courseName: 'Kỹ năng Chuyên nghiệp cho Kỹ sư',
-   },
-   {
-      id: 4, // Lịch thứ 4 để kiểm tra phân trang
-      date: '05/12/2025',
-      time: '09:00 - 11:00',
-      method: 'Trực tuyến',
-      location: 'Zoom Meeting',
-      courseName: 'Kỹ năng Chuyên nghiệp cho Kỹ sư',
-   },
-   {
-      id: 5, // Lịch thứ 5 để kiểm tra phân trang
-      date: '01/12/2025',
-      time: '09:00 - 11:00',
-      method: 'Trực tuyến',
-      location: 'Zoom Meeting',
-      courseName: 'Kỹ năng Chuyên nghiệp cho Kỹ sư',
-   },
-]
+const ITEMS_PER_PAGE = 5
 
-const MOCK_STUDENTS_BY_SESSION = [
-   // ... (giữ nguyên MOCK_STUDENTS_BY_SESSION)
-   {
-      id: 101,
-      name: 'Nguyễn Văn A',
-      mssv: '2313001',
-      email: 'a.nguyen@hcmut.edu.vn',
-      status: 'pending',
-      progress: '',
-      comment: '',
-   },
-   {
-      id: 102,
-      name: 'Trần Thị B',
-      mssv: '2313002',
-      email: 'b.tran@hcmut.edu.vn',
-      status: 'pending',
-      progress: '',
-      comment: '',
-   },
-   {
-      id: 103,
-      name: 'Lê Văn C',
-      mssv: '2313003',
-      email: 'c.le@hcmut.edu.vn',
-      status: 'done',
-      progress: '80',
-      comment: 'Tốt',
-   },
-]
-
-// Hằng số phân trang
-const ITEMS_PER_PAGE = 3
 const parseDate = dateStr => {
+   if (!dateStr || dateStr === 'Chưa xếp lịch') return new Date(0)
    const [day, month, year] = dateStr.split('/')
    return new Date(year, month - 1, day)
 }
 
 const DetailComponent = () => {
-   // --- STATE QUẢN LÝ DỮ LIỆU ---
+   const { id: meetingId } = useParams()
 
-   // 1. Danh sách lịch giảng dạy
-   const [schedules] = useState(MOCK_SCHEDULES) // Không cần setSchedules nữa
-
-   // 2. Danh sách sinh viên của buổi học đang chọn
+   // --- STATE DỮ LIỆU ---
+   const [schedules, setSchedules] = useState([])
+   const [loadingSchedules, setLoadingSchedules] = useState(true)
    const [students, setStudents] = useState([])
+   const [loadingStudents, setLoadingStudents] = useState(false)
 
-   // State UI
-   const [currentView, setCurrentView] = useState('list') // 'list' | 'students'
+   // --- STATE UI ---
+   const [currentView, setCurrentView] = useState('list')
    const [selectedSession, setSelectedSession] = useState(null)
+   const [currentPage, setCurrentPage] = useState(1)
 
-   // State Modal
+   // --- STATE MODAL ĐÁNH GIÁ (MỚI THÊM) ---
    const [isModalOpen, setIsModalOpen] = useState(false)
    const [editingStudent, setEditingStudent] = useState(null)
    const [formData, setFormData] = useState({ progress: '', comment: '' })
 
-   // *** STATE PHÂN TRANG MỚI ***
-   const [currentPage, setCurrentPage] = useState(1)
+   // 1. CALL API LẤY SESSION VÀ SLOT
+   useEffect(() => {
+      const fetchSchedule = async () => {
+         if (!meetingId) return
+         setLoadingSchedules(true)
+         try {
+            const resSession = await axios.get(`${BASE_API}/session/meeting/${meetingId}`)
+            const sessionsData = resSession.data.data || []
 
-   // --- LOGIC SẮP XẾP VÀ PHÂN TRANG ---
-   const sortedAndPaginatedSchedules = useMemo(() => {
-      // 1. Sắp xếp: Ưu tiên lịch sắp xảy ra gần nhất (ngày lớn hơn => gần hiện tại hơn)
-      const sorted = [...schedules].sort((a, b) => {
-         const dateA = parseDate(a.date)
-         const dateB = parseDate(b.date)
-         // Sắp xếp giảm dần để ngày lớn nhất (gần nhất) lên đầu
-         return dateB - dateA
-      })
+            const promises = sessionsData.map(async session => {
+               try {
+                  const resSlot = await axios.get(`${BASE_API}/session-slot/session/${session._id}`)
+                  const slots = resSlot.data.data || []
+                  const slot = slots[0] || {}
 
-      // 2. Phân trang
-      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-      const endIndex = startIndex + ITEMS_PER_PAGE
+                  return {
+                     id: session._id,
+                     title: session.title,
+                     date: slot.date
+                        ? new Date(slot.date).toLocaleDateString('en-GB')
+                        : 'Chưa xếp lịch',
+                     time:
+                        slot.start_time && slot.end_time
+                           ? `${slot.start_time} - ${slot.end_time}`
+                           : '...',
+                     method:
+                        slot.location_or_link && slot.location_or_link.includes('http')
+                           ? 'Trực tuyến'
+                           : 'Trực tiếp',
+                     location: slot.location_or_link || 'Chưa cập nhật',
+                  }
+               } catch (err) {
+                  return {
+                     id: session._id,
+                     title: session.title,
+                     date: 'Lỗi',
+                     time: '...',
+                     method: '...',
+                     location: '...',
+                  }
+               }
+            })
 
-      // Dữ liệu cho trang hiện tại
-      return sorted.slice(startIndex, endIndex)
-   }, [schedules, currentPage])
+            const results = await Promise.all(promises)
+            setSchedules(results)
+         } catch (error) {
+            console.error('Lỗi lấy lịch học:', error)
+         } finally {
+            setLoadingSchedules(false)
+         }
+      }
+      fetchSchedule()
+   }, [meetingId])
 
-   const totalPages = Math.ceil(schedules.length / ITEMS_PER_PAGE)
-
-   // Mảng chứa số trang: [1, 2, 3, ...]
-   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1)
-
-   // --- HÀM XỬ LÝ LOGIC ---
-
+   // 2. CALL API LẤY SINH VIÊN KHI CLICK
    const handleViewStudents = async session => {
       setSelectedSession(session)
-      setStudents(MOCK_STUDENTS_BY_SESSION)
       setCurrentView('students')
+      setLoadingStudents(true)
+
+      try {
+         const res = await axios.get(`${BASE_API}/student-with-session-slot/session/${session.id}`)
+         const rawData = res.data.data || []
+
+         const studentList = rawData.map(item => ({
+            id: item.student?._id,
+            name: item.student?.full_name || item.student?.name || 'Không tên',
+            mssv: item.student?.id_student || '---',
+            email: item.student?.email || '',
+            // --- THÊM DỮ LIỆU UI MẶC ĐỊNH ---
+            status: 'pending', // Mặc định là chưa ghi nhận
+            progress: '',
+            comment: '',
+         }))
+         setStudents(studentList)
+      } catch (error) {
+         console.error('Lỗi lấy sinh viên:', error)
+         setStudents([])
+      } finally {
+         setLoadingStudents(false)
+      }
    }
 
    const handleBackToList = () => {
@@ -144,6 +122,7 @@ const DetailComponent = () => {
       setCurrentView('list')
    }
 
+   // --- LOGIC XỬ LÝ MODAL ĐÁNH GIÁ (UI ONLY) ---
    const handleOpenAssessModal = student => {
       setEditingStudent(student)
       setFormData({
@@ -153,14 +132,10 @@ const DetailComponent = () => {
       setIsModalOpen(true)
    }
 
-   const handleSaveAssessment = async () => {
+   const handleSaveAssessment = () => {
       if (!editingStudent) return
 
-      console.log('Lưu đánh giá:', {
-         studentId: editingStudent.id,
-         ...formData,
-      })
-
+      // Cập nhật state cục bộ (Giả lập việc lưu thành công)
       const updatedStudents = students.map(s =>
          s.id === editingStudent.id ? { ...s, status: 'done', ...formData } : s
       )
@@ -168,123 +143,17 @@ const DetailComponent = () => {
       setIsModalOpen(false)
    }
 
-   const handlePageChange = page => {
-      if (page >= 1 && page <= totalPages) {
-         setCurrentPage(page)
-      }
-   }
+   // --- LOGIC PHÂN TRANG & RENDER ---
+   const sortedAndPaginatedSchedules = useMemo(() => {
+      const sorted = [...schedules].sort((a, b) => parseDate(b.date) - parseDate(a.date))
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+      return sorted.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+   }, [schedules, currentPage])
 
-   // --- CÁC PHẦN RENDER GIAO DIỆN ---
+   const totalPages = Math.ceil(schedules.length / ITEMS_PER_PAGE)
+   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1)
 
-   const renderScheduleList = () => (
-      <div className="schedule-list-view">
-         <div className="schedule-cards-container">
-            {/* SỬ DỤNG DỮ LIỆU ĐÃ SẮP XẾP VÀ PHÂN TRANG */}
-            {sortedAndPaginatedSchedules.map(item => (
-               <div key={item.id} className="schedule-card">
-                  <div className="card-left">
-                     <h3 className="date-title">Ngày {item.date}</h3>
-                     <div className="info-row">
-                        <span className="label">Thời gian học</span>
-                        <div className="value-box">{item.time}</div>
-                     </div>
-                     <div className="info-row">
-                        <span className="label">Phương thức</span>
-                        <div className="value-box">{item.method}</div>
-                     </div>
-                     <div className="info-row">
-                        <span className="label">Địa điểm</span>
-                        <div className="value-box">{item.location}</div>
-                     </div>
-                  </div>
-                  <div className="card-right">
-                     <Button className="btn-view-list" onClick={() => handleViewStudents(item)}>
-                        Danh sách sinh viên
-                     </Button>
-                  </div>
-               </div>
-            ))}
-         </div>
-
-         {/* PHẦN PAGINATION ĐÃ CẬP NHẬT */}
-         {totalPages > 1 && (
-            <div className="pagination">
-               <span onClick={() => handlePageChange(currentPage - 1)}>&lt;</span>
-
-               {pageNumbers.map(page => (
-                  <span
-                     key={page}
-                     className={page === currentPage ? 'active' : ''}
-                     onClick={() => handlePageChange(page)}
-                  >
-                     {page}
-                  </span>
-               ))}
-
-               <span onClick={() => handlePageChange(currentPage + 1)}>&gt;</span>
-            </div>
-         )}
-      </div>
-   )
-
-   // ... (renderStudentList và renderAssessModal giữ nguyên)
-   const renderStudentList = () => (
-      <div className="student-list-view">
-         <div className="back-nav" onClick={handleBackToList}>
-            <FaChevronLeft /> Quay lại lịch giảng dạy
-         </div>
-         {/* ... (các phần còn lại) */}
-         <div className="view-header">
-            <h2>Danh sách sinh viên - {selectedSession?.date}</h2>
-         </div>
-         <div className="session-info-panel">
-            <div className="info-grid">
-               <div className="info-item">
-                  <span className="label">Thời gian</span>
-                  <div className="value-box">{selectedSession?.time}</div>
-               </div>
-               <div className="info-item">
-                  <span className="label">Phương thức</span>
-                  <div className="value-box">{selectedSession?.method}</div>
-               </div>
-               <div className="info-item full-width">
-                  <span className="label">Địa điểm</span>
-                  <div className="value-box">{selectedSession?.location}</div>
-               </div>
-            </div>
-         </div>
-         <div className="student-table-section">
-            <h3>Danh sách sinh viên tham gia</h3>
-            <table className="student-table">
-               <thead>
-                  <tr>
-                     <th>Tên sinh viên</th>
-                     <th>MSSV</th>
-                     <th>Email trường</th>
-                     <th style={{ textAlign: 'right' }}>Trạng thái</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  {students.map(student => (
-                     <tr key={student.id}>
-                        <td>{student.name}</td>
-                        <td>{student.mssv}</td>
-                        <td style={{ fontWeight: 'bold' }}>{student.email}</td>
-                        <td style={{ textAlign: 'right' }}>
-                           <button
-                              className={`status-btn ${student.status}`}
-                              onClick={() => handleOpenAssessModal(student)}
-                           >
-                              {student.status === 'pending' ? 'Chưa ghi nhận' : 'Đã ghi nhận'}
-                           </button>
-                        </td>
-                     </tr>
-                  ))}
-               </tbody>
-            </table>
-         </div>
-      </div>
-   )
+   // --- RENDER COMPONENTS ---
 
    const renderAssessModal = () => {
       if (!isModalOpen || !editingStudent) return null
@@ -343,9 +212,148 @@ const DetailComponent = () => {
       )
    }
 
+   const renderScheduleList = () => (
+      <div className="schedule-list-view">
+         {loadingSchedules ? (
+            <p style={{ textAlign: 'center', padding: '20px' }}>Đang tải dữ liệu...</p>
+         ) : schedules.length === 0 ? (
+            <p style={{ textAlign: 'center', padding: '20px' }}>
+               Môn học này chưa có buổi học nào.
+            </p>
+         ) : (
+            <>
+               <div className="schedule-cards-container">
+                  {sortedAndPaginatedSchedules.map(item => (
+                     <div key={item.id} className="schedule-card">
+                        <div className="card-left">
+                           <h3 className="date-title">Ngày {item.date}</h3>
+                           <div className="info-row">
+                              <span className="label">Bài:</span>
+                              <div className="value-box" style={{ fontWeight: 'bold' }}>
+                                 {item.title}
+                              </div>
+                           </div>
+                           <div className="info-row">
+                              <span className="label">Giờ:</span>
+                              <div className="value-box">{item.time}</div>
+                           </div>
+                           <div className="info-row">
+                              <span className="label">Nơi học:</span>
+                              <div className="value-box">{item.location}</div>
+                           </div>
+                        </div>
+                        <div className="card-right">
+                           <Button
+                              className="btn-view-list"
+                              onClick={() => handleViewStudents(item)}
+                           >
+                              Danh sách sinh viên
+                           </Button>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+
+               {totalPages > 1 && (
+                  <div className="pagination">
+                     <span onClick={() => setCurrentPage(p => Math.max(1, p - 1))}>&lt;</span>
+                     {pageNumbers.map(page => (
+                        <span
+                           key={page}
+                           className={page === currentPage ? 'active' : ''}
+                           onClick={() => setCurrentPage(page)}
+                        >
+                           {page}
+                        </span>
+                     ))}
+                     <span onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}>
+                        &gt;
+                     </span>
+                  </div>
+               )}
+            </>
+         )}
+      </div>
+   )
+
+   const renderStudentList = () => (
+      <div className="student-list-view">
+         <div className="back-nav" onClick={handleBackToList}>
+            <FaChevronLeft /> Quay lại danh sách buổi học
+         </div>
+         <div className="view-header">
+            <h2>Danh sách tham gia - {selectedSession?.title}</h2>
+         </div>
+
+         {/* Thông tin buổi học ở trên cùng (Giống _tmp) */}
+         <div className="session-info-panel">
+            <div className="info-grid">
+               <div className="info-item">
+                  <span className="label">Thời gian</span>
+                  <div className="value-box">{selectedSession?.time}</div>
+               </div>
+               <div className="info-item">
+                  <span className="label">Phương thức</span>
+                  <div className="value-box">{selectedSession?.method}</div>
+               </div>
+               <div className="info-item full-width">
+                  <span className="label">Địa điểm</span>
+                  <div className="value-box">{selectedSession?.location}</div>
+               </div>
+            </div>
+         </div>
+
+         <div className="student-table-section">
+            {loadingStudents ? (
+               <p>Đang tải...</p>
+            ) : (
+               <table className="student-table">
+                  <thead>
+                     <tr>
+                        <th>STT</th>
+                        <th>Tên sinh viên</th>
+                        <th>MSSV</th>
+                        <th>Email</th>
+                        <th style={{ textAlign: 'right' }}>Trạng thái</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {students.length === 0 ? (
+                        <tr>
+                           <td colSpan="5" style={{ textAlign: 'center' }}>
+                              Chưa có sinh viên đăng ký.
+                           </td>
+                        </tr>
+                     ) : (
+                        students.map((st, i) => (
+                           <tr key={st.id || i}>
+                              <td>{i + 1}</td>
+                              <td style={{ fontWeight: 'bold' }}>{st.name}</td>
+                              <td>{st.mssv}</td>
+                              <td>{st.email}</td>
+                              <td style={{ textAlign: 'right' }}>
+                                 {/* NÚT TRẠNG THÁI */}
+                                 <button
+                                    className={`status-btn ${st.status}`}
+                                    onClick={() => handleOpenAssessModal(st)}
+                                 >
+                                    {st.status === 'pending' ? 'Chưa ghi nhận' : 'Đã ghi nhận'}
+                                 </button>
+                              </td>
+                           </tr>
+                        ))
+                     )}
+                  </tbody>
+               </table>
+            )}
+         </div>
+      </div>
+   )
+
    return (
       <div className="detail-component-wrapper">
          {currentView === 'list' ? renderScheduleList() : renderStudentList()}
+         {/* Render Modal */}
          {renderAssessModal()}
       </div>
    )

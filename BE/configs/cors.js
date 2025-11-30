@@ -1,11 +1,11 @@
 import cors from "cors";
 import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 const corsOptions = {
-  origin: process.env.FE_URL,   //"http://localhost:3000"
-  credentials: true
+    origin: process.env.FE_URL,
+    credentials: true,
 };
 
 export default cors(corsOptions);
