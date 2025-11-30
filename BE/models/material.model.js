@@ -9,7 +9,12 @@ const materialSchema = new mongoose.Schema(
         },
         content: {
             type: String,
-            required: true,
+            required: false,
+            trim: true,
+        },
+        file: {
+            type: String,
+            required: false,
             trim: true,
         },
         meeting: {
