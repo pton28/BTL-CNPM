@@ -28,7 +28,7 @@ const HeaderStudent = () => {
       if (!name) return
 
       setActiveItem(name) // Set active ngay khi click
-      
+
       switch (name) {
          case 'home':
             navigate('/')
@@ -56,32 +56,32 @@ const HeaderStudent = () => {
 
    return (
       <div className="header-tutor-container">
-         <img 
-            src={logo} 
-            alt="logo" 
-            className="header-logo" 
-            data-name="home" 
-            onClick={e => mapNavigate(e)} 
+         <img
+            src={logo}
+            alt="logo"
+            className="header-logo"
+            data-name="home"
+            onClick={e => mapNavigate(e)}
          />
          <div className="header-tutor-content">
             <div className="content-left">
-               <div 
+               <div
                   className={`nav-item ${activeItem === 'home' ? 'item-active' : ''}`}
-                  data-name="home" 
+                  data-name="home"
                   onClick={e => mapNavigate(e)}
                >
                   Trang chủ
                </div>
-               <div 
+               <div
                   className={`nav-item ${activeItem === 'search-course' ? 'item-active' : ''}`}
-                  data-name="search-course" 
+                  data-name="search-course"
                   onClick={e => mapNavigate(e)}
                >
                   Tìm kiếm khóa học
                </div>
-               <div 
+               <div
                   className={`nav-item ${activeItem === 'list-appointment' ? 'item-active' : ''}`}
-                  data-name="list-appointment" 
+                  data-name="list-appointment"
                   onClick={e => mapNavigate(e)}
                >
                   Danh sách của tôi
@@ -89,12 +89,11 @@ const HeaderStudent = () => {
             </div>
 
             <div className="content-right">
-               <div 
+               <div
                   className={`nav-item ${activeItem === 'profile' ? 'item-active' : ''}`}
-                 
                   onClick={e => mapNavigate(e)}
                >
-                  <img src={Account} alt="account" className="account-icon" data-name='account'/>
+                  <img src={Account} alt="account" className="account-icon" data-name="account" />
                </div>
             </div>
          </div>

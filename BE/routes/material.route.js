@@ -9,4 +9,3 @@ routeMaterial.put('/:id', MaterialController.updateMaterial)
 routeMaterial.delete('/:id', MaterialController.deleteMaterial)
 
 export default routeMaterial
-

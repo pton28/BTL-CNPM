@@ -112,4 +112,3 @@ const studentWithSessionSlotController = {
 }
 
 export default studentWithSessionSlotController;
-

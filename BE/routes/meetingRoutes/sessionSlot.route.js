@@ -10,4 +10,3 @@ routeSessionSlot.put('/:id', sessionSlotController.updateSessionSlot)
 routeSessionSlot.delete('/:id', sessionSlotController.deleteSessionSlot)
 
 export default routeSessionSlot
-

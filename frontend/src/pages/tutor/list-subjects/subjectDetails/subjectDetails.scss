@@ -6,129 +6,129 @@ $bg-gray: #f5f5f5;
 $danger-red: #dc3545;
 $text-color: #333;
 $border-color: #e0e0e0;
-$link-blue: #2196F3;
+$link-blue: #2196f3;
 
 // --- MAIN WRAPPER ---
 .subject-details-wrapper {
-  background-color: $bg-gray;
-  min-height: 100vh;
-  padding: 40px 0;
-  display: flex;
-  justify-content: center;
+   background-color: $bg-gray;
+   min-height: 100vh;
+   padding: 40px 0;
+   display: flex;
+   justify-content: center;
 }
 
 // --- CONTAINER CHÍNH ---
 .subject-details-container {
-  background-color: white;
-  width: 100%;
-  max-width: 1200px;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+   background-color: white;
+   width: 100%;
+   max-width: 1200px;
+   border-radius: 16px;
+   padding: 40px;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
-  // 1. HEADER & BUTTONS (Edit/Save/Cancel)
-  .header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-
-    .subject-title {
-      font-size: 24px;
-      font-weight: 600;
-      color: $text-color;
-      margin: 0;
-    }
-
-    .action-buttons {
+   // 1. HEADER & BUTTONS (Edit/Save/Cancel)
+   .header-section {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-    }
+      margin-bottom: 30px;
 
-    // Mixin cho button base
-    %btn-base {
-      padding: 8px 24px;
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid transparent;
+      .subject-title {
+         font-size: 24px;
+         font-weight: 600;
+         color: $text-color;
+         margin: 0;
+      }
+
+      .action-buttons {
+         display: flex;
+         align-items: center;
+         gap: 12px;
+      }
+
+      // Mixin cho button base
+      %btn-base {
+         padding: 8px 24px;
+         font-size: 14px;
+         font-weight: 500;
+         border-radius: 6px;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         border: 1px solid transparent;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+
+      .custom-btn-edit {
+         @extend %btn-base;
+         background-color: white;
+         color: $primary-blue;
+         border: 1px solid $primary-blue;
+
+         &:hover {
+            background-color: rgba($primary-blue, 0.1);
+            opacity: 0.9;
+         }
+      }
+
+      .custom-btn-save {
+         @extend %btn-base;
+         background-color: rgba(#00b087, 0.15); // Màu nền nhẹ hơn cho đẹp
+         color: #00b087;
+         border-color: #00b087;
+
+         &:hover {
+            background-color: #00b087;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 176, 135, 0.3);
+            transform: translateY(-1px);
+         }
+      }
+
+      .custom-btn-cancel {
+         @extend %btn-base;
+         background-color: rgba($danger-red, 0.15);
+         color: $danger-red;
+         border-color: $danger-red;
+
+         &:hover {
+            background-color: $danger-red;
+            color: white;
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+         }
+      }
+   }
+
+   // 2. TABS CONTAINER
+   .tabs-container {
       display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+      gap: 15px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid $border-color; // Thêm dòng kẻ dưới tab cho phân tách
+      padding-bottom: 10px;
 
-    .custom-btn-edit {
-      @extend %btn-base;
-      background-color: white;
-      color: $primary-blue;
-      border: 1px solid $primary-blue;
+      .custom-tab-btn {
+         // Style mặc định nằm trong component Button của bạn
+         // Style Active
+         &.active {
+            background-color: $primary-blue;
+            color: white;
+            border-color: $primary-blue;
+            box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
 
-      &:hover {
-        background-color: rgba($primary-blue, 0.1);
-        opacity: 0.9;
+            &:hover {
+               opacity: 0.9;
+            }
+         }
       }
-    }
+   }
 
-    .custom-btn-save {
-      @extend %btn-base;
-      background-color: rgba(#00B087, 0.15); // Màu nền nhẹ hơn cho đẹp
-      color: #00B087;
-      border-color: #00B087;
-
-      &:hover {
-        background-color: #00B087;
-        color: white;
-        box-shadow: 0 4px 8px rgba(0, 176, 135, 0.3);
-        transform: translateY(-1px);
-      }
-    }
-
-    .custom-btn-cancel {
-      @extend %btn-base;
-      background-color: rgba($danger-red, 0.15);
-      color: $danger-red;
-      border-color: $danger-red;
-
-      &:hover {
-        background-color: $danger-red;
-        color: white;
-        box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
-      }
-    }
-  }
-
-  // 2. TABS CONTAINER
-  .tabs-container {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid $border-color; // Thêm dòng kẻ dưới tab cho phân tách
-    padding-bottom: 10px;
-
-    .custom-tab-btn {
-      // Style mặc định nằm trong component Button của bạn
-      // Style Active
-      &.active {
-        background-color: $primary-blue;
-        color: white;
-        border-color: $primary-blue;
-        box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
-
-        &:hover {
-          opacity: 0.9;
-        }
-      }
-    }
-  }
-
-  // 3. CONTENT BODY (Chứa CourseComponent)
-  .content-body {
+   // 3. CONTENT BODY (Chứa CourseComponent)
+   .content-body {
       width: 100%;
 
-    // --- STYLE CHO LOGIC CHỈNH SỬA & HIỂN THỊ ---
+      // --- STYLE CHO LOGIC CHỈNH SỬA & HIỂN THỊ ---
       .course-content-wrapper {
          display: flex;
          flex-direction: column;
@@ -151,10 +151,10 @@ $link-blue: #2196F3;
             margin-top: 10px;
 
             &:hover {
-                  border-color: $primary-blue;
-                  color: $primary-blue;
-                  background-color: rgba($primary-blue, 0.05);
-                  transform: translateY(-2px); // Nổi lên nhẹ
+               border-color: $primary-blue;
+               color: $primary-blue;
+               background-color: rgba($primary-blue, 0.05);
+               transform: translateY(-2px); // Nổi lên nhẹ
             }
          }
          .section-block {
@@ -164,7 +164,7 @@ $link-blue: #2196F3;
             padding: 20px 24px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border: 1px solid #f0f0f0;
-          
+
             .section-header {
                display: flex;
                justify-content: space-between;
@@ -205,16 +205,16 @@ $link-blue: #2196F3;
                      transition: all 0.2s;
 
                      &:focus {
-                         border-color: $primary-blue; // Đổi màu xanh khi click vào
-                         background-color: #fff;
-                         box-shadow: 0 0 0 2px rgba($primary-blue, 0.1);
+                        border-color: $primary-blue; // Đổi màu xanh khi click vào
+                        background-color: #fff;
+                        box-shadow: 0 0 0 2px rgba($primary-blue, 0.1);
                      }
-                 }
+                  }
                }
 
                .btn-add-item-small {
-                  background-color: rgba(#00B087, 0.12);
-                  color: #00B087;
+                  background-color: rgba(#00b087, 0.12);
+                  color: #00b087;
                   border: none;
                   padding: 6px 12px;
                   border-radius: 4px;
@@ -224,7 +224,7 @@ $link-blue: #2196F3;
                   transition: all 0.2s;
 
                   &:hover {
-                     background-color: #00B087;
+                     background-color: #00b087;
                      color: white;
                      box-shadow: 0 4px 8px rgba(0, 176, 135, 0.3);
                      transform: translateY(-1px);
@@ -242,7 +242,7 @@ $link-blue: #2196F3;
                   justify-content: space-between;
                   align-items: center;
                   padding: 12px 10px;
-               
+
                   .item-content {
                      display: flex;
                      align-items: center;
@@ -295,19 +295,19 @@ $link-blue: #2196F3;
 
 // --- RESPONSIVE ---
 @include respond-to(md) {
-  .subject-details-container {
-    width: 95%;
-    padding: 20px;
+   .subject-details-container {
+      width: 95%;
+      padding: 20px;
 
-    .header-section {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 15px;
+      .header-section {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 15px;
 
-      .action-buttons {
-        width: 100%;
-        justify-content: flex-start;
+         .action-buttons {
+            width: 100%;
+            justify-content: flex-start;
+         }
       }
-    }
-  }
+   }
 }

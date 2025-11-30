@@ -73,7 +73,7 @@ $green-text: #00695c;
                gap: 12px;
 
                .date-title {
-                  color: #007bff;
+                  color: #0044cc;
                   font-size: 18px;
                   margin: 0 0 5px 0;
                }
@@ -85,7 +85,7 @@ $green-text: #00695c;
                   .label {
                      width: 100px;
                      font-weight: 600;
-                     color: #007bff;
+                     color: #0044cc;
                      font-size: 13px;
                   }
                   .value-box {
@@ -93,18 +93,6 @@ $green-text: #00695c;
                   }
                }
             }
-
-            // .card-right {
-            //    .btn-view-list {
-            //       background-color: #7ba4e7; // Màu xanh nhạt hơn nút chính
-            //       color: white;
-            //       border: none;
-            //       font-weight: 500;
-            //       &:hover {
-            //          background-color: $primary-blue;
-            //       }
-            //    }
-            // }
          }
       }
    }
