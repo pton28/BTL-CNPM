@@ -22,7 +22,7 @@ const meetingSchema = new mongoose.Schema({
     },
     major: {
         type: mongoose.Schema.Types.ObjectId,
-        require: true,
+        required: true,
         ref: 'Major'
     },
     session_count: {

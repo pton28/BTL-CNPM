@@ -119,7 +119,7 @@ const SearchCourse = () => {
             <div className="filter-container">
                <h3>Lĩnh vực</h3>
                <select value={filterObj.major} onChange={e => handleFilterChange('major', e.target.value)}>
-                  <option value="">Tất cả</option>
+                  <option value="" key={1}>Tất cả</option>
                   {loadingMajor ? (
                      <option disabled>Đang tải...</option>
                   ) : (
@@ -166,6 +166,7 @@ const SearchCourse = () => {
                      </tr>
                   </thead>
                   <tbody>
+                     {console.log('course', filteredCourses)}
                      {filteredCourses.map((item, index) => (
                         <tr key={index}>
                            <td title={item.subject}>{item.subject}</td>
