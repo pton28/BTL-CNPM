@@ -2,12 +2,14 @@ import './HeaderStudent.scss'
 import logo from '@/assets/common/logoBK.svg'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Account from '@/assets/student/header/User_cicrle.svg'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const HeaderStudent = () => {
    const navigate = useNavigate()
    const location = useLocation()
    const [activeItem, setActiveItem] = useState('home')
+   const [showDropdown, setShowDropdown] = useState(false)
+   const dropdownRef = useRef(null)
 
    // Cập nhật activeItem khi URL thay đổi
    useEffect(() => {
@@ -23,11 +25,25 @@ const HeaderStudent = () => {
       }
    }, [location.pathname])
 
+   // Đóng dropdown khi click bên ngoài
+   useEffect(() => {
+      const handleClickOutside = (event) => {
+         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setShowDropdown(false)
+         }
+      }
+
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => {
+         document.removeEventListener('mousedown', handleClickOutside)
+      }
+   }, [])
+
    const mapNavigate = e => {
       const name = e.target.dataset.name
       if (!name) return
 
-      setActiveItem(name) // Set active ngay khi click
+      setActiveItem(name)
 
       switch (name) {
          case 'home':
@@ -46,12 +62,24 @@ const HeaderStudent = () => {
             navigate('/student/profile')
             break
 
-         case 'account':
-            navigate('/student/history')
-            break
          default:
             break
       }
+   }
+
+   const handleAvatarClick = () => {
+      setShowDropdown(!showDropdown)
+   }
+
+   const handleProfileClick = () => {
+      setShowDropdown(false)
+      navigate('/student/profile')
+   }
+
+   const handleLogout = () => {
+      localStorage.removeItem('id')
+      localStorage.removeItem('token')
+      navigate('/pre-login')
    }
 
    return (
@@ -90,10 +118,29 @@ const HeaderStudent = () => {
 
             <div className="content-right">
                <div
-                  className={`nav-item ${activeItem === 'profile' ? 'item-active' : ''}`}
-                  onClick={e => mapNavigate(e)}
+                  className={`nav-item account-wrapper ${activeItem === 'profile' ? 'item-active' : ''}`}
+                  ref={dropdownRef}
                >
-                  <img src={Account} alt="account" className="account-icon" data-name="account" />
+                  <img 
+                     src={Account} 
+                     alt="account" 
+                     className="account-icon"
+                     onClick={handleAvatarClick}
+                  />
+                  
+                  {showDropdown && (
+                     <div className="account-dropdown">
+                        <div className="dropdown-item" onClick={handleProfileClick}>
+                           <span className="dropdown-icon"></span>
+                           <span>Thông tin cá nhân</span>
+                        </div>
+                        <div className="dropdown-divider"></div>
+                        <div className="dropdown-item logout" onClick={handleLogout}>
+                           <span className="dropdown-icon"></span>
+                           <span>Đăng xuất</span>
+                        </div>
+                     </div>
+                  )}
                </div>
             </div>
          </div>

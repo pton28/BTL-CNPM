@@ -18,6 +18,7 @@ import LoginTutor from '@/pages/tutor/login/LoginTutor.jsx'
 import ListSubjects from '@/pages/tutor/list-subjects/listSubjects.jsx'
 import SubjectDetails from '@/pages/tutor/list-subjects/subjectDetails/subjectDetails.jsx'
 import OpenClass from '@/pages/tutor/open-class/OpenClass.jsx'
+import ProfileStudent from '@/pages/student/profile/Profile.jsx'
 
 export const router = createBrowserRouter([
    {
@@ -44,6 +45,8 @@ export const router = createBrowserRouter([
                      { path: 'list-appointment/:id', element: <InnerAppointment /> },
 
                      { path: 'history', element: <HistoryAppointment /> },
+
+                     {path: 'profile', element: <ProfileStudent />}
                   ],
                },
             ],
