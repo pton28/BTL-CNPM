@@ -96,7 +96,7 @@ const DetailComponent = () => {
       try {
          const res = await axios.get(`${BASE_API}/student-with-session-slot/session/${session.id}`)
          const rawData = res.data.data || []
-
+         console.log(res)
          const studentList = rawData.map(item => ({
             id: item.student?._id,
             name: item.student?.full_name || item.student?.name || 'Không tên',

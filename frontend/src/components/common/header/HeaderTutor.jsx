@@ -11,17 +11,14 @@ const HeaderTutor = () => {
    const handleHome = () => navigate('/')
    const handleOpenClass = () => navigate('/tutor/open-class')
    const handleListClass = () => navigate('/tutor/list-subjects')
-   // const handleProfile = () => navigate('/tutor/profile')
+   const handleProfile = () => navigate('/tutor/profile')
 
    const handleLogout = () => {
       localStorage.clear()
       console.log('Đăng xuất thành công')
       navigate('/')
    }
-
-   const handleProfile = () => {
-      navigate('/profile')
-   }
+   
    return (
       <div className="header-tutor-container">
          <img src={logo} alt="logo" className="header-logo" onClick={handleHome} />

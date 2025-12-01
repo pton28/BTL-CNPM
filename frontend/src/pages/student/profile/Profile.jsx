@@ -1,36 +1,49 @@
 import { useState, useEffect } from 'react'
-import './profileTutor.scss'
+import './Profile.scss'
 import axios from '@/services/axios.customize'
 import { BASE_API } from '@/constants'
 
 
-const ProfileTutor = () => {
+const ProfileStudent = () => {
   // Hardcode data - bạn sẽ thay bằng axios sau
 
-  const [tutorData, setTutorData] = useState(null)
+  const [studentData, setStudentData] = useState(null)
   const [loading, setLoading] = useState(true)
 
+//     const studentData = {
+//     "_id": "692c4a7c8fb4ce3d52d9fe5a",
+//     "full_name": "Lâm Hoàng Vũ",
+//     "email": "vu.lamhoang05@hcmut.edu.vn",
+//     "password": "$2a$12$p49Q1oJm8bIYVQUpknMQJ.h9IV1C5uWil/3vhniv7/Ii5E50sZj6u",
+//     "faculty_id": {
+//       "_id": "69188d7948f8cffae6fe721a",
+//       "name": "Khoa học và Kỹ thuật Máy tính"
+//     },
+//     "role_id": 2,
+//     "is_active": true,
+//     "id_student": "stu 001"
+//   }
   useEffect(() => {
-    const fetchTutorProfile = async () => {
+    const fetchStudentProfile = async () => {
       try {
-        const tutorID = localStorage.getItem('id')
-        const res = await axios.get(`${BASE_API}/tutor/${tutorID}`)
+        const studentId = localStorage.getItem('id')
+        const res = await axios.get(`${BASE_API}/student/${studentId}`)
         
         if (res.data.EC === 0) {
-          setTutorData(res.data.data)
+          setStudentData(res.data.data)
         }
       } catch (error) {
-        console.log('Error fetching tutor profile:', error)
+        console.log('Error fetching student profile:', error)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchTutorProfile()
+    fetchStudentProfile()
   }, [])
 
   if (loading) return <div className="loading">Đang tải...</div>
-  if (!tutorData) return <div className="error">Không tìm thấy thông tin</div>
+  if (!studentData) return <div className="error">Không tìm thấy thông tin</div>
 
   return (
     <div className="profile-container">
@@ -40,25 +53,25 @@ const ProfileTutor = () => {
           <div className="header-content">
             {/* Avatar */}
             <div className="avatar">
-              {tutorData.full_name.charAt(0)}
+              {studentData.full_name.charAt(0)}
             </div>
             
             {/* Name and Role */}
             <div className="user-info">
-              <h1 className="user-name">{tutorData.full_name}</h1>
+              <h1 className="user-name">{studentData.full_name}</h1>
               <p className="user-role">
                 <span className="icon">🛡️</span>
-                Giảng viên
+                Sinh viên
               </p>
             </div>
 
             {/* Status Badge */}
-            <div className={`status-badge ${tutorData.is_active ? 'active' : 'inactive'}`}>
+            <div className={`status-badge ${studentData.is_active ? 'active' : 'inactive'}`}>
               <span className="status-icon">
-                {tutorData.is_active ? '✓' : '✕'}
+                {studentData.is_active ? '✓' : '✕'}
               </span>
               <span className="status-text">
-                {tutorData.is_active ? 'Đang hoạt động' : 'Không hoạt động'}
+                {studentData.is_active ? 'Đang hoạt động' : 'Không hoạt động'}
               </span>
             </div>
           </div>
@@ -75,8 +88,8 @@ const ProfileTutor = () => {
                 <span>👤</span>
               </div>
               <div className="detail-content">
-                <p className="detail-label">Mã giảng viên</p>
-                <p className="detail-value">{tutorData.id}</p>
+                <p className="detail-label">Mã sinh viên</p>
+                <p className="detail-value">{studentData.id_student}</p>
               </div>
             </div>
 
@@ -87,7 +100,10 @@ const ProfileTutor = () => {
               </div>
               <div className="detail-content">
                 <p className="detail-label">Địa chỉ thư điện tử</p>
-                <p className="detail-value">{tutorData.email}</p>
+                <p className="detail-value">{studentData.email}</p>
+                <p className="detail-note">
+                  (Các thành viên khóa học có thể nhìn thấy)
+                </p>
               </div>
             </div>
 
@@ -98,7 +114,7 @@ const ProfileTutor = () => {
               </div>
               <div className="detail-content">
                 <p className="detail-label">Khoa</p>
-                <p className="detail-value">{tutorData.faculty.name}</p>
+                <p className="detail-value">{studentData.faculty_id.name}</p>
               </div>
             </div>
 
@@ -143,4 +159,4 @@ const ProfileTutor = () => {
   )
 }
 
-export default ProfileTutor
+export default ProfileStudent
