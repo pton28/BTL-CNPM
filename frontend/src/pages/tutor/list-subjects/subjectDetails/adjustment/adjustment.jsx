@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, use } from 'react';
 import './adjustment.scss';
 
 const AddFileModal = ({ isOpen, onClose, onConfirm }) => {
+  const [content, setContent] = useState("")
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null); // Tạo ref để tham chiếu tới thẻ input ẩn
@@ -44,12 +45,15 @@ const AddFileModal = ({ isOpen, onClose, onConfirm }) => {
 
   // 5. Hàm gửi dữ liệu ra ngoài khi bấm "Tạo"
   const handleSubmit = () => {
-    if (selectedFile) {
+    if (selectedFile || content.trim().length > 0) {
         // Truyền file đã chọn ra hàm onConfirm ở cha
-        onConfirm(selectedFile); 
-        
+        onConfirm({
+          file: selectedFile,
+          content: content
+    });    
         // Reset sau khi gửi
         setSelectedFile(null); 
+        setContent("")
     } else {
         alert("Vui lòng chọn tài liệu trước!");
     }
@@ -72,6 +76,7 @@ const AddFileModal = ({ isOpen, onClose, onConfirm }) => {
           <label className="modal-label">Thêm tài liệu</label>
           <p className="modal-subtext">Kích thước tối đa với một tập tin 100 MB.</p>
 
+          <textarea className='text-area' value={content} onChange={(e) => setContent(e.target.value)} placeholder="Nhập mô tả cho tài liệu này..." ></textarea>
           {/* --- VÙNG UPLOAD CHÍNH --- */}
           <div 
             className={`upload-zone ${isDragging ? 'dragging' : ''}`}

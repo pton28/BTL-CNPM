@@ -6,11 +6,12 @@ const MaterialController = {
     createMaterial: async(req, res) => {
         
         console.log("=== DEBUG UPLOAD ===");
-        console.log("Body (Text):", req.body);
-        console.log("File (Binary):", req.file);
+        console.log('Headers:', req.headers);
+        console.log('File:', req.file);
+        console.log('Body:', req.body);
 
-        const { title, meeting } = req.body;
-        const file = req.file;
+        const { title, meeting, content } = req.body;
+        const file_raw = req.file;
 
         if(!title || !meeting) {
             return sendResponse(res, {
@@ -20,10 +21,19 @@ const MaterialController = {
                 EC: -1
             })
         }
-        const content = file.originalname;
-        console.log("File Original name: ", content);
+        if (!file_raw && (!content || content.trim().length === 0)) {
+        console.error("LỖI: Multer không bắt được file (req.file is undefined)");
+        return sendResponse(res, {
+            status: 400,
+            message: 'File upload not found! Please check FormData key name must be "file"',
+            data: null,
+            EC: -1
+        });
+        }
+        const file = file_raw ? file_raw.originalname: null;
+        // console.log("File Original name: ", content);
 
-        const response = await MaterialService.createMaterialService(title, content, meeting)
+        const response = await MaterialService.createMaterialService(title, file, content, meeting)
         console.log("RESPONSE: ", response)
         if(response) return sendResponse(res, {
             status: 201,

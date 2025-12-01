@@ -39,11 +39,29 @@ const CourseComponent = ({ isEditing, sections, onInsertSection, onAddItem, onDe
                         <div className="section-items">
                             {section.items.map((item, itemIndex) => (
                                 <div key={itemIndex} className="item-row">
-                                    <div className="item-content">
-                                        <span className="icon-folder">
-                                           <svg width="20" height="20" viewBox="0 0 24 24" fill="#333" stroke="currentColor" strokeWidth="0" ><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>
-                                        </span>
-                                        <a href={`http://localhost:8000/${item.name}`} target="_blank" rel="noreferrer" className="item-link" onClick={(e) => e.preventDefault()}>{item.displayName || item.name}</a>
+                                    <div className="item-content" style={{ display: 'flex', alignItems: 'center' }}>
+                                        {item.type !== 'text' && (
+                                            <span className="icon-folder" style={{ marginRight: '10px' }}>
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#333" stroke="currentColor" strokeWidth="0">
+                                                    <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path>
+                                                </svg>
+                                            </span>
+                                        )}
+
+                                        {item.type === 'text' ? (
+                                            <span className="item-text">
+                                                {item.displayName || item.content}
+                                            </span>
+                                        ) : (
+                                            <a 
+                                                href={`http://localhost:8000/uploads/${item.name}`} 
+                                                target="_blank" 
+                                                rel="noreferrer" 
+                                                className="item-link"
+                                            >
+                                                {item.displayName || item.name}
+                                            </a>
+                                        )}
                                     </div>
 
                                     {isEditing && (

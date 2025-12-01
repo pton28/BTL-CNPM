@@ -40,9 +40,11 @@ const SubjectDetails = () => {
                const sectionTitle = item.title; 
                const fileObj = {
                      _id: item._id,          
-                     name: item.content,    
-                     displayName: item.content.split('/').pop().split('-').slice(1).join('-') || item.content,
-                     isNew: false // Đánh dấu đây là file cũ từ DB
+                     name: item.file,    
+                     displayName: item.file ? item.file : item.content,
+                     type: item.file ? 'file' : 'text',
+                     isNew: false,
+                     hasFile: !!item.file
                };
 
                if (!groupedData[sectionTitle]) {
@@ -51,11 +53,18 @@ const SubjectDetails = () => {
                groupedData[sectionTitle].push(fileObj);
             });
 
-             const formattedSections = Object.keys(groupedData).map((key, index) => ({
+            const formattedSections = Object.keys(groupedData).map((key, index) => {
+               const sortedItems = groupedData[key].sort((a, b) => {
+                  if (!a.hasFile && b.hasFile) return -1;
+                  if (a.hasFile && !b.hasFile) return 1;
+                  return 0;
+               });
+               return {
                  id: index + 1,
                  title: key,
-                 items: groupedData[key] 
-             }));
+                 items: sortedItems
+               }
+            });
 
              setSections(formattedSections);
          } else {
@@ -86,20 +95,29 @@ const SubjectDetails = () => {
          
          // Tạo một object tạm (chưa có ID thật từ DB)
          const tempId = `temp-${Date.now()}`;
-         
+         const hasFile = !!fileData.file;
+
          const newFileObj = {
-             _id: tempId, 
-             name: "#", // Chưa có link server
-             displayName: fileData.name,
-             fileRaw: fileData, // Lưu file gốc để tí nữa Save thì upload
-             isNew: true // Đánh dấu để biết tí nữa cần Upload
+            _id: tempId, 
+            name: "#", // Chưa có link server
+            displayName: hasFile ? fileData.file.name : fileData.content,
+            type: hasFile ? 'file' : 'text',
+            fileRaw: fileData.file, // Lưu file gốc để tí nữa Save thì upload
+            contentRaw: fileData.content,
+            isNew: true // Đánh dấu để biết tí nữa cần Upload
          };
 
          setSections(prevSections => prevSections.map(sec => {
             if(sec.id === activeSectionId){
+               let newItems;
+               if (!hasFile) {
+                    newItems = [newFileObj, ...sec.items];
+                } else {
+                    newItems = [...sec.items, newFileObj];
+                }
                return{
                   ...sec,
-                  items: [...sec.items, newFileObj]
+                  items: newItems
                }
             }
             return sec;
@@ -158,10 +176,10 @@ const SubjectDetails = () => {
              for (const item of section.items) {
                  
                  // Trường hợp 1: File Mới -> Upload
-                 if (item.isNew && item.fileRaw) {
+                 if (item.isNew) {
                      // Upload file mới
                      updatePromises.push(
-                         createNewMaterial(section.title, item.fileRaw, id)
+                        createNewMaterial(section.title, item.fileRaw, item.contentRaw, id)
                      );
                  } 
                  // Trường hợp 2: File Cũ -> Update Title (nếu title section đổi)
@@ -191,10 +209,22 @@ const SubjectDetails = () => {
    const handleOpenAddModal = sectionId => setActiveSectionId(sectionId);
    const handleCloseModal = () => setActiveSectionId(null);
    const handleAddSection = () => {
-      setSections([...sections, { id: Date.now(), title: 'Mục mới', items: [] }]);
+      const newSection = {
+         id: `temp-section-${Date.now()}`, // ID tạm để React render key
+         title: 'Mục mới (Nhập tên...)',    // Tên mặc định
+         items: []                          // Chưa có tài liệu nào
+      };
+      setSections(prev => [...prev, newSection]);
    };
    const handleUpdateTitle = (sectionId, newTitle) => {
-      setSections(sections.map(s => s.id === sectionId ? { ...s, title: newTitle } : s));
+      setSections(prevSections => 
+         prevSections.map(section => {
+            if (section.id === sectionId) {
+               return { ...section, title: newTitle };
+            }
+            return section;
+         })
+      );
    };
 
    // Render

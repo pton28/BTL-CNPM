@@ -22,4 +22,38 @@
             }
         }
     }
+    .section-items {
+        .item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+
+            .item-content {
+                display: flex;
+                align-items: center;
+
+                // --- QUAN TRỌNG: Style cho phần Text (Thông báo) ---
+                .item-text {
+                    font-weight: 700;  /* In đậm */
+                    font-size: 16px;   /* Cỡ chữ to hơn chút cho rõ (tùy chỉnh) */
+                    color: #000;       /* Màu đen đậm */
+                    margin-left: 0;    /* Text sát lề trái vì không có icon */
+                    display: block;
+                    padding: 5px 0;
+                }
+
+                // Style cho phần Link file
+                .item-link {
+                    color: #333;
+                    text-decoration: none;
+                    &:hover {
+                        color: #007bff;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
 }

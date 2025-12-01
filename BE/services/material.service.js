@@ -2,19 +2,22 @@ import Material from '../models/material.model.js';
 import mongoose from 'mongoose';
 
 const MaterialService = {
-    createMaterialService: async(title, content, meeting) => {
+    createMaterialService: async(title, file, content, meeting) => {
         try {
             const payload = {
                 title,
+                file: file || "",
                 content,
                 meeting
             }
-            // validate duplicate
-            const existingMaterial = await Material.findOne({ 
-                title: title, 
-                meeting: meeting,
-                content: content // Check thêm trường này
-            })
+
+            const filter = { meeting: meeting };
+            if (file) {
+                filter.title = title; // Hoặc check theo tên file: filter.file = file;
+            } else {
+                filter.content = content;
+            }
+            const existingMaterial = await Material.findOne(filter);
             if (existingMaterial) {
                 console.log("File này đã tồn tại trong mục này rồi!");
                 return null;
@@ -98,4 +101,3 @@ const MaterialService = {
 }
 
 export default MaterialService;
-
