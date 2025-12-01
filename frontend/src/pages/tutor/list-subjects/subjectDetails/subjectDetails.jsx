@@ -10,8 +10,6 @@ import { createNewMaterial, deleteMaterial, updateMaterial } from '@/services/ma
 
 import { useFetchMeetingById } from '@/services/fetchAPI/useFetchMeetingById'
 
-import { useFetchMeetingById } from '@/services/fetchAPI/useFetchMeetingById'
-
 const SubjectDetails = () => {
    const { id } = useParams()
    console.log(id)
