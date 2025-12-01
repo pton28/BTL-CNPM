@@ -11,7 +11,7 @@ const ListAppointment = () => {
    const { data: appointmentList, loading } = useFetchListAppointmentByStudent(refreshKey)
 
    const handleRefresh = () => {
-      setRefreshKey(prev => !prev)
+      navigate('/student/history')
    }
 
    return (
@@ -19,7 +19,7 @@ const ListAppointment = () => {
          <div className="header-appointment-container">
             <h2>Danh sách lớp của tôi</h2>
             <button className="btn-border" onClick={handleRefresh}>
-               {loading ? 'Đang tải...' : 'Cập nhật lịch học'}
+               {loading ? 'Đang tải...' : 'Xem lịch sử'}
             </button>
          </div>
 

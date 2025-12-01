@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { BASE_API } from '../../../constants'
 import axios from 'axios';
 import { setTokens } from '@/services/auth.services'
+import { message } from 'antd'
 
 const LoginStudent = () => {
    const navigate = useNavigate()
@@ -20,7 +21,7 @@ const LoginStudent = () => {
       try {
          const response = await axios.post(`${BASE_API}/auth/login/student`, {email, password})
 
-         console.log('1')
+         // console.log('1', response)
 
          setTokens({
             access_token: response.data.token,
@@ -30,7 +31,7 @@ const LoginStudent = () => {
          navigate('/')
       } catch (error) {
          console.log('error login', error)
-         alert('Đăng nhập thất bại!')
+         message.success('Đăng nhập thất bại!')
       }
    }
 

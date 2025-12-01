@@ -5,6 +5,7 @@ import axios from '@/services/axios.customize'
 import { BASE_API } from '@/constants'
 import { useFetchAllTutor } from '@/services/fetchAPI/useFetchAllTutor'
 import { useFetchAllMajor } from '@/services/fetchAPI/useFetchAllMajor'
+import { message } from 'antd'
 
 /**
  * @author: ChatGPT 80% - Vu 20%
@@ -54,11 +55,11 @@ const SearchCourse = () => {
       // Tìm kiếm theo tên khóa học (không dấu, không phân biệt hoa thường)
       if (searchText) {
          const searchTextNormalized = removeVietnameseTones(searchText.toLowerCase())
-         
+
          result = result.filter(course => {
             const subjectNormalized = removeVietnameseTones(course.subject?.toLowerCase() || '')
             const lecturerNormalized = removeVietnameseTones(course.lecturer?.toLowerCase() || '')
-            
+
             return (
                subjectNormalized.includes(searchTextNormalized) ||
                lecturerNormalized.includes(searchTextNormalized)
@@ -93,6 +94,35 @@ const SearchCourse = () => {
       setFilterObj(prev => ({ ...prev, [field]: value }))
    }
 
+   // Hàm kiểm tra ngày có phải tương lai không
+   const isPast = dateString => {
+      if (!dateString) return false
+      const eventDate = new Date(dateString)
+      const today = new Date('1/12/2025')
+      // today.setHours(0, 0, 0, 0) // Reset giờ về 00:00:00 để so sánh chính xác
+      console.log('date', dateString, '-> result', Boolean(eventDate > today))
+
+      return eventDate > today
+   }
+   const handleCancelMeeting = async (meeting_id) => {
+      // TODO: Thực hiện logic hủy đăng ký ở đây
+      console.log('Hủy đăng ký meeting:', meeting_id)
+      const student_id = localStorage.getItem('id')
+
+      const res = await axios.delete(`${BASE_API}/student-with-meeting`, {
+         data: {
+            student_id, 
+            meeting_id
+         }
+      })
+      if(res) {
+         setRefresh(r => !r)
+         message.success('Đã hủy thành công')
+      }
+      else {
+         message.error('Đã có lỗi xảy ra')
+      }
+   }
    if (loading) return <p className="loading-text">Đang tải dữ liệu...</p>
 
    return (
@@ -102,7 +132,10 @@ const SearchCourse = () => {
 
             <div className="filter-container">
                <h3>Giảng viên</h3>
-               <select value={filterObj.tutor} onChange={e => handleFilterChange('tutor', e.target.value)}>
+               <select
+                  value={filterObj.tutor}
+                  onChange={e => handleFilterChange('tutor', e.target.value)}
+               >
                   <option value="">Tất cả</option>
                   {loadingTutor ? (
                      <option disabled>Đang tải...</option>
@@ -118,8 +151,13 @@ const SearchCourse = () => {
 
             <div className="filter-container">
                <h3>Lĩnh vực</h3>
-               <select value={filterObj.major} onChange={e => handleFilterChange('major', e.target.value)}>
-                  <option value="" key={1}>Tất cả</option>
+               <select
+                  value={filterObj.major}
+                  onChange={e => handleFilterChange('major', e.target.value)}
+               >
+                  <option value="" key={1}>
+                     Tất cả
+                  </option>
                   {loadingMajor ? (
                      <option disabled>Đang tải...</option>
                   ) : (
@@ -151,6 +189,7 @@ const SearchCourse = () => {
                {/* <span className="result-count"> ({filteredCourses.length} kết quả)</span> */}
             </h2>
 
+            <span className='note-cancel'>Lưu ý: chỉ những khóa học chưa bắt đầu mới được phép hủy</span>
             {filteredCourses.length === 0 ? (
                <p className="no-result">Không tìm thấy khóa học nào phù hợp</p>
             ) : (
@@ -176,11 +215,22 @@ const SearchCourse = () => {
                            <td>{item.date_of_event}</td>
                            <td>
                               {item.status === 'Registered' ? (
-                                 <span className="status-badge register">Đã đăng ký</span>
+                                 isPast(item.date_of_event) ? (
+                                    <span className="status-badge registered">Đã đăng ký</span>
+                                    
+                                 ) : (
+                                    <button className="status-badge unregister" onClick={() => handleCancelMeeting(item.id)}>
+                                       Hủy đăng ký
+                                    </button>
+                                 )
                               ) : (
-                                 <span className="status-badge registered" onClick={() => handleSignUpMeeting(item.id)}>
+                                 !isPast(item.date_of_event) ? (
+                                    <button className="status-badge register" onClick={() => handleSignUpMeeting(item.id)}>
                                     Đăng ký
-                                 </span>
+                                 </button>
+                                 ) : (
+                                    <button className="status-badge exregister">Quá hạn đăng ký</button>
+                                 )
                               )}
                            </td>
                         </tr>
