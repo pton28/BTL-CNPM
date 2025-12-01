@@ -74,83 +74,106 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
    }
 
    const handleCreate = async () => {
-      if (!newEvent.meetingId) {
-         alert('Vui lòng chọn môn học!')
-         return
-      }
-      if (!newEvent.sessionTitle) {
-         alert('Vui lòng nhập nội dung buổi học!')
-         return
-      }
-
-      setLoading(true)
-      try {
-         // Bước 1: Tạo Session (Bài học)
+   if (!newEvent.meetingId) {
+      alert('Vui lòng chọn môn học!')
+      return
+   }
+   if (!newEvent.sessionTitle) {
+      alert('Vui lòng nhập nội dung buổi học!')
+      return
+   }
+   setLoading(true)
+   try {
+      // Bước 1: Kiểm tra xem meeting này đã có session nào chưa
+      const existingSessionsRes = await axios.get(`${BASE_API}/session?meeting=${newEvent.meetingId}`)
+      const existingSessions = existingSessionsRes.data.data || []
+      
+      let sessionId = null
+      
+      if (existingSessions.length === 0) {
+         // Trường hợp 1: Meeting lần đầu -> Tạo session mới
          const sessionPayload = {
             title: newEvent.sessionTitle,
             meeting: newEvent.meetingId,
          }
          const sessionRes = await axios.post(`${BASE_API}/session`, sessionPayload)
          const createdSession = sessionRes.data.data
-
          if (!createdSession || !createdSession._id) throw new Error('Lỗi tạo Session')
-
-         // Bước 2: Tính toán thời gian
-         const startTimeStr = `${newEvent.hour.toString().padStart(2, '0')}:${newEvent.minute.toString().padStart(2, '0')}`
-
-         let startH = parseInt(newEvent.hour)
-         let startM = parseInt(newEvent.minute)
-         let durH = parseInt(newEvent.durationHour || 0)
-         let durM = parseInt(newEvent.durationMinute || 0)
-
-         let totalStartMinutes = startH * 60 + startM
-         let totalDuration = durH * 60 + durM
-         let totalEndMinutes = totalStartMinutes + totalDuration
-
-         let endH = Math.floor(totalEndMinutes / 60) % 24
-         let endM = totalEndMinutes % 60
-
-         const endTimeStr = `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`
-
-         // Format ngày gửi lên: YYYY-MM-DD
-         const isoDate = `${newEvent.year}-${newEvent.month.toString().padStart(2, '0')}-${newEvent.day.toString().padStart(2, '0')}`
-
-         // Tạo chuỗi địa điểm
-         let locString = ''
-         if (newEvent.mode === 'online') {
-            locString = newEvent.link || 'Online Meeting'
+         sessionId = createdSession._id
+      } else {
+         // Trường hợp 2: Meeting đã có session
+         // Tìm session có title trùng với newEvent.sessionTitle
+         const matchingSession = existingSessions.find(
+            session => session.title.trim().toLowerCase() === newEvent.sessionTitle.trim().toLowerCase()
+         )
+         
+         if (matchingSession) {
+            // Nội dung trùng -> Dùng session cũ (chỉ tạo slot mới)
+            sessionId = matchingSession._id
          } else {
-            // Format: Phòng - Tòa - Cơ sở
-            const { room, building, campus } = newEvent.location
-            const parts = []
-            if (room) parts.push(room)
-            if (building) parts.push(building)
-            if (campus) parts.push(campus)
-            locString = parts.length > 0 ? parts.join(' - ') : 'Offline'
+            // Nội dung khác -> Tạo session mới
+            const sessionPayload = {
+               title: newEvent.sessionTitle,
+               meeting: newEvent.meetingId,
+            }
+            const sessionRes = await axios.post(`${BASE_API}/session`, sessionPayload)
+            const createdSession = sessionRes.data.data
+            if (!createdSession || !createdSession._id) throw new Error('Lỗi tạo Session')
+            sessionId = createdSession._id
          }
-
-         // Bước 3: Tạo Slot (Lịch)
-         const slotPayload = {
-            session: createdSession._id,
-            start_time: startTimeStr,
-            end_time: endTimeStr,
-            location_or_link: locString,
-            date: isoDate,
-            duration: totalDuration,
-         }
-
-         const slotRes = await axios.post(`${BASE_API}/session-slot`, slotPayload)
-         if (slotRes.data) {
-            alert('Đã tạo lịch học thành công!')
-            onSave() // Callback để reload lại lịch ở component cha
-         }
-      } catch (error) {
-         console.error('Lỗi tạo lịch:', error)
-         alert('Có lỗi xảy ra khi tạo lịch!')
-      } finally {
-         setLoading(false)
       }
+      
+      // Bước 2: Tính toán thời gian
+      const startTimeStr = `${newEvent.hour.toString().padStart(2, '0')}:${newEvent.minute.toString().padStart(2, '0')}`
+      let startH = parseInt(newEvent.hour)
+      let startM = parseInt(newEvent.minute)
+      let durH = parseInt(newEvent.durationHour || 0)
+      let durM = parseInt(newEvent.durationMinute || 0)
+      let totalStartMinutes = startH * 60 + startM
+      let totalDuration = durH * 60 + durM
+      let totalEndMinutes = totalStartMinutes + totalDuration
+      let endH = Math.floor(totalEndMinutes / 60) % 24
+      let endM = totalEndMinutes % 60
+      const endTimeStr = `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`
+      
+      // Format ngày gửi lên: YYYY-MM-DD
+      const isoDate = `${newEvent.year}-${newEvent.month.toString().padStart(2, '0')}-${newEvent.day.toString().padStart(2, '0')}`
+      
+      // Tạo chuỗi địa điểm
+      let locString = ''
+      if (newEvent.mode === 'online') {
+         locString = newEvent.link || 'Online Meeting'
+      } else {
+         const { room, building, campus } = newEvent.location
+         const parts = []
+         if (room) parts.push(room)
+         if (building) parts.push(building)
+         if (campus) parts.push(campus)
+         locString = parts.length > 0 ? parts.join(' - ') : 'Offline'
+      }
+      
+      // Bước 3: Tạo Slot (Lịch) với sessionId đã xác định
+      const slotPayload = {
+         session: sessionId,
+         start_time: startTimeStr,
+         end_time: endTimeStr,
+         location_or_link: locString,
+         date: isoDate,
+         duration: totalDuration,
+      }
+      const slotRes = await axios.post(`${BASE_API}/session-slot`, slotPayload)
+      
+      if (slotRes.data) {
+         alert('Đã tạo lịch học thành công!')
+         onSave() // Callback để reload lại lịch ở component cha
+      }
+   } catch (error) {
+      console.error('Lỗi tạo lịch:', error)
+      alert('Có lỗi xảy ra khi tạo lịch!')
+   } finally {
+      setLoading(false)
    }
+}
 
    if (!isOpen) return null
 

@@ -35,57 +35,76 @@ const DetailComponent = () => {
 
    // 1. CALL API LẤY SESSION VÀ SLOT
    useEffect(() => {
-      const fetchSchedule = async () => {
-         if (!meetingId) return
-         setLoadingSchedules(true)
-         try {
-            const resSession = await axios.get(`${BASE_API}/session/meeting/${meetingId}`)
-            const sessionsData = resSession.data.data || []
+   const fetchSchedule = async () => {
+      if (!meetingId) return
+      setLoadingSchedules(true)
+      try {
+         const resSession = await axios.get(`${BASE_API}/session/meeting/${meetingId}`)
+         const sessionsData = resSession.data.data || []
 
-            const promises = sessionsData.map(async session => {
-               try {
-                  const resSlot = await axios.get(`${BASE_API}/session-slot/session/${session._id}`)
-                  const slots = resSlot.data.data || []
-                  const slot = slots[0] || {}
+         const promises = sessionsData.map(async session => {
+            try {
+               const resSlot = await axios.get(`${BASE_API}/session-slot/session/${session._id}`)
+               const slots = resSlot.data.data || []
 
-                  return {
-                     id: session._id,
+               // Nếu session không có slot nào
+               if (slots.length === 0) {
+                  return [{
+                     id: `${session._id}-no-slot`,
+                     sessionId: session._id,
                      title: session.title,
-                     date: slot.date
-                        ? new Date(slot.date).toLocaleDateString('en-GB')
-                        : 'Chưa xếp lịch',
-                     time:
-                        slot.start_time && slot.end_time
-                           ? `${slot.start_time} - ${slot.end_time}`
-                           : '...',
-                     method:
-                        slot.location_or_link && slot.location_or_link.includes('http')
-                           ? 'Trực tuyến'
-                           : 'Trực tiếp',
-                     location: slot.location_or_link || 'Chưa cập nhật',
-                  }
-               } catch (err) {
-                  return {
-                     id: session._id,
-                     title: session.title,
-                     date: 'Lỗi',
+                     date: 'Chưa xếp lịch',
                      time: '...',
                      method: '...',
-                     location: '...',
-                  }
+                     location: 'Chưa cập nhật',
+                  }]
                }
-            })
 
-            const results = await Promise.all(promises)
-            setSchedules(results)
-         } catch (error) {
-            console.error('Lỗi lấy lịch học:', error)
-         } finally {
-            setLoadingSchedules(false)
-         }
+               // Map tất cả slots của session này
+               return slots.map((slot, index) => ({
+                  id: `${session._id}-${slot._id || index}`,
+                  sessionId: session._id,
+                  slotId: slot._id,
+                  title: session.title,
+                  date: slot.date
+                     ? new Date(slot.date).toLocaleDateString('en-GB')
+                     : 'Chưa xếp lịch',
+                  time:
+                     slot.start_time && slot.end_time
+                        ? `${slot.start_time} - ${slot.end_time}`
+                        : '...',
+                  method:
+                     slot.location_or_link && slot.location_or_link.includes('http')
+                        ? 'Trực tuyến'
+                        : 'Trực tiếp',
+                  location: slot.location_or_link || 'Chưa cập nhật',
+               }))
+            } catch (err) {
+               console.error(`Lỗi lấy slot của session ${session._id}:`, err)
+               return [{
+                  id: `${session._id}-error`,
+                  sessionId: session._id,
+                  title: session.title,
+                  date: 'Lỗi',
+                  time: '...',
+                  method: '...',
+                  location: '...',
+               }]
+            }
+         })
+
+         const results = await Promise.all(promises)
+         // Flatten mảng 2 chiều thành mảng 1 chiều
+         const flattenedSchedules = results.flat()
+         setSchedules(flattenedSchedules)
+      } catch (error) {
+         console.error('Lỗi lấy lịch học:', error)
+      } finally {
+         setLoadingSchedules(false)
       }
-      fetchSchedule()
-   }, [meetingId])
+   }
+   fetchSchedule()
+}, [meetingId])
 
    // 2. CALL API LẤY SINH VIÊN KHI CLICK
    const handleViewStudents = async session => {
@@ -96,7 +115,6 @@ const DetailComponent = () => {
       try {
          const res = await axios.get(`${BASE_API}/student-with-session-slot/session/${session.id}`)
          const rawData = res.data.data || []
-         console.log(res)
          const studentList = rawData.map(item => ({
             id: item.student?._id,
             name: item.student?.full_name || item.student?.name || 'Không tên',
