@@ -112,11 +112,6 @@ $green-text: #00695c;
          }
       }
 
-      // .view-header h2 {
-      //    font-size: 22px;
-      //    margin-bottom: 20px;
-      // }
-
       .session-info-panel {
          background: white;
          border-radius: 12px;
@@ -182,6 +177,7 @@ $green-text: #00695c;
                color: #333;
             }
 
+            // NÚT TRẠNG THÁI (Đã thêm vào)
             .status-btn {
                padding: 8px 16px;
                border-radius: 6px;
@@ -213,7 +209,7 @@ $green-text: #00695c;
       }
    }
 
-   // === MODAL: ASSESSMENT (Ảnh 3) ===
+   // === MODAL: ASSESSMENT (Thêm vào cho đầy đủ UI) ===
    .assess-modal-overlay {
       position: fixed;
       top: 0;
@@ -330,21 +326,6 @@ $green-text: #00695c;
                padding: 10px 30px;
                &:hover {
                   background: #eee;
-               }
-            }
-
-            .change-btn {
-               padding: 5px 10px;
-               border: none;
-               background: #df0404;
-               font-size: 14px;
-               color: #fff;
-               border-radius: 5px;
-               cursor: pointer;
-               transition: transform 0.3s;
-               &:hover {
-                  background: #c01036;
-                  transform: scale(1.05);
                }
             }
          }

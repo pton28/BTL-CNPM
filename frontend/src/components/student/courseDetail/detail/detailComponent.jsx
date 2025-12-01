@@ -75,7 +75,7 @@ const DetailComponent = () => {
                         <td>{formatDate(ss.date) || 'Chưa có'}</td>
                         <td>{ss.start_time}</td>
                         <td>{ss.location}</td>
-                        <td>{isPast(ss.date, ss.start_time) ? 'Đã diễn ra' : 'Sắp diễn ra'}</td>
+                        <td>{ss.location === 'No' ? 'Chưa chọn' : isPast(ss.date, ss.start_time) ? 'Đã diễn ra' : 'Sắp diễn ra'}</td>
                         {isPast(ss.date, ss.start_time) ? (
                            <td>Đóng góp xây dựng bài tốt, có tầm nhìn xa</td>
                         ) : (

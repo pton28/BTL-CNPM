@@ -9,7 +9,7 @@ const meetingSchema = new mongoose.Schema(
         },
         tutor: {
             type: mongoose.Schema.Types.ObjectId,
-            require: true,
+            required: true,
             ref: "Tutor",
         },
         date_of_event: {
@@ -23,7 +23,7 @@ const meetingSchema = new mongoose.Schema(
         },
         major: {
             type: mongoose.Schema.Types.ObjectId,
-            require: true,
+            required: true,
             ref: "Major",
         },
         session_count: {

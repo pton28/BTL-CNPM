@@ -1,20 +1,18 @@
 .open-class-page {
-   // Tạo nền xám nhạt cho toàn trang để làm nổi bật cái card ở giữa
    background-color: #f5f7fa;
    min-height: calc(100vh - 60px);
    padding: 30px 20px;
    display: flex;
-   justify-content: center; // Căn giữa thẻ Card
+   justify-content: center;
    align-items: flex-start;
    font-family: 'Arial', sans-serif;
 
-   // --- 1. BOX LAYOUT STYLE (Giao diện vuông vức) ---
    .main-card {
       background: white;
       width: 100%;
-      max-width: 1100px; // Giới hạn chiều rộng, tạo cảm giác vuông vức
-      border-radius: 12px; // Bo góc nhẹ
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); // Đổ bóng nhẹ
+      max-width: 1100px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       padding: 25px;
       display: flex;
       flex-direction: column;
@@ -36,7 +34,7 @@
                font-size: 24px;
                font-weight: 700;
                color: #333;
-               min-width: 180px; // Để chữ không bị nhảy khi đổi tháng
+               min-width: 180px;
                text-align: center;
             }
 
@@ -60,34 +58,16 @@
                }
             }
          }
-
-         .btn-primary-blue {
-            background-color: #0044cc;
-            color: white;
-            padding: 10px 24px;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 68, 204, 0.3);
-            transition: transform 0.1s;
-
-            &:active {
-               transform: scale(0.98);
-            }
-         }
       }
 
-      // --- 2. CALENDAR GRID STYLES ---
       .calendar-container {
          border: 1px solid #e0e0e0;
          border-radius: 8px;
-         overflow: hidden; // Để bo góc ăn nhập với border
+         overflow: hidden;
 
          .calendar-days-header {
             display: grid;
-            grid-template-columns: repeat(7, 1fr); // 7 cột đều nhau
+            grid-template-columns: repeat(7, 1fr);
             background-color: #fafafa;
             border-bottom: 1px solid #e0e0e0;
 
@@ -118,7 +98,7 @@
                display: grid;
                grid-template-columns: repeat(7, 1fr);
                border-bottom: 1px solid #f0f0f0;
-               min-height: 120px; // Chiều cao tối thiểu mỗi ô
+               min-height: 120px;
 
                &:last-child {
                   border-bottom: none;
@@ -130,12 +110,17 @@
                   position: relative;
                   transition: background 0.2s;
 
+                  // QUAN TRỌNG: Thiết lập layout cho ô lịch
+                  overflow: hidden;
+                  display: flex;
+                  flex-direction: column;
+
                   &:last-child {
                      border-right: none;
                   }
 
                   &.disabled {
-                     background-color: #fcfcfc; // Màu nền cho ngày tháng khác
+                     background-color: #fcfcfc;
                      .day-number {
                         color: #ccc;
                      }
@@ -157,17 +142,25 @@
                      flex-direction: column;
                      gap: 5px;
 
+                     // BẮT BUỘC ĐỂ CẮT CHỮ:
+                     width: 100%;
+                     min-width: 0;
+
                      .event-tag {
                         font-size: 11px;
                         padding: 4px 8px;
                         border-radius: 4px;
                         cursor: pointer;
                         font-weight: 500;
+
+                        // CẤU HÌNH CẮT CHỮ (ELLIPSIS)
+                        display: block;
+                        width: 100%;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+                        box-sizing: border-box;
 
-                        // Theme màu sự kiện
                         &.blue {
                            background: #e3f2fd;
                            color: #1565c0;
@@ -181,6 +174,12 @@
                            color: #c2185b;
                         }
                      }
+
+                     .more-evts {
+                        font-size: 11px;
+                        color: #666;
+                        padding-left: 4px;
+                     }
                   }
                }
             }
@@ -188,29 +187,28 @@
       }
    }
 
-   // --- 3. MODAL STYLES (Giống hệt ảnh mẫu) ---
+   // --- MODAL STYLES ---
    .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.4); // Nền tối mờ nhẹ
+      background: rgba(0, 0, 0, 0.4);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 1000;
 
       .modal-content {
-         background: #0044cc; // Nền xanh đậm đặc trưng
-         width: 550px;
+         background: #0044cc;
+         width: 600px; // Rộng hơn chút để chứa 2 cột
          padding: 40px;
          border-radius: 16px;
          color: white;
          box-shadow: 0 10px 30px rgba(0, 68, 204, 0.4);
          position: relative;
 
-         // Hiệu ứng hiện lên
          &.zoom-in {
             animation: zoomIn 0.2s ease-out;
          }
@@ -242,14 +240,21 @@
          .modal-body {
             margin-bottom: 30px;
 
+            // Style cho label chung
             label {
                display: block;
                margin-bottom: 10px;
                font-weight: 500;
                font-size: 14px;
+               .required {
+                  color: #ffeb3b;
+                  margin-left: 4px;
+               } // Dấu sao đỏ/vàng
             }
 
-            input {
+            // Input và Select chung
+            input,
+            select {
                width: 100%;
                padding: 16px;
                border-radius: 8px;
@@ -257,10 +262,34 @@
                font-size: 15px;
                box-sizing: border-box;
                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+               font-family: inherit;
 
                &:focus {
                   outline: none;
                   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+               }
+            }
+
+            // Riêng Select cần background trắng
+            select {
+               background-color: white;
+               cursor: pointer;
+            }
+
+            .form-group {
+               margin-bottom: 20px;
+               &:last-child {
+                  margin-bottom: 0;
+               }
+            }
+
+            // Layout 2 cột
+            .form-row {
+               display: flex;
+               gap: 20px;
+               .form-group {
+                  flex: 1; // Chia đều 50-50
+                  margin-bottom: 0;
                }
             }
          }
@@ -268,22 +297,6 @@
          .modal-footer {
             display: flex;
             justify-content: flex-end;
-
-            .btn-submit {
-               background: white;
-               color: #0044cc;
-               padding: 12px 24px;
-               border: none;
-               border-radius: 25px;
-               font-weight: 700;
-               cursor: pointer;
-               font-size: 14px;
-               transition: background 0.2s;
-
-               &:hover {
-                  background: #f2f2f2;
-               }
-            }
          }
       }
    }

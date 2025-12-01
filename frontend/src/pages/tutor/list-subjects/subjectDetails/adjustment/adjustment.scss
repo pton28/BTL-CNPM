@@ -1,144 +1,149 @@
-
-// Màu lấy từ bảng Figma trong ảnh
-$figma-blue: #044CC8; 
-$figma-green: #52C41A;
-$figma-red: #FF4D4F;
+@use 'sass:color';
+$figma-blue: #044cc8;
+$figma-green: #52c41a;
+$figma-red: #ff4d4f;
 
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); // Nền tối mờ
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: rgba(0, 0, 0, 0.5); // Nền tối mờ
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 1000;
 }
 
 .modal-container {
-  background: white;
-  width: 857px; // Kích thước chuẩn Figma
-  max-width: 95%;
-  border-radius: 20px; // Bo góc chuẩn Figma
-  overflow: hidden; // Để header không bị lòi ra khỏi bo góc
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
+   background: white;
+   width: 857px; // Kích thước chuẩn Figma
+   max-width: 95%;
+   border-radius: 20px; // Bo góc chuẩn Figma
+   overflow: hidden; // Để header không bị lòi ra khỏi bo góc
+   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+   display: flex;
+   flex-direction: column;
 
-  // --- HEADER ---
-  .modal-header {
-    background-color: $figma-blue;
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-
-    h2 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 700;
-    }
-
-    .close-icon {
-      font-size: 30px;
-      cursor: pointer;
-      line-height: 1;
-      opacity: 0.8;
-      &:hover { opacity: 1; }
-    }
-  }
-
-  // --- BODY ---
-  .modal-body {
-    padding: 30px;
-    
-    .modal-label {
-      font-weight: 600;
-      font-size: 16px;
-      color: #333;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .modal-subtext {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 20px;
-    }
-
-    .upload-zone {
-      border: 2px dashed #d9d9d9;
-      background-color: #fafafa;
-      border-radius: 12px;
-      height: 250px; // Chiều cao vùng kéo thả
+   // --- HEADER ---
+   .modal-header {
+      background-color: $figma-blue;
+      padding: 20px 30px;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      position: relative;
-      transition: all 0.3s;
-      cursor: pointer;
-
-      &:hover {
-        border-color: $figma-blue;
-        background-color: #f0f5ff;
-      }
-
-      .file-icon-badge {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: #e6f7ff;
-        padding: 5px 10px;
-        border-radius: 4px;
-        font-size: 20px;
-      }
-
-      .upload-content {
-        text-align: center;
-        
-        .upload-icon {
-          color: #333;
-          margin-bottom: 15px;
-        }
-
-        p {
-          font-weight: 500;
-          color: #333;
-        }
-      }
-    }
-  }
-
-  // --- FOOTER ---
-  .modal-footer {
-    padding: 20px 30px;
-    display: flex;
-    justify-content: flex-end; // Căn nút sang phải
-    gap: 15px;
-
-    button {
-      padding: 10px 30px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-      transition: 0.2s;
       color: white;
-    }
 
-    .btn-cancel {
-      background-color: $figma-red;
-      &:hover { background-color: darken($figma-red, 10%); }
-    }
+      h2 {
+         margin: 0;
+         font-size: 24px;
+         font-weight: 700;
+      }
 
-    .btn-create {
-      background-color: $figma-green;
-      &:hover { background-color: darken($figma-green, 10%); }
-    }
-  }
+      .close-icon {
+         font-size: 30px;
+         cursor: pointer;
+         line-height: 1;
+         opacity: 0.8;
+         &:hover {
+            opacity: 1;
+         }
+      }
+   }
+
+   // --- BODY ---
+   .modal-body {
+      padding: 30px;
+
+      .modal-label {
+         font-weight: 600;
+         font-size: 16px;
+         color: #333;
+         display: block;
+         margin-bottom: 5px;
+      }
+
+      .modal-subtext {
+         font-size: 14px;
+         color: #666;
+         margin-bottom: 20px;
+      }
+
+      .upload-zone {
+         border: 2px dashed #d9d9d9;
+         background-color: #fafafa;
+         border-radius: 12px;
+         height: 250px; // Chiều cao vùng kéo thả
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         position: relative;
+         transition: all 0.3s;
+         cursor: pointer;
+
+         &:hover {
+            border-color: $figma-blue;
+            background-color: #f0f5ff;
+         }
+
+         .file-icon-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #e6f7ff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 20px;
+         }
+
+         .upload-content {
+            text-align: center;
+
+            .upload-icon {
+               color: #333;
+               margin-bottom: 15px;
+            }
+
+            p {
+               font-weight: 500;
+               color: #333;
+            }
+         }
+      }
+   }
+
+   // --- FOOTER ---
+   .modal-footer {
+      padding: 20px 30px;
+      display: flex;
+      justify-content: flex-end; // Căn nút sang phải
+      gap: 15px;
+
+      button {
+         padding: 10px 30px;
+         border-radius: 8px;
+         font-weight: 600;
+         font-size: 16px;
+         border: none;
+         cursor: pointer;
+         transition: 0.2s;
+         color: white;
+      }
+
+      .btn-cancel {
+         background-color: $figma-red;
+         &:hover {
+            background-color: color.adjust($figma-red, $lightness: -10%);
+         }
+      }
+
+      .btn-create {
+         background-color: $figma-green;
+         &:hover {
+            background-color: color.adjust($figma-green, $lightness: -10%);
+         }
+      }
+   }
 }

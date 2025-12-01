@@ -9,6 +9,7 @@ export const authService = {
 
     // Tìm người dùng theo email
     const user = await Student.findOne({ email });
+    // console.log('user', user)
     if (!user) return null; // Nếu không tìm thấy người dùng, trả về null
 
     // So sánh mật khẩu người dùng nhập vào với mật khẩu đã mã hóa trong cơ sở dữ liệu

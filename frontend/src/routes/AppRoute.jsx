@@ -1,12 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 
-/*
- * Define public routes and private routes
- * Distinguish:
- *   1.  relative path (ex: 'admin')
- *   2.  absolute path (ex: '/admin')
- * */
-
 // Common --------------------------------------------------------------------------
 import MainLayout from '@/components/MainLayout.jsx'
 import PreLogin from '@/pages/common/preLogin/PreLogin.jsx'
@@ -14,7 +7,6 @@ import ProtectedRoute from './ProtectedRoute.jsx'
 import Unauthorized from '@/pages/common/unauthorized/Unauthorized.jsx'
 
 // Student --------------------------------------------------------------------------
-import MainStudentLayout from '../pages/student/MainStudentLayout.jsx'
 import LoginStudent from '@/pages/student/login/LoginStudent.jsx'
 import HistoryAppointment from '@/pages/student/history/HistoryAppointment.jsx'
 import InnerAppointment from '@/pages/student/inner-appointment/InnerAppointment.jsx'
@@ -22,7 +14,6 @@ import ListAppointment from '@/pages/student/list-appointment/ListAppointment.js
 import SearchCourse from '@/pages/student/search-course/SearchCourse.jsx'
 
 // Tutor ----------------------------------------------------------------------------
-import MainTutorLayout from '../pages/tutor/MainTutorLayout.jsx'
 import LoginTutor from '@/pages/tutor/login/LoginTutor.jsx'
 import ListSubjects from '@/pages/tutor/list-subjects/listSubjects.jsx'
 import SubjectDetails from '@/pages/tutor/list-subjects/subjectDetails/subjectDetails.jsx'
@@ -42,8 +33,7 @@ export const router = createBrowserRouter([
             element: <ProtectedRoute allowedRoles={['student']} />,
             children: [
                {
-                  path: '/student', // Đường dẫn gốc: /student
-                  // element: <MainStudentLayout />, // Nếu bạn muốn layout riêng lồng trong MainLayout
+                  path: '/student',
                   children: [
                      { index: true, element: <Navigate to="search-course" replace /> },
 
@@ -58,22 +48,16 @@ export const router = createBrowserRouter([
                },
             ],
          },
-
-         /* --- KHU VỰC TUTOR (Chỉ Tutor mới vào được) --- */
          {
             element: <ProtectedRoute allowedRoles={['tutor']} />,
             children: [
                {
-                  path: '/tutor', // Đường dẫn gốc: /tutor
-                  // element: <MainTutorLayout />,
+                  path: '/tutor',
                   children: [
-                     // Redirect mặc định cho tutor
                      { index: true, element: <Navigate to="list-subjects" replace /> },
 
-                     // URL: /tutor/list-subjects
                      { path: 'list-subjects', element: <ListSubjects /> },
 
-                     // URL: /tutor/subject-Details
                      { path: 'subject-details/:id', element: <SubjectDetails /> },
 
                      { path: 'open-class', element: <OpenClass /> },

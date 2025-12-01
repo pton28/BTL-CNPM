@@ -10,13 +10,13 @@ import {
    startOfWeek,
    endOfWeek,
    isSameMonth,
-   isSameDay,
    addDays,
    parseISO,
+   isSameDay,
 } from 'date-fns'
 import Button from '@/components/common/ui/button/buttonClickForm/button.jsx'
 import DayDetailModal from './DayDetailModal'
-import axios from '@/services/axios.customize' // Import axios đã config
+import axios from '@/services/axios.customize'
 import { BASE_API } from '@/constants'
 
 const OpenClass = () => {
@@ -24,14 +24,17 @@ const OpenClass = () => {
    const [events, setEvents] = useState([])
    const [isLoading, setIsLoading] = useState(false)
 
-   // State Modal
+   // --- STATE CHO MODAL MỞ MÔN ---
    const [isModalOpen, setIsModalOpen] = useState(false)
    const [courseName, setCourseName] = useState('')
+   const [sessionCount, setSessionCount] = useState(10)
+   const [selectedMajor, setSelectedMajor] = useState('')
+   const [method, setMethod] = useState('Offline') // <-- 1. THÊM STATE HÌNH THỨC HỌC
+   const [listMajors, setListMajors] = useState([])
 
-   // State Refresh để load lại dữ liệu sau khi tạo mới
    const [refresh, setRefresh] = useState(false)
 
-   // 1. GỌI API LẤY DỮ LIỆU LỊCH (SLOTS) CỦA TUTOR
+   // --- 1. GỌI API ---
    useEffect(() => {
       const fetchAllSlots = async () => {
          setIsLoading(true)
@@ -39,27 +42,18 @@ const OpenClass = () => {
             const tutorId = localStorage.getItem('id')
             if (!tutorId) return
 
-            // Bước 1: Lấy danh sách Meeting của Tutor
             const resMeeting = await axios.get(`${BASE_API}/meeting/tutor/${tutorId}`)
             const meetings = resMeeting.data.data || []
 
-            // Bước 2: Với mỗi Meeting, lấy danh sách Session -> SessionSlot
-            // Lưu ý: Cách này hơi thủ công vì chưa có API "Get All Slots By Tutor".
-            // Tốt nhất nên bảo Backend viết thêm API đó.
-            // Dưới đây là cách xử lý tạm ở Frontend:
             let allSlots = []
-
-            // Promise.all để chạy song song cho nhanh
             await Promise.all(
                meetings.map(async meeting => {
                   try {
-                     // Lấy sessions của meeting
                      const resSession = await axios.get(
                         `${BASE_API}/session/meeting/${meeting._id}`
                      )
                      const sessions = resSession.data.data || []
 
-                     // Với mỗi session, lấy slots
                      await Promise.all(
                         sessions.map(async session => {
                            const resSlot = await axios.get(
@@ -67,13 +61,23 @@ const OpenClass = () => {
                            )
                            const slots = resSlot.data.data || []
 
-                           // Format lại dữ liệu để hiển thị lên lịch
-                           const formattedSlots = slots.map(slot => ({
-                              id: slot._id,
-                              title: session.title, // Tên hiển thị là tên bài học hoặc tên môn
-                              date: new Date(slot.date).toISOString(), // Chuẩn hóa ngày
-                              type: 'blue', // Màu sắc mặc định
-                           }))
+                           const formattedSlots = slots.map(slot => {
+                              const isoDate = new Date(slot.date).toISOString()
+                              const dateOnly = isoDate.substring(0, 10)
+
+                              return {
+                                 id: slot._id,
+                                 title: session.title,
+                                 date: isoDate,
+                                 dateStr: dateOnly,
+                                 type: 'blue',
+
+                                 meetingTitle: meeting.title_meeting,
+                                 startTime: slot.start_time,
+                                 endTime: slot.end_time,
+                                 location: slot.location_or_link,
+                              }
+                           })
                            allSlots = [...allSlots, ...formattedSlots]
                         })
                      )
@@ -82,7 +86,6 @@ const OpenClass = () => {
                   }
                })
             )
-
             setEvents(allSlots)
          } catch (error) {
             console.error('Lỗi lấy lịch:', error)
@@ -91,10 +94,25 @@ const OpenClass = () => {
          }
       }
 
-      fetchAllSlots()
-   }, [currentDate, refresh]) // Chạy lại khi đổi tháng hoặc có lệnh refresh
+      const fetchMajors = async () => {
+         try {
+            const res = await axios.get(`${BASE_API}/major`)
+            if (res.data && res.data.data) {
+               setListMajors(res.data.data)
+               if (res.data.data.length > 0 && !selectedMajor) {
+                  setSelectedMajor(res.data.data[0]._id)
+               }
+            }
+         } catch (err) {
+            console.error('Lỗi lấy danh sách Major:', err)
+         }
+      }
 
-   // 2. Các hàm điều hướng lịch
+      fetchAllSlots()
+      fetchMajors()
+   }, [currentDate, refresh])
+
+   // --- 2. HÀM ĐIỀU HƯỚNG ---
    const nextMonth = () => setCurrentDate(addMonths(currentDate, 1))
    const prevMonth = () => setCurrentDate(subMonths(currentDate, 1))
 
@@ -106,19 +124,17 @@ const OpenClass = () => {
       setIsDetailModalOpen(true)
    }
 
-   // Hàm callback khi tạo xong ở Modal con
    const handleSaveNewEvent = () => {
-      setRefresh(prev => !prev) // Trigger useEffect chạy lại
+      setRefresh(prev => !prev)
       setIsDetailModalOpen(false)
    }
 
-   // 3. Logic tạo lưới lịch (Grid)
+   // --- 3. GENERATE CALENDAR GRID ---
    const generateCalendarGrid = () => {
       const monthStart = startOfMonth(currentDate)
       const monthEnd = endOfMonth(monthStart)
-      const startDate = startOfWeek(monthStart)
-      const endDate = endOfWeek(monthEnd)
-
+      const startDate = startOfWeek(monthStart, { weekStartsOn: 1 }) // Bắt đầu từ thứ 2
+      const endDate = endOfWeek(monthEnd, { weekStartsOn: 1 })
       const dateFormat = 'd'
       const rows = []
       let days = []
@@ -128,10 +144,9 @@ const OpenClass = () => {
       while (day <= endDate) {
          for (let i = 0; i < 7; i++) {
             formattedDate = format(day, dateFormat)
+            const currentCellDateStr = format(day, 'yyyy-MM-dd')
+            const dayEvents = events.filter(evt => evt.dateStr === currentCellDateStr)
             const cloneDay = day
-
-            // So sánh ngày (lưu ý parseISO để tránh lệch múi giờ)
-            const dayEvents = events.filter(evt => isSameDay(parseISO(evt.date), cloneDay))
 
             days.push(
                <div
@@ -140,7 +155,6 @@ const OpenClass = () => {
                   onClick={() => handleDayClick(cloneDay)}
                >
                   <span className="day-number">{formattedDate}</span>
-
                   <div className="events-list">
                      {dayEvents.slice(0, 3).map((evt, idx) => (
                         <div key={idx} className={`event-tag ${evt.type || 'blue'}`}>
@@ -165,25 +179,38 @@ const OpenClass = () => {
       return <div className="calendar-body">{rows}</div>
    }
 
-   // 4. CHỨC NĂNG: MỞ MÔN HỌC (CREATE MEETING)
+   // --- 4. XỬ LÝ TẠO MÔN HỌC ---
    const handleOpenCourse = async () => {
-      if (!courseName.trim()) return
+      if (!courseName.trim()) {
+         alert('Vui lòng nhập tên môn học!')
+         return
+      }
+      if (!selectedMajor) {
+         alert('Vui lòng chọn chuyên ngành!')
+         return
+      }
+      if (sessionCount <= 0) {
+         alert('Số buổi học phải lớn hơn 0!')
+         return
+      }
 
       try {
          const tutorId = localStorage.getItem('id')
          const payload = {
             title_meeting: courseName,
             tutor: tutorId,
-            date_of_event: new Date().toISOString(), // Ngày tạo
-            method: 'Offline', // Mặc định, có thể sửa sau
-            session_count: 10, // Mặc định
-            // major: "ID_MAJOR" // Nếu BE bắt buộc major, bạn cần dropdown chọn Major ở đây
+            date_of_event: new Date().toISOString(),
+            method: method, // <-- 2. GỬI HÌNH THỨC HỌC LÊN API
+            session_count: Number(sessionCount),
+            major: selectedMajor,
          }
 
          const res = await axios.post(`${BASE_API}/meeting`, payload)
          if (res.data && res.data.EC === 0) {
             alert('Đã mở môn học thành công!')
             setCourseName('')
+            setSessionCount(10)
+            setMethod('Offline') // Reset
             setIsModalOpen(false)
             setRefresh(prev => !prev)
          } else {
@@ -227,7 +254,7 @@ const OpenClass = () => {
             </div>
          </div>
 
-         {/* Modal Mở Môn Học */}
+         {/* --- MODAL MỞ MÔN --- */}
          {isModalOpen && (
             <div className="modal-overlay">
                <div className="modal-content zoom-in">
@@ -235,17 +262,66 @@ const OpenClass = () => {
                      <h3>Mở môn học mới</h3>
                      <FaTimes className="close-icon" onClick={() => setIsModalOpen(false)} />
                   </div>
+
                   <div className="modal-body">
-                     <label>Tên môn học</label>
-                     <input
-                        autoFocus
-                        type="text"
-                        placeholder="Ví dụ: Lập trình Web"
-                        value={courseName}
-                        onChange={e => setCourseName(e.target.value)}
-                        onKeyDown={e => e.key === 'Enter' && handleOpenCourse()}
-                     />
+                     {/* Tên môn */}
+                     <div className="form-group">
+                        <label>
+                           Tên môn học <span className="required">*</span>
+                        </label>
+                        <input
+                           autoFocus
+                           type="text"
+                           placeholder="Ví dụ: Lập trình Web"
+                           value={courseName}
+                           onChange={e => setCourseName(e.target.value)}
+                        />
+                     </div>
+
+                     {/* Hàng chứa: Số buổi | Hình thức | Chuyên ngành */}
+                     <div className="form-row">
+                        {/* Cột 1: Số buổi */}
+                        <div className="form-group" style={{ flex: '0 0 20%' }}>
+                           <label>Số buổi</label>
+                           <input
+                              type="number"
+                              min="1"
+                              value={sessionCount}
+                              onChange={e => setSessionCount(e.target.value)}
+                           />
+                        </div>
+
+                        {/* Cột 2: Hình thức học (MỚI THÊM) */}
+                        <div className="form-group" style={{ flex: '0 0 30%' }}>
+                           <label>Hình thức</label>
+                           <select value={method} onChange={e => setMethod(e.target.value)}>
+                              <option value="Offline">Offline</option>
+                              <option value="Online">Online</option>
+                           </select>
+                        </div>
+
+                        {/* Cột 3: Chuyên ngành */}
+                        <div className="form-group" style={{ flex: '1' }}>
+                           <label>
+                              Chuyên ngành <span className="required">*</span>
+                           </label>
+                           <select
+                              value={selectedMajor}
+                              onChange={e => setSelectedMajor(e.target.value)}
+                           >
+                              <option value="" disabled>
+                                 -- Chọn --
+                              </option>
+                              {listMajors.map(major => (
+                                 <option key={major._id} value={major._id}>
+                                    {major.name}
+                                 </option>
+                              ))}
+                           </select>
+                        </div>
+                     </div>
                   </div>
+
                   <div className="modal-footer">
                      <Button onClick={handleOpenCourse}>Xác nhận</Button>
                   </div>
@@ -253,6 +329,7 @@ const OpenClass = () => {
             </div>
          )}
 
+         {/* Modal Chi tiết ngày */}
          <DayDetailModal
             isOpen={isDetailModalOpen}
             onClose={() => setIsDetailModalOpen(false)}

@@ -19,7 +19,6 @@ const LoginTutor = () => {
       try {
          // const response = await loginAPI(email, password);
          // const { user, accessToken } = response.data;
-         console.log('>>> Dữ liệu chuẩn bị gửi đi:', { email, password });
          const response = await axios.post(`${BASE_API}/auth/login/tutor`, { email, password })
 
          setTokens({
