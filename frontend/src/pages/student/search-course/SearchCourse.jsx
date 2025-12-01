@@ -100,7 +100,7 @@ const SearchCourse = () => {
       const eventDate = new Date(dateString)
       const today = new Date('1/12/2025')
       // today.setHours(0, 0, 0, 0) // Reset giờ về 00:00:00 để so sánh chính xác
-      console.log('date', dateString, '-> result', Boolean(eventDate > today))
+      // console.log('date', dateString, '-> result', Boolean(eventDate > today))
 
       return eventDate > today
    }
