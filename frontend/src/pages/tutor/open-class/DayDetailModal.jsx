@@ -10,10 +10,14 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
    const [loading, setLoading] = useState(false)
    const [myMeetings, setMyMeetings] = useState([])
 
-   // State form tạo mới
+   // --- STATE MỚI ---
+   const [sessionsOfMeeting, setSessionsOfMeeting] = useState([]) // Danh sách session của môn đã chọn
+   const [inputType, setInputType] = useState('new') // 'new' | 'existing'
+
    const [newEvent, setNewEvent] = useState({
       meetingId: '',
-      sessionTitle: '',
+      sessionTitle: '', // Dùng khi nhập mới
+      sessionId: '', // Dùng khi chọn có sẵn
       day: '',
       month: '',
       year: '',
@@ -26,7 +30,7 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
       location: { campus: '', building: '', room: '' },
    })
 
-   // 1. Reset form và lấy danh sách môn khi mở modal
+   // 1. Reset form
    useEffect(() => {
       if (isOpen && date) {
          setNewEvent(prev => ({
@@ -36,13 +40,15 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
             year: format(date, 'yyyy'),
             meetingId: '',
             sessionTitle: '',
-            // Reset các trường khác nếu cần
+            sessionId: '',
             mode: 'online',
             link: '',
             location: { campus: '', building: '', room: '' },
          }))
+         setInputType('new')
+         setSessionsOfMeeting([])
          fetchMyMeetings()
-         setActiveTab('list') // Mặc định mở tab danh sách trước
+         setActiveTab('list')
       }
    }, [isOpen, date])
 
@@ -59,12 +65,29 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
       }
    }
 
+   // --- LOGIC MỚI: KHI CHỌN MÔN HỌC -> LẤY SESSION ---
+   const handleMeetingChange = async e => {
+      const meetingId = e.target.value
+      setNewEvent(prev => ({ ...prev, meetingId, sessionId: '' })) // Reset session khi đổi môn
+      setSessionsOfMeeting([])
+
+      if (meetingId) {
+         try {
+            const res = await axios.get(`${BASE_API}/session/meeting/${meetingId}`)
+            if (res.data && res.data.data) {
+               setSessionsOfMeeting(res.data.data)
+            }
+         } catch (error) {
+            console.log('Lỗi lấy session:', error)
+         }
+      }
+   }
+
    const handleInputChange = e => {
       const { name, value } = e.target
       setNewEvent(prev => ({ ...prev, [name]: value }))
    }
 
-   // Xử lý input địa điểm offline
    const handleLocationChange = e => {
       const { name, value } = e.target
       setNewEvent(prev => ({
@@ -78,49 +101,51 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
          alert('Vui lòng chọn môn học!')
          return
       }
-      if (!newEvent.sessionTitle) {
+
+      // Validate theo loại nhập liệu
+      if (inputType === 'new' && !newEvent.sessionTitle.trim()) {
          alert('Vui lòng nhập nội dung buổi học!')
+         return
+      }
+      if (inputType === 'existing' && !newEvent.sessionId) {
+         alert('Vui lòng chọn buổi học có sẵn!')
          return
       }
 
       setLoading(true)
       try {
-         // Bước 1: Tạo Session (Bài học)
-         const sessionPayload = {
-            title: newEvent.sessionTitle,
-            meeting: newEvent.meetingId,
+         let finalSessionId = newEvent.sessionId
+
+         // Bước 1: Nếu là session mới -> Gọi API tạo Session
+         if (inputType === 'new') {
+            const sessionPayload = {
+               title: newEvent.sessionTitle,
+               meeting: newEvent.meetingId,
+            }
+            const sessionRes = await axios.post(`${BASE_API}/session`, sessionPayload)
+            const createdSession = sessionRes.data.data
+            if (!createdSession || !createdSession._id) throw new Error('Lỗi tạo Session')
+            finalSessionId = createdSession._id
          }
-         const sessionRes = await axios.post(`${BASE_API}/session`, sessionPayload)
-         const createdSession = sessionRes.data.data
 
-         if (!createdSession || !createdSession._id) throw new Error('Lỗi tạo Session')
-
-         // Bước 2: Tính toán thời gian
+         // Bước 2: Tính toán thời gian (Giữ nguyên logic cũ)
          const startTimeStr = `${newEvent.hour.toString().padStart(2, '0')}:${newEvent.minute.toString().padStart(2, '0')}`
-
          let startH = parseInt(newEvent.hour)
          let startM = parseInt(newEvent.minute)
          let durH = parseInt(newEvent.durationHour || 0)
          let durM = parseInt(newEvent.durationMinute || 0)
-
          let totalStartMinutes = startH * 60 + startM
          let totalDuration = durH * 60 + durM
          let totalEndMinutes = totalStartMinutes + totalDuration
-
          let endH = Math.floor(totalEndMinutes / 60) % 24
          let endM = totalEndMinutes % 60
-
          const endTimeStr = `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`
-
-         // Format ngày gửi lên: YYYY-MM-DD
          const isoDate = `${newEvent.year}-${newEvent.month.toString().padStart(2, '0')}-${newEvent.day.toString().padStart(2, '0')}`
 
-         // Tạo chuỗi địa điểm
          let locString = ''
          if (newEvent.mode === 'online') {
             locString = newEvent.link || 'Online Meeting'
          } else {
-            // Format: Phòng - Tòa - Cơ sở
             const { room, building, campus } = newEvent.location
             const parts = []
             if (room) parts.push(room)
@@ -131,7 +156,7 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
 
          // Bước 3: Tạo Slot (Lịch)
          const slotPayload = {
-            session: createdSession._id,
+            session: finalSessionId, // Dùng ID đã có hoặc mới tạo
             start_time: startTimeStr,
             end_time: endTimeStr,
             location_or_link: locString,
@@ -142,7 +167,7 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
          const slotRes = await axios.post(`${BASE_API}/session-slot`, slotPayload)
          if (slotRes.data) {
             alert('Đã tạo lịch học thành công!')
-            onSave() // Callback để reload lại lịch ở component cha
+            onSave()
          }
       } catch (error) {
          console.error('Lỗi tạo lịch:', error)
@@ -158,8 +183,6 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
       <div className="modal-backdrop" onClick={onClose}>
          <div className="modal-container" onClick={e => e.stopPropagation()}>
             <FaTimes className="close-icon" onClick={onClose} />
-
-            {/* --- TAB NAVIGATION --- */}
             <div className="tab-nav">
                <button
                   className={activeTab === 'list' ? 'active' : ''}
@@ -176,7 +199,7 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
             </div>
 
             <div className="modal-body">
-               {/* ---------------- TAB 1: DANH SÁCH ---------------- */}
+               {/* TAB 1: DANH SÁCH (Giữ nguyên) */}
                {activeTab === 'list' && (
                   <div className="tab-content">
                      <h2 className="modal-title">Lớp học ngày {format(date, 'dd/MM/yyyy')}</h2>
@@ -185,29 +208,21 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
                            <p className="empty-message">Không có lịch dạy nào trong ngày này.</p>
                         ) : (
                            events.map((evt, index) => {
-                              // Kiểm tra xem location có phải link không
                               const isLink =
                                  evt.location &&
                                  (evt.location.startsWith('http') || evt.location.startsWith('www'))
-
                               return (
                                  <div key={index} className="class-card-item">
-                                    {/* Tên môn học */}
                                     <h4 className="class-subject">
-                                       {evt.meetingTitle || 'Môn học (Chưa cập nhật tên)'}
+                                       {evt.meetingTitle || 'Môn học'}
                                     </h4>
-
-                                    {/* Nội dung bài học */}
                                     <div className="class-session">
                                        <span className="label">Nội dung:</span> {evt.title}
                                     </div>
-
-                                    {/* Hàng thông tin thời gian & địa điểm */}
                                     <div className="class-meta-row">
                                        <div className="meta-item time">
                                           🕒 {evt.startTime} - {evt.endTime}
                                        </div>
-
                                        <div className="meta-item location">
                                           {isLink ? (
                                              <a
@@ -231,7 +246,7 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
                   </div>
                )}
 
-               {/* ---------------- TAB 2: TẠO MỚI ---------------- */}
+               {/* TAB 2: TẠO MỚI (ĐÃ CẬP NHẬT) */}
                {activeTab === 'create' && (
                   <div className="tab-content">
                      <h2 className="modal-title">Lên lịch dạy mới</h2>
@@ -246,7 +261,7 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
                               className="custom-input"
                               name="meetingId"
                               value={newEvent.meetingId}
-                              onChange={handleInputChange}
+                              onChange={handleMeetingChange}
                            >
                               <option value="">-- Chọn môn học --</option>
                               {myMeetings.map(m => (
@@ -257,19 +272,92 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
                            </select>
                         </div>
 
-                        {/* 2. Nội dung bài */}
+                        {/* 2. Nội dung buổi học (CẬP NHẬT UI MỚI) */}
                         <div className="form-group">
                            <label>
                               Nội dung buổi học <span style={{ color: 'red' }}>*</span>
                            </label>
-                           <input
-                              name="sessionTitle"
-                              value={newEvent.sessionTitle}
-                              onChange={handleInputChange}
-                              className="custom-input"
-                              placeholder="VD: Chương 1 - Giới thiệu..."
-                              autoComplete="off"
-                           />
+
+                           {/* Radio Group để chọn chế độ */}
+                           <div
+                              className="radio-group"
+                              style={{ marginBottom: '10px', display: 'flex', gap: '20px' }}
+                           >
+                              <div className="radio-item">
+                                 <input
+                                    type="radio"
+                                    id="typeNew"
+                                    name="inputType"
+                                    checked={inputType === 'new'}
+                                    onChange={() => setInputType('new')}
+                                    style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                 />
+                                 <label
+                                    htmlFor="typeNew"
+                                    style={{
+                                       marginLeft: '8px',
+                                       cursor: 'pointer',
+                                       fontWeight: 'normal',
+                                    }}
+                                 >
+                                    Tạo nội dung mới
+                                 </label>
+                              </div>
+
+                              <div className="radio-item">
+                                 <input
+                                    type="radio"
+                                    id="typeExisting"
+                                    name="inputType"
+                                    checked={inputType === 'existing'}
+                                    onChange={() => setInputType('existing')}
+                                    disabled={!newEvent.meetingId} // Disable nếu chưa chọn môn
+                                    style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                 />
+                                 <label
+                                    htmlFor="typeExisting"
+                                    style={{
+                                       marginLeft: '8px',
+                                       cursor: 'pointer',
+                                       fontWeight: 'normal',
+                                       opacity: !newEvent.meetingId ? 0.5 : 1,
+                                    }}
+                                 >
+                                    Chọn bài có sẵn
+                                 </label>
+                              </div>
+                           </div>
+
+                           {/* Hiển thị Input hoặc Select tùy theo chế độ */}
+                           {inputType === 'new' ? (
+                              <input
+                                 name="sessionTitle"
+                                 value={newEvent.sessionTitle}
+                                 onChange={handleInputChange}
+                                 className="custom-input"
+                                 placeholder="VD: Chương 1 - Giới thiệu..."
+                                 autoComplete="off"
+                              />
+                           ) : (
+                              <select
+                                 className="custom-input"
+                                 name="sessionId"
+                                 value={newEvent.sessionId}
+                                 onChange={handleInputChange}
+                                 disabled={sessionsOfMeeting.length === 0}
+                              >
+                                 <option value="">-- Chọn bài học có sẵn --</option>
+                                 {sessionsOfMeeting.length > 0 ? (
+                                    sessionsOfMeeting.map(s => (
+                                       <option key={s._id} value={s._id}>
+                                          {s.title}
+                                       </option>
+                                    ))
+                                 ) : (
+                                    <option disabled>Môn này chưa có bài học nào</option>
+                                 )}
+                              </select>
+                           )}
                         </div>
 
                         {/* 3. Thời gian bắt đầu */}
@@ -355,7 +443,6 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
                         <div className="form-group">
                            <label>Hình thức</label>
                            <div className="radio-group">
-                              {/* Option Online */}
                               <div className="radio-item">
                                  <input
                                     type="radio"
@@ -378,7 +465,6 @@ const DayDetailModal = ({ isOpen, onClose, date, events, onSave }) => {
                                  />
                               )}
 
-                              {/* Option Offline */}
                               <div className="radio-item mt-2">
                                  <input
                                     type="radio"
