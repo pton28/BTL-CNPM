@@ -4,13 +4,18 @@ import { BASE_API } from '../constants';
 const updateMaterial = async (id, data) => {
     return axios.put(`${BASE_API}/material/${id}`, data);
 };
-const createNewMaterial = async (title, file, meetingId) => {
+const createNewMaterial = async (title, file, content, meetingId) => {
     const formData = new FormData();
     formData.append('title', title);
+    formData.append('file', file); 
+    formData.append('content', content)
     formData.append('meeting', meetingId);
-    formData.append('content', file); 
 
-    return axios.post(`${BASE_API}/material`, formData);
+    return axios.post(`${BASE_API}/material`, formData, {
+        headers: {
+            'Content-Type': undefined // QUAN TRỌNG NHẤT
+        }
+    });
 };
 const deleteMaterial = async (id) => {
     return axios.delete(`${BASE_API}/material/${id}`);

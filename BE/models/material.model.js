@@ -7,12 +7,12 @@ const materialSchema = new mongoose.Schema(
             required: true,
             trim: true,
         },
-        content: {
+        file: {
             type: String,
             required: false,
             trim: true,
         },
-        file: {
+        content: {
             type: String,
             required: false,
             trim: true,

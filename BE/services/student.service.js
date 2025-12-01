@@ -19,6 +19,8 @@ export const loginStudentService = async(email, password) => {
 export const getStudentByIdService = async(id) => {
     try {
         const student = await Student.findById(id)
+            .populate('faculty_id') 
+            .exec();
         if(!student) return null
         return student
     } catch (error) {
