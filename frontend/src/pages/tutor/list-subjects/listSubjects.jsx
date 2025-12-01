@@ -17,7 +17,7 @@ const listSubjects = () => {
 
    // GỌI HOOK: Lấy data và loading
    const { data: subjects, loading } = useFetchMeetingByTutor(refresh)
-   console.log(subjects)
+   if(!loading) console.log('subject', subjects)
    // Hàm chuyển trang chi tiết kèm theo ID meeting
    const handleViewDetail = meetingId => {
       navigate(`/tutor/subject-details/${meetingId}`)
