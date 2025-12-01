@@ -19,6 +19,9 @@ const HeaderTutor = () => {
       navigate('/')
    }
 
+   const handleProfile = () => {
+      navigate('/profile')
+   }
    return (
       <div className="header-tutor-container">
          <img src={logo} alt="logo" className="header-logo" onClick={handleHome} />
@@ -47,6 +50,9 @@ const HeaderTutor = () => {
 
                   {showDropdown && (
                      <div className="dropdown-menu">
+                        <div className="dropdown-item" onClick={handleProfile}>
+                           Thông tin cá nhân
+                        </div>
                         <div className="dropdown-item" onClick={handleLogout}>
                            Đăng xuất
                         </div>
